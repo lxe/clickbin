@@ -6,8 +6,8 @@ var url    = require('url')
   , _      = require('underscore')
   , crypto = require('crypto')
   , uuid   = require('node-uuid')
-  , Bin    = require('models/bin')
-  , Link   = require('models/link')
+  , Bin    = require('../models/bin')
+  , Link   = require('../models/link')
 
 /**
  * [exports description]
@@ -55,7 +55,7 @@ module.exports = function(app) {
       });
     }
 
-    Bin.find({ path: path }, function(err, bin) {
+    Bin.find({ name: path }, function(err, bin) {
 
       // No exisitng bin found
       if (err) {
@@ -64,7 +64,9 @@ module.exports = function(app) {
         // TODO: Add user bin support
         if (!path) {
           bin      = new Bin();
-          bin.path = Bin.numBins;
+
+          // TODO: Use the counter instead of this :)
+          bin.path = uuid.v4();
         } else {
 
           // TODO: Add user bin support

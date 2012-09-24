@@ -32,4 +32,4 @@ var BinSchema = new Schema({
   , contents : [BinItem]
 })
 
-module.exports = mongoose.model('Bin',BinSchema)
+module.exports = mongoose.model('Bin', BinSchema)
