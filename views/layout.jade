@@ -14,6 +14,7 @@ html(lang='en')
 			content='width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0')
 		meta(name='description', content='')
 		meta(name='author',      content='')
+		link(rel='stylesheet', href='/stylesheets/main.css')
 
 	body 
 		.wrapper
@@ -27,13 +28,13 @@ html(lang='en')
 							span.icon-bar
 							span.icon-bar
 						.nav-collapse
-							a(href='/').brand 
-								h1 ClickBin
+							a(href='/').brand ClickBin
 
 			//
 			// Body block
-			//					
-			block body
+			//				
+			.container	
+				block body
 	
 		footer
 			.inner Footer
