@@ -9248,6 +9248,19 @@ body {
   font-size: 14px;
   background: url("/images/noisy_grid.png");
 }
+#master-nav .navbar-inner {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top: none;
+}
+@media (min-width: 768px) {
+  #master-nav .navbar-inner {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+}
+/* Landing */
 #landing-promo {
   margin-top: 40px;
 }
@@ -9263,18 +9276,6 @@ body {
   #landing-promo h1 {
     font-size: 28px;
     line-height: 1.2;
-  }
-}
-#master-nav .navbar-inner {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  border-top: none;
-}
-@media (min-width: 768px) {
-  #master-nav .navbar-inner {
-    border-radius: 0;
-    border-left: none;
-    border-right: none;
   }
 }
 #linkform input {
