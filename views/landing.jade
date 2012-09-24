@@ -1,7 +1,7 @@
 extends layout
 
 block body
-	.hero-unit
+	#landing-promo
 		h1 
 			i.icon-link
 			|  Paste a link to start:
@@ -9,8 +9,8 @@ block body
 			a(href="#") reddit.com
 		form(action="/link/add", method="post")#linkform
 			.input-append
-				input(type="text").span6
-				button.btn.btn-success.btn-large(type="submit")
+				input(type="text")
+				button.btn.btn-inverse.btn-large(type="submit")
 					strong 
 						i.icon-hand-right
 						|  Go!

@@ -10,16 +10,6 @@ body {
 	background: url("/images/noisy_grid.png");
 }
 
-.hero-unit {
-	background-color: transparent;
-	h1 {
-		// text-shadow: 0px -1px 8px #ffffff;
-		@media (max-width: 768px) {
-			font-size: 28px;
-		}
-	}
-}
-
 #master-nav {
 	.navbar-inner {
 		border-top-left-radius: 0;
@@ -33,6 +23,22 @@ body {
 		}
 	}
 }
+
+/* Landing */
+#landing-promo {
+	margin-top: 40px;
+	@media (max-width: 768px) {
+		margin-top: 10px;
+	}
+	h1 {
+		font-size: 48px;
+		@media (max-width: 768px) {
+			font-size: 28px;
+			line-height: 1.2;
+		}
+	}
+}
+
 
 #linkform {
 	input {
