@@ -7,47 +7,47 @@
 
 !!! 5
 html(lang='en') 
-	head
-		meta(charset='utf-8')
-		title= locals.title
-		meta(name='viewport', 
-			content='width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0')
-		meta(name='description', content='')
-		meta(name='author',      content='')
-		link(rel='stylesheet', href='/stylesheets/main.css')
+  head
+  meta(charset='utf-8')
+  title= locals.title
+  meta(name='viewport', 
+    content='width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0')
+  meta(name='description', content='')
+  meta(name='author',  content='')
+  link(rel='stylesheet', href='/stylesheets/main.css')
 
-	body 
-		.wrapper
-			.navbar
-				.navbar-inner 
-					.container 
-						a.btn.btn-primary.btn-navbar(
-							data-toggle="collapse", 
-							data-target=".nav-collapse")
-							span.icon-bar
-							span.icon-bar
-							span.icon-bar
-						.nav-collapse
-							a(href='/').brand ClickBin
-			//
-			// Body block
-			//				
-			.container	
-				block body
-	
-		footer
-			.inner Footer
+  body 
+  .wrapper
+    .navbar
+    .navbar-inner 
+      .container 
+      a.btn.btn-primary.btn-navbar(
+        data-toggle="collapse", 
+        data-target=".nav-collapse")
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      .nav-collapse
+        a(href='/').brand ClickBin
+    //
+    // Body block
+    //    
+    .container  
+    block body
+  
+  footer
+    .inner Footer
 
-	script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js')
+  script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js')
 
 
 
-            //
-            // Body block
-            // 
-            block body
-    
-        footer
-            .inner Footer
-    script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js')
-        
+    //
+    // Body block
+    // 
+    block body
+  
+  footer
+    .inner Footer
+  script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js')
+  
