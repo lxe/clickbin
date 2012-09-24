@@ -9248,12 +9248,21 @@ body {
   font-size: 14px;
   background: url("/images/noisy_grid.png");
 }
-.hero-unit {
-  background-color: transparent;
+#landing-promo {
+  margin-top: 40px;
 }
 @media (max-width: 768px) {
-  .hero-unit h1 {
+  #landing-promo {
+    margin-top: 10px;
+  }
+}
+#landing-promo h1 {
+  font-size: 48px;
+}
+@media (max-width: 768px) {
+  #landing-promo h1 {
     font-size: 28px;
+    line-height: 1.2;
   }
 }
 #master-nav .navbar-inner {
