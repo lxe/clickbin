@@ -18,7 +18,7 @@ html(lang='en')
 
   body 
     .wrapper
-      .navbar
+      .navbar#master-nav
         .navbar-inner 
           .container 
             a.btn.btn-primary.btn-navbar(
@@ -28,7 +28,8 @@ html(lang='en')
               span.icon-bar
               span.icon-bar
             .nav-collapse
-              a(href='/').brand ClickBin
+              a(href='/').brand 
+                strong clickb.in
 
       //
       // Body block
@@ -37,7 +38,7 @@ html(lang='en')
         block body
   
     footer
-      .inner Footer
+      //- .inner Footer
 
   script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js')
 

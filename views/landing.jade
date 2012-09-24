@@ -2,5 +2,15 @@ extends layout
 
 block body
 	.hero-unit
-		h1 ClickBin
-		p Test
+		h1 
+			i.icon-link
+			|  Paste a link to start:
+		p.help For example, 
+			a(href="#") reddit.com
+		form(action="/link/add", method="post")#linkform
+			.input-append
+				input(type="text").span6
+				button.btn.btn-success.btn-large(type="submit")
+					strong 
+						i.icon-hand-right
+						|  Go!

@@ -1,13 +1,48 @@
 @import "bootstrap/bootstrap";
+@import "bootstrap/responsive";
 
 /**
  * User Styles
  */
 
-
-
 body {
 	font-size: 14px;
+	background: url("/images/noisy_grid.png");
 }
 
-@import "bootstrap/responsive";
+.hero-unit {
+	background-color: transparent;
+	h1 {
+		// text-shadow: 0px -1px 8px #ffffff;
+		@media (max-width: 768px) {
+			font-size: 28px;
+		}
+	}
+}
+
+#master-nav {
+	.navbar-inner {
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
+		border-top: none;
+
+		@media (min-width: 768px) {
+			border-radius: 0;
+			border-left: none;
+			border-right: none;
+		}
+	}
+}
+
+#linkform {
+	input {
+		padding: 9px 14px 8px 14px;
+	  font-size: @baseFontSize + 2px;
+	  line-height: normal;
+	  font-weight: bold;
+ 	 	// .border-radius(5px, 0, 0, 5px);
+	}
+}
+
+
+
