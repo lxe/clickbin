@@ -2,7 +2,7 @@
  * 
  */
 
-var fs = require('fs');
+var fs = require('fs')
 
 /**
  * [exports description]
@@ -17,9 +17,9 @@ module.exports = function(app) {
    * @return {[type]}      [description]
    */
   fs.readdirSync(__dirname).forEach(function(file) {
-    if (file == "index.js") return;
-    var name = file.substr(0, file.indexOf('.'));
-    require('./' + name)(app);
+    if (file == "index.js") return
+    var name = file.substr(0, file.indexOf('.'))
+    require('./' + name)(app)
   });
 
   /**
@@ -30,7 +30,7 @@ module.exports = function(app) {
    */
   app.get('/', function(req, res) {
     return res.render('landing', {
-      title: 'Welcome to ClickBin'
+      title: 'ClickBin'
     });
   });
 }
