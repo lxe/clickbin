@@ -5,13 +5,13 @@ var mongoose = require('mongoose')
 
 
 function setPassword(password){
-    if(common.validatePassword(password)){
-        password = common.md5(password + salt)
-        var res = common.digest(password)
-        this.salt = res.salt
-        return res.digest
-    }
-    return "." //return an invalid password
+  if(common.validatePassword(password)){
+    password = common.md5(password + salt)
+    var res = common.digest(password)
+    this.salt = res.salt
+    return res.digest
+  }
+  return "." //return an invalid password
 }
 
 var UserSchema = new Schema({
@@ -21,29 +21,29 @@ var UserSchema = new Schema({
     , required : true
   }
   , firstname : {
-      type : String
-      , requried : false
+    type : String
+    , requried : false
   }
   , lastname : {
-      type : String
-      , required : false
+    type : String
+    , required : false
   }
   , password : { 
-      type : String
-      , set : setPassword
-      , required : true
-      , validate : [ common.validatePassword, "password"]
+    type : String
+    , set : setPassword
+    , required : true
+    , validate : [ common.validatePassword, "password"]
   }
   , salt : {
-      type : String
-      , required : true
+    type : String
+    , required : true
   }
   // did the user validate their account via email?
   , validated : {
-      type : Boolean
-      , required : true
-      , default : false
+    type : Boolean
+    , required : true
+    , default : false
   }
-})
+},{strict:true})
 
 module.exports = mongoose.model('User',UserSchema)
