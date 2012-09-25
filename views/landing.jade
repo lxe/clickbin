@@ -1,16 +1,16 @@
 extends layout
 
 block body
-	#landing-promo
-		h1 
-			i.icon-link
-			|  Paste a link to start:
-		p.help For example, 
-			a(href="#") reddit.com
-		form(action="/link/add", method="post")#linkform
-			.input-append
-				input(type="text")
-				button.btn.btn-inverse.btn-large(type="submit")
-					strong 
-						i.icon-hand-right
-						|  Go!
+  #landing-promo
+    h1 
+      i.icon-link
+      |  Paste a link to start:
+    p.help For example, 
+      a(href="#") reddit.com
+    form#linkform(action="/link/add", method="post")
+      .input-append
+        input(type="text",name="uri")
+        button.btn.btn-inverse.btn-large(type="submit")
+          strong 
+            i.icon-hand-right
+            |  Go!

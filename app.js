@@ -15,28 +15,28 @@ var _          = require('underscore')
  * ============================================================================
  * Express app setup
  */
-var app = module.exports = express();
+var app = module.exports = express()
 
 app.configure(function() {
   /**
    * 
    */
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
+  app.set('views', __dirname + '/views')
+  app.set('view engine', 'jade')
   app.use(require('connect-less')({
     src: __dirname + '/views',
     dst: __dirname + '/public',
     enable: ['less']
-  }));
+  }))
 
   /**
    * 
    */
-  app.use(express.static(__dirname + '/public'));
-  
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(express.cookieParser());
+  app.use(express.static(__dirname + '/public'))
+  app.use(express.favicon(__dirname + '/public/images/favicon.ico'))
+  app.use(express.bodyParser())
+  app.use(express.methodOverride())
+  app.use(express.cookieParser())
 
   /**
    * 
@@ -45,7 +45,7 @@ app.configure(function() {
     secret: 'whalecopter',
     maxAge: new Date(Date.now() + 3600000),
     store:  new MongoStore({ db: 'clickbin' })
-  }));
+  }))
 
 
   /**
@@ -58,18 +58,18 @@ app.configure(function() {
   app.use(function(req, res, next) {
 
     // Flash 
-    req.session.flash = req.session.flash || {};
-    res.locals.flash  = req.session.flash;
-    req.session.flash = {};
+    req.session.flash = req.session.flash || {}
+    res.locals.flash  = req.session.flash
+    req.session.flash = {}
 
-    next();
-  });
+    next()
+  })
 
   /**
    * 
    */
-  app.use(app.router);
-});
+  app.use(app.router)
+})
 
 /**
  * [ description]
@@ -79,31 +79,31 @@ app.configure('development', function() {
   app.use(express.errorHandler({
     dumpExceptions: true,
     showStack: true
-  }));
-});
+  }))
+})
 
 /**
  * [ description]
  * @return {[type]} [description]
  */
 app.configure('production', function() {
-  app.use(express.errorHandler());
-});
+  app.use(express.errorHandler())
+})
 
 // Routes
-require('./routes')(app);
+require('./routes')(app)
 
 /**
  * ============================================================================
  * [serverConfig description]
  * @type {Object}
  */
-var serverConfig = { port: 3000 };
-mongo.connect('mongodb://localhost/clickbin');
+var serverConfig = { port: 3000 }
+mongo.connect('mongodb://localhost/clickbin')
 mongo.connection.on('open', function() {
   app.listen(serverConfig.port, function() {
     console.log("Express server listening on port %d in %s mode", 
       serverConfig.port, 
-      app.settings.env);
-  });
-});
+      app.settings.env)
+  })
+})
