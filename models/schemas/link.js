@@ -8,7 +8,7 @@ var LinkSchema = new Schema({
   }
   , icon : {
     type : String
-    , required : true
+    , required : false
     , default : null
   }
   , url : {

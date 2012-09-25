@@ -8,6 +8,7 @@ var url     = require('url')
   , uuid    = require('node-uuid')
   , Bin     = require('../models/bin')
   , Counter = require('../models/counter')
+  , scrapper = require('../controllers/scrapper')
 
 /**
  * [exports description]
@@ -31,10 +32,8 @@ module.exports = function(app) {
    * @return {[type]}        [description]
    */
   app.get(uri_regexp, function(req, res, next) {
-    console.log('req.url: '+req.url)
     function linkError(errStr) {
       req.session.flash.linkError = errStr
-      console.log('link error: '+errStr)
       return res.redirect('/')
     }
     
@@ -43,12 +42,12 @@ module.exports = function(app) {
     
     // use http if no protocol was specified
     var protocol = matches[matches.length - 2] || 'http://'
-      , path     = matches[matches.length - 1]
-      , uri      = matches[1]
+      , uri     = matches[matches.length - 1]
+      , path      = matches[1]
     
     // if the uri is there and the path isn't, then really.. the path is there
     // but not the uri.....?
-    if(uri!==undefined && uri!==null && uri.indexOf('.')===-1){
+    if(uri!==undefined && uri!==null && uri.indexOf('.')===-1 && path == undefined){
       path = uri
       uri = undefined
     }
@@ -64,37 +63,52 @@ module.exports = function(app) {
         , bin : bin
       })
     }
+    console.log('path: '+path)
+    console.log('uri: '+uri)
     if(path){
       // bin paths should start with a '/' but not end with one
       if(path[0]!=='/') path = '/' + path
       if(path[path.length-1]==='/') path = path.substring(0,path.length-1)
-      if(!uri){
         // requesting a just a bin
-        Bin.find({path:path}, function(err, bin){
-          if(err) return linkError('Internal Error')
-          // no existing bin found
-          if(!bin) return linkError('Not Implemnted')
-          else return render(bin)
+        Bin.findOne({path:path}, function(err, bin){
+          if(err) return next(err)
+          if(!bin) return next(404)
+          if(!uri){
+            // just show the bin
+            return render(bin)
+          }else{
+            // add a uri to an existing bin
+            // TODO: check permissions
+            scrapper.get(protocol + '://' + uri, function(err,link){
+              if(err) return next(err)
+              if(bin.addLink(link)){
+                // successfully added a `new` link to the bin
+                bin.save(function(err){
+                  if(err) return next(err)
+                  else return render(bin)
+                })
+              }else
+                // TODO: report that the link is already in the bin
+                return render(bin)
+            })
+          }
         })
-      }else{
-        // add the url to an existing bin
-        // TODO: check to see if the current (logged out) user is the owner of 
-        // this bin
-      }
     }else{
       // creating an anounomous bin. ie., 
       // a request of the form: clickb.in/google.com
-      console.log('creat anounmous bin')
       Counter.increment('anonymous-bin-counter', function(err, val){
         if(err) return next(err)
-        bin = new Bin({
-          path : '/' + val.toString(36)
-          , links : [ { title : 'Test' , url : protocol + '://' + uri } ]
+        scrapper.get(protocol + '://' + uri, function(err,link){
+          if(err) return next(err)
+          bin = new Bin({
+            path : '/' + val.toString(36) // base 36 encode the counter
+            , links : [ link ]
+          })
+          bin.save(function(err) {
+            if (err) return next(err)
+            return res.redirect(bin.path)
+          }) // end save bin
         })
-        bin.save(function(err) {
-          if (err) return next(err)
-          return res.redirect(bin.path)
-        }) // end save bin
       })
     }
   }) // end GET /[bin-name]/[link]

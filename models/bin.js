@@ -30,4 +30,11 @@ BinSchema.virtual('parent').get(function(){
   else return null
 })
 
+BinSchema.methods.addLink = function(link){
+  if( _.any(this.links,function(link_){ return (link_.uri === link.uri) }) )
+    // the link is already in this bin
+    return false
+  else return !!this.links.push(link)
+}
+
 module.exports = mongoose.model('Bin', BinSchema)
