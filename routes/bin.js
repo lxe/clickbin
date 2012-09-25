@@ -2,11 +2,12 @@
  * Link/bin routing
  */
 
-var url    = require('url')
-  , _      = require('underscore')
-  , crypto = require('crypto')
-  , uuid   = require('node-uuid')
-  , Bin    = require('../models/bin')
+var url     = require('url')
+  , _       = require('underscore')
+  , crypto  = require('crypto')
+  , uuid    = require('node-uuid')
+  , Bin     = require('../models/bin')
+  , Counter = require('../models/counter')
 
 /**
  * [exports description]
@@ -30,6 +31,7 @@ module.exports = function(app) {
    * @return {[type]}        [description]
    */
   app.get(uri_regexp, function(req, res, next) {
+    console.log('req.url: '+req.url)
     function linkError(errStr) {
       req.session.flash.linkError = errStr
       console.log('link error: '+errStr)
@@ -62,7 +64,6 @@ module.exports = function(app) {
         , bin : bin
       })
     }
-    
     if(path){
       // bin paths should start with a '/' but not end with one
       if(path[0]!=='/') path = '/' + path
@@ -83,14 +84,18 @@ module.exports = function(app) {
     }else{
       // creating an anounomous bin. ie., 
       // a request of the form: clickb.in/google.com
-      bin = new Bin({
-        path : '/' + uuid.v4() // TODO: Use the counter instead of this :)
-        , links : [ { title : 'Test' , url : protocol + '://' + uri } ]
+      console.log('creat anounmous bin')
+      Counter.increment('anonymous-bin-counter', function(err, val){
+        if(err) return next(err)
+        bin = new Bin({
+          path : '/' + val.toString(36)
+          , links : [ { title : 'Test' , url : protocol + '://' + uri } ]
+        })
+        bin.save(function(err) {
+          if (err) return next(err)
+          return res.redirect(bin.path)
+        }) // end save bin
       })
-      bin.save(function(err) {
-        if (err) return linkError('Crazy server error')
-        return res.redirect(bin.path)
-      }) // end save bin
     }
   }) // end GET /[bin-name]/[link]
 }

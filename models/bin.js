@@ -17,4 +17,17 @@ var BinSchema = new Schema({
   , links : [LinkSchema]
 })
 
+
+BinSchema.virtual('title').get(function(){
+  var path = this.path.split('/')
+    , name = path[path.length - 1]
+  //return name[0].toUpperCase() + name.substring(1) // camle case?
+  return name
+})
+BinSchema.virtual('parent').get(function(){
+  var path = this.path.split('/')
+  if(path.length>1) return path[path.length - 2]
+  else return null
+})
+
 module.exports = mongoose.model('Bin', BinSchema)
