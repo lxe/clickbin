@@ -1,4 +1,5 @@
-var mongoose = require('mongoose')
+var _       = require('underscore')
+  , mongoose = require('mongoose')
   , Schema = mongoose.Schema
   , LinkSchema = require('./schemas/link')
 
@@ -31,7 +32,7 @@ BinSchema.virtual('parent').get(function(){
 })
 
 BinSchema.methods.addLink = function(link){
-  if( _.any(this.links,function(link_){ return (link_.uri === link.uri) }) )
+  if( _.any(this.links,function(link_){ return (link_.url === link.url) }) )
     // the link is already in this bin
     return false
   else return !!this.links.push(link)

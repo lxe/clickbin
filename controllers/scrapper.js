@@ -6,6 +6,7 @@ module.exports = {
     jsdom.env(url, [
       'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'
     ], function(err, window){
+      if(err) return cb(err)
       cb(null,{
         icon : window.$('link[rel="shortcut icon"]').attr('href')
         , title : window.$('title').text()

@@ -9241,6 +9241,18 @@ a.badge:hover {
     overflow: visible !important;
   }
 }
+.bin .link {
+  clear: both;
+  display: block;
+}
+.bin .link .icon {
+  width: 60px;
+  float: left;
+  margin: 10px;
+}
+.bin .link h3 {
+  float: left;
+}
 /**
  * User Styles
  */
