@@ -42,7 +42,6 @@ module.exports = function (app) {
         return linkError('Invalid URL')
 
     // use http if no protocol was specified
-    console.log(matches)
     var protocol = matches[matches.length - 2] || 'http://'
       , uri  = matches[matches.length - 1]
       , path = matches[1]
@@ -63,15 +62,18 @@ module.exports = function (app) {
 
     function render(bin) {
       // meanhile, in russia
-      return res.render('bin', {
-        path: path
-        , bin: bin
+      Bin.find({path:new RegExp(bin.path + '/[^/]+$')},function(err,childBins){
+        if(err) return next(err)
+        return res.render('bin', {
+          path: path
+          , bin: bin
+          , isOwner : bin.sessionID === req.sessionID
+          , childBins : childBins
+        })
       })
     }
-
-    console.log('path: ' + path)
-    console.log('uri: '  + uri)
-
+    
+    
     if (path) {
       // bin paths should start with a '/' but not end with one
       // requesting a just a bin
@@ -80,34 +82,56 @@ module.exports = function (app) {
       }, function (err, bin) {
         if (err) return next(err)
         // just show the bin
-        else if(uri === undefined) return render(bin)
-        if (!bin) {
+        else if (!bin) {
           // add a new bin (possibly recursively adding all the bins above it)
-          if(path.split('/').length === 1) 
+          var bins = path.substring(1).split('/')
+          if(bins.length === 1) 
             return next(new Error("Only randomly top level bins can be "
               + "created"))
-          // HERE BE DRAGONS!!
           // TODO: recursively check and create bins up until the give path
-        } else {
-          // add a uri to an existing bin
-          // TODO: eligently handle permission errors
-          if (bin.sessionID !== req.sessionID) return next(new Error("Permission Denied"))
-          scrapper.get(protocol + uri, function (err, link) {
-            if (err) return next(err)
-            if (bin.addLink(link)) {
-              // successfully added a `new` link to the bin
-              bin.save(function (err) {
-                if (err) return next(err)
-                else return res.redirect(path)
-              })
-            } else {
-              console.log('unable to add link')
-              console.log(link)
-              // TODO: report that the link is already in the bin
-              return res.redirect(path)
+          // check to see if the root bin exists
+            // if not, show error
+            // else, check permissions
+              // if not, show error
+              // else, create the bin
+              // then add link to current child bin
+              // repeat last step until we reach the root bin
+          else Bin.findOne({
+            path : '/' + bins[0]
+          }, function(err, bin) {
+            if(err) return next(err)
+            else if(!bin) return next(new Error("The root bin doesn't exist yet"
+              + " and only random top level bins can be created"))
+            else if(bin.sessionID !== req.sessionID) return next(new Error("You"
+              + " dont own that root bin"))
+            else{
+              if(uri){
+                scrapper.get(protocol + uri, function(err,link){
+                  if(err) return next(err)
+                  saveNewBin(bins,[link])
+                })
+              }else saveNewBin(bins,[])
+              
+              function saveNewBin(bins,links){
+                var bin = new Bin({
+                  path : '/' + bins.join('/')
+                  , sessionID : req.sessionID
+                  , links : links
+                })
+                bin.save(function (err) {
+                  if (err) return next(err)
+                  // create sub bins
+                  ensureBinsExistAlongPath(bins)
+                  return res.redirect(bin.path)
+                })
+              }
             }
           })
-        }
+        } else if(uri === undefined) return render(bin)
+        else return addLinkToBin(path, protocol, uri, bin, function(err) {
+          if(err) return next(err)
+          else res.redirect(path)
+        })
       })
     } else {
       // creating an anounomous bin. ie., 
@@ -122,14 +146,48 @@ module.exports = function (app) {
             // when creating an anounymous bin, give it the sessionID of its
             // creator
             , sessionID : req.sessionID
+            , links : [link]
           })
-          bin.addLink(link)
           bin.save(function (err) {
             if (err) return next(err)
             return res.redirect(bin.path)
           }) // end save bin
         })
       })
+    }
+    
+    function addLinkToBin(path, protocol, uri, bin, cb){
+      {
+        // add a uri to an existing bin
+        // TODO: eligently handle permission errors
+        if (bin.sessionID !== req.sessionID) 
+          return next(new Error("Permission Denied"))
+        else scrapper.get(protocol + uri, function (err, link) {
+          if (err) return cb(err)
+          if (bin.addLink(link)) return bin.save(cb)
+          else return cb(new Error("This bin alrady has that same link"))
+        })
+      }
+    }
+    function ensureBinsExistAlongPath(bins){
+      for(var i = bins.length; i > 1; i--){
+        // go create the bins, if they dont exist yet
+        var path = '/' + bins.slice(0,i).join('/')
+        Bin.collection.findAndModify(
+          { 
+            path : path 
+            , sessionID : req.sessionID
+          }   // query
+          , []                              // sort
+          , {                               // update
+            $set : { 
+              path : path 
+              , sessionID : req.sessionID
+            }
+          }
+          , { upsert : true }               // options
+        ,function(){}) // we dont need to wait for this callback. fire and forget
+      }
     }
   }) // end GET /[bin-name]/[link]
 }
