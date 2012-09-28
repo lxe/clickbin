@@ -61,7 +61,6 @@ app.configure(function() {
     req.session.flash = req.session.flash || {}
     res.locals.flash  = req.session.flash
     req.session.flash = {}
-
     next()
   })
 
