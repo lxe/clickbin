@@ -1,10 +1,16 @@
 mixin link(link)
-  li
+  li.clearfix
     a.clearfix(href=link.url, title=link.title)
-      img.pull-left.icon(src="#{link.icon || '/images/noicon.png'}")
-      .text.pull-left
-        .link #{link.title}
-        .url #{link.url}
+      .minwidth.clearfix
+        .icon
+          if (link.icon)
+            img(src="#{link.icon}")
+          else
+            .no-icon
+              i.icon-link
+        .text
+          .link #{link.title}
+          .url #{link.url}
 
 extends layout
 
