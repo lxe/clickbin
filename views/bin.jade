@@ -9,18 +9,39 @@ mixin link(link)
             .no-icon
               i.icon-link
         .text
-          .link #{link.title}
+          if (link.title)
+            .link #{link.title}
+          else
+            .link #{link.url}
           .url #{link.url}
+
+mixin bin(bin)
+  li.clearfix
+    a.clearfix(href=bin.path,title=bin.title)
+      .minwidth.clearfix
+        .icon
+          .no-icon
+            i.icon-link
+        .text
+          .link #{bin.title}
 
 extends layout
 
 block breadcrumb
-  li.divider-bin
-    span.icon-caret-right
-  li.active
-    a(href="/#{bin.title}").bin-link #{bin.title}
+  - var bins = bin.path.split('/').slice(1)
+  - var path = ''
+  each bin, i in bins
+    - path = path + '/' + bin
+    li.divider-bin
+      span.icon-caret-right
+    li(class=(i===bins.length-1)?"active":"")
+      a(href="#{path}").bin-link #{bin} 
 
 block body
+  if(isOwner)
+    .row
+      .span12
+        [You own this Bin]
   .row
     .span6
       h1 Links:
@@ -32,4 +53,5 @@ block body
       h1 Bins:
       .well
         ul.bin
-          li No Bins :(
+          each bin in childBins
+            mixin bin(bin)

@@ -15,6 +15,12 @@ var BinSchema = new Schema({
     , required : true
     , default : true
   }
+  , sessionID : {
+      type : String
+      , unique : false
+      , required : false
+      , default : null
+  }
   , links : [LinkSchema]
 })
 
