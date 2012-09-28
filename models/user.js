@@ -1,9 +1,17 @@
+/**
+ * User Model
+ */
+
 var mongoose = require('mongoose')
   , Schema = mongoose.Schema
   , salt = require('../config').salt
   , common = require('./common')
 
 
+/**
+ * [setPassword description]
+ * @param {[type]} password [description]
+ */
 function setPassword(password){
   if(common.validatePassword(password)){
     password = common.md5(password + salt)
@@ -14,19 +22,19 @@ function setPassword(password){
   return "." //return an invalid password
 }
 
+/**
+ * [UserSchema description]
+ * @type {Schema}
+ */
 var UserSchema = new Schema({
   username : {
     type: String
     , unique : true
     , required : true
-  }
-  , firstname : {
-    type : String
-    , requried : false
-  }
-  , lastname : {
-    type : String
-    , required : false
+  },
+  name : {
+    first: String,
+    last:  String
   }
   , password : { 
     type : String
@@ -38,12 +46,13 @@ var UserSchema = new Schema({
     type : String
     , required : true
   }
-  // did the user validate their account via email?
-  , validated : {
+
+  // did the user activate their account via email?
+  , active : {
     type : Boolean
     , required : true
     , default : false
   }
-},{strict:true})
+}, { strict: true })
 
-module.exports = mongoose.model('User',UserSchema)
+module.exports = mongoose.model('User', UserSchema)
