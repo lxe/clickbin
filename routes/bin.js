@@ -69,8 +69,8 @@ module.exports = function (app) {
       })
     }
 
-    console.log('path: ' + path);
-    console.log('uri: '  + uri);
+    console.log('path: ' + path)
+    console.log('uri: '  + uri)
 
     if (path) {
       // bin paths should start with a '/' but not end with one
@@ -78,18 +78,20 @@ module.exports = function (app) {
       Bin.findOne({
         path: path
       }, function (err, bin) {
-        if (err) 
-          return next(err)
-
-        else if (!bin) 
-          return next(new Error("No bin exists with that name"))
-        
-        else if (uri === undefined) {
-          // just show the bin
-          return render(bin)
+        if (err) return next(err)
+        // just show the bin
+        else if(uri === undefined) return render(bin)
+        if (!bin) {
+          // add a new bin (possibly recursively adding all the bins above it)
+          if(path.split('/').length === 1) 
+            return next(new Error("Only randomly top level bins can be "
+              + "created"))
+          // HERE BE DRAGONS!!
+          // TODO: recursively check and create bins up until the give path
         } else {
           // add a uri to an existing bin
-          // TODO: check permissions
+          // TODO: eligently handle permission errors
+          if (bin.sessionID !== req.sessionID) return next(new Error("Permission Denied"))
           scrapper.get(protocol + uri, function (err, link) {
             if (err) return next(err)
             if (bin.addLink(link)) {
@@ -117,6 +119,9 @@ module.exports = function (app) {
           // base 36 encode the counter's value
           bin = new Bin({
             path: '/' + val.toString(36)
+            // when creating an anounymous bin, give it the sessionID of its
+            // creator
+            , sessionID : req.sessionID
           })
           bin.addLink(link)
           bin.save(function (err) {
