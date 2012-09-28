@@ -1,52 +1,92 @@
+/**
+ *  Common utilities
+ */
+
 var crypto = require('crypto')
 
 module.exports = {
-  md5 : function(orginal_str){
-      return crypto
-        .createHash('md5')
-        .update(orginal_str)
-        .digest("hex")
+  
+  /**
+   * [md5 description]
+   * @param  {[type]} orginal_str [description]
+   * @return {[type]}             [description]
+   */
+  md5: function(orginal_str) {
+    return crypto.createHash('md5').update(orginal_str).digest("hex")
   }
-  , digest : function(password,salt){
-      if(!salt) salt = crypto.randomBytes(23).toString('base64')
-      var digest = this.sha2(password + salt)
-      // apply stretching
-      for (var i = 0; i < 4; i++) digest = this.sha2(digest)
-      return {
-          salt : salt
-          , digest : digest
-      };
+
+  /**
+   * [digest description]
+   * @param  {[type]} password [description]
+   * @param  {[type]} salt     [description]
+   * @return {[type]}          [description]
+   */
+  , digest: function(password, salt) {
+    salt = salt || crypto.randomBytes(23).toString('base64')
+    var digest = this.sha2(password + salt)
+
+    // apply stretching
+    for (var i = 0; i < 4; i++) digest = this.sha2(digest)
+    return { salt: salt, digest: digest }
   }
-  , sha2 : function(password){
-      return crypto
-        .createHash('sha512')
-        .update(password)
-        .digest('hex')
+
+  /**
+   * [sha2 description]
+   * @param  {[type]} password [description]
+   * @return {[type]}          [description]
+   */
+  , sha2: function(password) {
+    return crypto.createHash('sha512').update(password).digest('hex')
   }
-  , sha1 : function(msg,key) {
-    return crypto
-      .createHmac('sha256',key)
-      .update(msg)
-      .digest('hex')
+
+  /**
+   * [sha1 description]
+   * @param  {[type]} msg [description]
+   * @param  {[type]} key [description]
+   * @return {[type]}     [description]
+   */
+  , sha1: function(msg, key) {
+    return crypto.createHmac('sha256', key).update(msg).digest('hex')
   }
-  , validateEmail : function(email){
-      if(email){
-          var reg = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,6}$/
-          return -1 !== email.search(reg)
-      }
-      return false
+
+
+  /**
+   * [validateRegex description]
+   * @param  {[type]} val   [description]
+   * @param  {[type]} regex [description]
+   * @return {[type]}       [description]
+   */
+  , validateRegex: function(val, regex) {
+    return val ? regex.test(val) : false;
   }
-  , validateUsername : function(username){
-      if(username){
-          var reg = /^[a-zA-z]{1,}[a-zA-Z0-9]{2,}$/
-          return reg.test(username)
-      }else return false
+
+  /**
+   * [validateEmail description]
+   * @param  {[type]} email [description]
+   * @return {[type]}       [description]
+   */
+  , validateEmail: function(email) {
+    return this.validateRegex(email,
+      /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,6}$/)
   }
-  , validatePassword : function(password){
-      return (
-          password
-           && password.length >= 6
-           && -1 !== password.search(/^[^ \t\r\n]*$/)
-       )
+
+  /**
+   * [validateUsername description]
+   * @param  {[type]} username [description]
+   * @return {[type]}          [description]
+   */
+  , validateUsername: function(username) {
+    return this.validateRegex(username,
+      /^[a-zA-z]{1,}[a-zA-Z0-9]{2,}$/)
+  }
+
+  /**
+   * [validatePassword description]
+   * @param  {[type]} password [description]
+   * @return {[type]}          [description]
+   */
+  , validatePassword: function(password) {
+    return (password && password.length >= 6 
+      && /^[^ \t\r\n]*$/.test(password))
   }
 }
