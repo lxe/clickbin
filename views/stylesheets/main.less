@@ -7,49 +7,135 @@
  */
 
 body {
-	font-size: 14px;
-	background: url("/images/noisy_grid.png");
+  font-size: 14px;
+  background: url("/images/noisy_grid.png");
 }
 
 #master-nav {
-	.navbar-inner {
-		border-top-left-radius: 0;
-		border-top-right-radius: 0;
-		border-top: none;
+  .navbar-inner {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top: none;
 
-		@media (min-width: 768px) {
-			border-radius: 0;
-			border-left: none;
-			border-right: none;
-		}
-	}
+    @media (min-width: 768px) {
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+    }
+  }
 }
 
 /* Landing */
 #landing-promo {
-	margin-top: 40px;
-	@media (max-width: 768px) {
-		margin-top: 10px;
-	}
-	h1 {
-		font-size: 48px;
-		@media (max-width: 768px) {
-			font-size: 28px;
-			line-height: 1.2;
+  margin-top: 40px;
+  @media (max-width: 768px) {
+    margin-top: 10px;
+  }
+  h1 {
+    font-size: 48px;
+    @media (max-width: 768px) {
+      font-size: 28px;
+      line-height: 1.2;
+    }
+  }
+}
+
+
+#linkform {
+  input {
+    padding: 9px 14px 8px 14px;
+    font-size: @baseFontSize + 2px;
+    line-height: normal;
+    font-weight: bold;
+      // .border-radius(5px, 0, 0, 5px);
+  }
+}
+
+.bin {
+
+}
+
+.navbar {
+  .brand {
+    padding-right: 0;
+  }
+
+  .divider-bin {
+    float: none;
+    // Vertically center the text given @navbarHeight
+    padding: ((@navbarHeight - @baseLineHeight) / 2) + 2 2px ((@navbarHeight - @baseLineHeight) / 2) - 6;
+    color: @navbarLinkColor;
+    text-decoration: none;
+    text-shadow: 0 1px 0 @navbarBackgroundHighlight;
+  }
+
+  .bin-link {
+  	font-weight: bold;
+  }
+}
+
+ul.bin {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	li {
+		a {
+			display: block;
+			.text {
+				padding: 5px;
+			}
+			.link {
+				font-size: 120%;
+				line-height: 1;
+			}
+			.url {
+				color: #666 !important;
+				font-size: 11px;
+				line-height: 1;
+				margin-top: 2px;
+			}
+		}
+		img {
+			width: 32px;
+			height: 32px;
+			margin: 5px;
+			border-radius: 5px;
+			box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+			.pull-left;
 		}
 	}
 }
 
 
-#linkform {
-	input {
-		padding: 9px 14px 8px 14px;
-	  font-size: @baseFontSize + 2px;
-	  line-height: normal;
-	  font-weight: bold;
- 	 	// .border-radius(5px, 0, 0, 5px);
-	}
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

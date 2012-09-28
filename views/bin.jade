@@ -1,11 +1,29 @@
+mixin link(link)
+  li
+    a.clearfix(href=link.url, title=link.title)
+      img.pull-left.icon(src="#{link.icon || '/images/noicon.png'}")
+      .text.pull-left
+        .link #{link.title}
+        .url #{link.url}
+
 extends layout
 
+block breadcrumb
+  li.divider-bin
+    span.icon-caret-right
+  li.active
+    a(href="/#{bin.title}").bin-link #{bin.title}
+
 block body
-  .bin
-    h1 / #{bin.title}
-    each link in bin.links
-      .link
-        a(href=link.url,title=link.title)
-          if link.icon
-            img.icon(src=link.icon)
-          h3 #{link.title}
+  .row
+    .span6
+      h1 Links:
+      .well
+        ul.bin.clearfix
+          each link in bin.links
+            mixin link(link)
+    .span6
+      h1 Bins:
+      .well
+        ul.bin
+          li No Bins :(

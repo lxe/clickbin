@@ -20,16 +20,17 @@ html(lang='en')
     .wrapper
       .navbar#master-nav
         .navbar-inner 
-          .container 
-            a.btn.btn-navbar.btn-inverse(
-              data-toggle="collapse", 
-              data-target=".nav-collapse")
-              span.icon-bar
-              span.icon-bar
-              span.icon-bar
-            .nav-collapse
-              a(href='/').brand 
-                strong clickb.in
+          a.btn.btn-navbar.btn-inverse(
+            data-toggle="collapse", 
+            data-target=".nav-collapse")
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          .nav-collapse
+            a(href='/').brand 
+              strong clickb.in
+            ul.nav
+              block breadcrumb
 
       //
       // Body block

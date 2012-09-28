@@ -9296,3 +9296,45 @@ body {
   line-height: normal;
   font-weight: bold;
 }
+.navbar .brand {
+  padding-right: 0;
+}
+.navbar .divider-bin {
+  float: none;
+  padding: 12px 2px 4px;
+  color: #777777;
+  text-decoration: none;
+  text-shadow: 0 1px 0 #ffffff;
+}
+.navbar .bin-link {
+  font-weight: bold;
+}
+ul.bin {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+ul.bin li a {
+  display: block;
+}
+ul.bin li a .text {
+  padding: 5px;
+}
+ul.bin li a .link {
+  font-size: 120%;
+  line-height: 1;
+}
+ul.bin li a .url {
+  color: #666 !important;
+  font-size: 11px;
+  line-height: 1;
+  margin-top: 2px;
+}
+ul.bin li img {
+  width: 32px;
+  height: 32px;
+  margin: 5px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  float: left;
+}
