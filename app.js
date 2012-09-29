@@ -10,6 +10,7 @@ var _          = require('underscore')
   , MongoStore = require('connect-mongo')(express)
   , mongo      = require('mongoose')
   , less       = require('less')
+  , flash = require('connect-flash')
   , config     = require('./config')
 
 /*
@@ -47,23 +48,7 @@ app.configure(function() {
     maxAge: new Date(Date.now() + 3600000),
     store:  new MongoStore({ db: 'clickbin' })
   }))
-
-
-  /**
-   * [ description]
-   * @param  {[type]}   req  [description]
-   * @param  {[type]}   res  [description]
-   * @param  {Function} next [description]
-   * @return {[type]}        [description]
-   */
-  app.use(function(req, res, next) {
-
-    // Flash 
-    req.session.flash = req.session.flash || {}
-    res.locals.flash  = req.session.flash
-    req.session.flash = {}
-    next()
-  })
+  app.use(flash())
 
   /**
    * 
