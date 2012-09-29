@@ -166,7 +166,7 @@ module.exports = function (app) {
           return res.redirect(path)
         })
         else{
-          return next(new Error("This bin already has that same link"))
+          return next(new Error("poop"))
         }
       })
     }
