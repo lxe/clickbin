@@ -7,7 +7,7 @@ var request = require('request')
   , jsdom   = require("jsdom")
 
 module.exports = {
-
+  
   /**
    * [get description]
    * @param  {[type]}   url [description]

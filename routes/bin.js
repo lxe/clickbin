@@ -6,8 +6,9 @@ var url      = require('url')
   , crypto   = require('crypto')
   , uuid     = require('node-uuid')
   , Bin      = require('../models/bin')
+  , Link     = require('../models/link')
   , Counter  = require('../models/counter')
-  , scrapper = require('../controllers/scrapper')
+  , scraper = require('../controllers/scraper')
 
 /**
  * [exports description]
@@ -106,7 +107,7 @@ module.exports = function (app) {
               + " dont own that root bin"))
             else{
               if(uri){
-                scrapper.get(protocol + uri, function(err,link){
+                scrape(protocol + uri, function(err,link){
                   if(err) return next(err)
                   saveNewBin(bins,[link])
                 })
@@ -138,7 +139,7 @@ module.exports = function (app) {
       // a request of the form: clickb.in/google.com
       Counter.increment('anonymous-bin-counter', function (err, val) {
         if (err) return next(err)
-        scrapper.get(protocol + uri, function (err, link) {
+        scrape(protocol + uri, function (err, link) {
           if (err) return next(err)
           // base 36 encode the counter's value
           bin = new Bin({
@@ -162,7 +163,7 @@ module.exports = function (app) {
         // TODO: eligently handle permission errors
         if (bin.sessionID !== req.sessionID) 
           return next(new Error("Permission Denied"))
-        else scrapper.get(protocol + uri, function (err, link) {
+        else scrape(protocol + uri, function (err, link) {
           if (err) return cb(err)
           if (bin.addLink(link)) return bin.save(cb)
           else return cb(new Error("This bin alrady has that same link"))
@@ -189,5 +190,23 @@ module.exports = function (app) {
         ,function(){}) // we dont need to wait for this callback. fire and forget
       }
     }
+    
+    function scrape(url, cb) {
+      // this is sort of like a cache, for the scraper
+      Link.findOne( { url : url }, function(err, link) {
+        if(err) return cb(err)
+        else if(link) return cb(null,link)
+        // go, and _actually_ scrape the page
+        else scraper.get(url,function(err,link){
+          if(err) return cb(err)
+          link = new Link(link)
+          link.save(function(err){
+            if(err) return cb(err)
+            else return cb(null,link)
+          })
+        })
+      })
+    }
+    
   }) // end GET /[bin-name]/[link]
 }
