@@ -10,6 +10,7 @@ var _          = require('underscore')
   , MongoStore = require('connect-mongo')(express)
   , mongo      = require('mongoose')
   , less       = require('less')
+  , config     = require('./config')
 
 /*
  * ============================================================================
@@ -97,12 +98,11 @@ require('./routes')(app)
  * [serverConfig description]
  * @type {Object}
  */
-var serverConfig = { port: 3000 }
 mongo.connect('mongodb://localhost/clickbin')
 mongo.connection.on('open', function() {
-  app.listen(serverConfig.port, function() {
+  app.listen(config.server.port, function() {
     console.log("Express server listening on port %d in %s mode", 
-      serverConfig.port, 
+      config.server.port, 
       app.settings.env)
   })
 })
