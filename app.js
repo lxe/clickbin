@@ -61,7 +61,25 @@ app.configure(function() {
     store:  new MongoStore({ db: 'clickbin' })
   }))
   
-  app.use(flash())
+  /**
+   * Custom middleware
+   */
+  app.use(function(req, res, next) {
+
+    /**
+     * Custom "flash" middleware. Unlike the
+     * original connect-flash 
+     * (https://github.com/jaredhanson/connect-flash),
+     * this one is simpler, and allows any sort
+     * of objects, not just flat strings.
+     *
+     * This is really nice and simple give it a shot.
+     */
+    req.session.flash = req.session.flash || {}
+    res.locals.flash  = req.session.flash
+    req.session.flash = {}
+    next()
+  })
 
   /**
    * Router middleware
