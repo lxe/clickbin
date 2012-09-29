@@ -44,4 +44,16 @@ BinSchema.methods.addLink = function(link){
   else return !!this.links.push(link)
 }
 
-module.exports = mongoose.model('Bin', BinSchema)
+BinSchema.methods.removeLinkById = function(linkID){
+  console.log('remove link by id: '+linkID)
+  this.links = _.filter(this.links,function(link){
+    return link.id !== linkID
+  })
+  return this
+}
+
+BinSchema.methods.getChildren = function(cb){
+  Bin.find({path:new RegExp(this.path + '/[^/]+$')},cb)
+}
+
+var Bin = module.exports = mongoose.model('Bin', BinSchema)

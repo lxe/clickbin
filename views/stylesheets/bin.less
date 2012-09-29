@@ -1,7 +1,24 @@
 .bin{
-  .link{
+  .link, .bin-link{
+    position: relative;
+    .btn {
+      &.remove {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        display: none;
+      }
+    }
+    &:hover{
+       > .btn.remove{
+         display: block;
+      }
+    }
+  }
+  .url-title{
     clear: both;
     display: block;
+    position: relative;
     .icon{
       width: 60px;
       float: left;

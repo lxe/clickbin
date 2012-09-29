@@ -63,13 +63,13 @@ module.exports = function (app) {
 
     function render(bin) {
       // meanhile, in russia
-      Bin.find({path:new RegExp(bin.path + '/[^/]+$')},function(err,childBins){
+      bin.getChildren(function(err,children){
         if(err) return next(err)
         return res.render('bin', {
           path: path
           , bin: bin
           , isOwner : bin.sessionID === req.sessionID
-          , childBins : childBins
+          , children : children
         })
       })
     }
@@ -207,6 +207,37 @@ module.exports = function (app) {
         })
       })
     }
-    
   }) // end GET /[bin-name]/[link]
+  
+  app.get('/_/bin/:binID/link/:linkID/remove',function(req,res,next){
+    Bin.findById(req.params.binID,function(err,bin){
+      if(err) return next(err)
+      if(!bin) return next(new Error("That bin doesnt exist"))
+      if(req.sessionID !== bin.sessionID) return next(new Error("You dont have permission to remove links from bins you dont own"))
+      bin.removeLinkById(req.params.linkID).save(function(err){
+        if(err) return next(err)
+        else res.redirect(bin.path)
+      })
+    })
+  })
+  
+  app.get('/_/bin/:binID/remove',function(req,res,next){
+    Bin.findById(req.params.binID,function(err,bin){
+      if(err) return next(err)
+      if(!bin) return next(new Error("That bin doesnt exist"))
+      if(req.sessionID !== bin.sessionID) return next(new Error("You dont have permission to remove bins you dont own"))
+      bin.getChildren(function(err,children){
+        if(err) return next(err)
+        if(children.length>0) return next(new Error("You can only remove bins that are empty"))
+        else{
+          var parent = bin.parent;
+          bin.remove(function(err){
+            if(err) return next(err)
+            else return res.redirect(parent)
+          })
+        }
+      })
+    })
+  })
+  
 }

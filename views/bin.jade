@@ -1,5 +1,6 @@
 mixin link(link)
-  li.clearfix
+  li.clearfix.link
+    a(href="/_/bin/" + bin.id + "/link/" + link.id + "/remove").btn.remove x
     a.clearfix(href=link.url, title=link.title)
       .minwidth.clearfix
         .icon
@@ -10,13 +11,14 @@ mixin link(link)
               i.icon-link
         .text
           if (link.title)
-            .link #{link.title}
+            .url-title #{link.title}
           else
-            .link #{link.url}
+            .url-title #{link.url}
           .url #{link.url}
 
 mixin bin(bin)
-  li.clearfix
+  li.clearfix.bin-link
+    a(href="/_/bin/" + bin.id + "/remove").btn.remove x
     a.clearfix(href=bin.path,title=bin.title)
       .minwidth.clearfix
         .icon
@@ -53,5 +55,5 @@ block body
       h1 Bins:
       .well
         ul.bin
-          each bin in childBins
+          each bin in children
             mixin bin(bin)
