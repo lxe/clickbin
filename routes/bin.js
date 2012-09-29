@@ -129,10 +129,7 @@ module.exports = function (app) {
             }
           })
         } else if(uri === undefined) return render(bin)
-        else return addLinkToBin(path, protocol, uri, bin, function(err) {
-          if(err) return next(err)
-          else res.redirect(path)
-        })
+        else return addLinkToBin(path, protocol, uri, bin)
       })
     } else {
       // creating an anounomous bin. ie., 
@@ -157,18 +154,21 @@ module.exports = function (app) {
       })
     }
     
-    function addLinkToBin(path, protocol, uri, bin, cb){
-      {
-        // add a uri to an existing bin
-        // TODO: eligently handle permission errors
-        if (bin.sessionID !== req.sessionID) 
-          return next(new Error("Permission Denied"))
-        else scrape(protocol + uri, function (err, link) {
-          if (err) return cb(err)
-          if (bin.addLink(link)) return bin.save(cb)
-          else return cb(new Error("This bin alrady has that same link"))
+    function addLinkToBin(path, protocol, uri, bin){
+      // add a uri to an existing bin
+      // TODO: eligently handle permission errors
+      if (bin.sessionID !== req.sessionID) 
+        return next(new Error("Permission Denied"))
+      else scrape(protocol + uri, function (err, link) {
+        if (err) return cb(err)
+        else if (bin.addLink(link)) return bin.save(function(err){
+          if(err) return next(err)
+          return res.redirect(path)
         })
-      }
+        else{
+          return next(new Error("This bin already has that same link"))
+        }
+      })
     }
     function ensureBinsExistAlongPath(bins){
       for(var i = bins.length; i > 1; i--){
