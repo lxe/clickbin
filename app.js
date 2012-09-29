@@ -86,16 +86,13 @@ app.configure(function() {
 
 app.configure('development', function() {
   app.use(express.errorHandler({
-    dumpExceptions: true,
-    showStack: true
+    dumpExceptions : true
+    , showStack    : true
   }))
 })
 
 app.configure('production', function() {
-  app.use(express.errorHandler({
-    dumpExceptions: false,
-    showStack: false
-  }))
+  app.use(express.errorHandler())
 })
 
 // Routes
