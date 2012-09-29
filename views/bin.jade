@@ -1,6 +1,6 @@
 mixin link(link)
   li.clearfix.link
-    a(href="/_/bin/" + bin.id + "/link/" + link.id + "/remove").btn.remove x
+    a(href="/_/bin/#{bin.id}/link/#{link.id}/remove").close &times;
     a.clearfix(href=link.url, title=link.title)
       .minwidth.clearfix
         .icon
@@ -18,7 +18,7 @@ mixin link(link)
 
 mixin bin(bin)
   li.clearfix.bin-link
-    a(href="/_/bin/" + bin.id + "/remove").btn.remove x
+    a(href="/_/bin/#{bin.id}/remove").close &times;
     a.clearfix(href=bin.path,title=bin.title)
       .minwidth.clearfix
         .icon
@@ -40,7 +40,11 @@ block breadcrumb
       a(href="#{path}").bin-link #{bin} 
 
 block body
-  p #{req.flash}
+  if (flash.error)
+    .alert.alert-error
+      i.icon-exclamation-sign  
+      != flash.error
+
   if(isOwner)
     .row
       .span12

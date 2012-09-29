@@ -10,7 +10,6 @@ var _          = require('underscore')
   , MongoStore = require('connect-mongo')(express)
   , mongo      = require('mongoose')
   , less       = require('less')
-  , flash = require('connect-flash')
   , config     = require('./config')
 
 /*

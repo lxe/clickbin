@@ -80,7 +80,12 @@ ul.bin {
 	list-style: none;
 
 	li {
-		border-bottom: #d4d4d4 1px solid;
+		&:not(:last-child) {
+      border-bottom: #e4e4e4 1px solid;
+    }
+    &:not(:first-child) {
+      border-top: #ffffff 1px solid;
+    }
 		padding: 5px;
 		a {
 			display: block;

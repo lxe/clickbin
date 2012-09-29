@@ -150,24 +150,41 @@ module.exports = function (app) {
       })
     }
     
-    function addLinkToBin(path, protocol, uri, bin){
-      // add a uri to an existing bin
-      // TODO: eligently handle permission errors
-      if (bin.sessionID !== req.sessionID) 
-        return next(new Error("Permission Denied"))
+    /**
+     * Add an URI to an existing bin
+     * @param {[type]} path     [description]
+     * @param {[type]} protocol [description]
+     * @param {[type]} uri      [description]
+     * @param {[type]} bin      [description]
+     */
+    function addLinkToBin(path, protocol, uri, bin) {
+
+      if (bin.sessionID !== req.sessionID) {
+        req.session.flash.error = 'You can\'t add links to this bin. '
+          + '<a href="ask">Ask for permission</a>'
+        return res.redirect(path)
+      }
+
       else scrape(protocol + uri, function (err, link) {
         if (err) return cb(err)
-        else if (bin.addLink(link)) return bin.save(function(err){
+
+        if (bin.addLink(link)) return bin.save(function(err) {
           if(err) return next(err)
           return res.redirect(path)
         })
-        else{
-          req.flash('error','This bin already has that same link')
-          return res.redirect(path)
-        }
+        
+        req.session.flash.error = 'This bin already has that same link'
+        return res.redirect(path)
       })
     }
+
+    /**
+     * [ensureBinsExistAlongPath description]
+     * @param  {[type]} bins [description]
+     * @return {[type]}      [description]
+     */
     function ensureBinsExistAlongPath(bins){
+
       for(var i = bins.length; i > 1; i--){
         // go create the bins, if they dont exist yet
         var path = '/' + bins.slice(0,i).join('/')
@@ -188,6 +205,12 @@ module.exports = function (app) {
       }
     }
     
+    /**
+     * [scrape description]
+     * @param  {[type]}   url [description]
+     * @param  {Function} cb  [description]
+     * @return {[type]}       [description]
+     */
     function scrape(url, cb) {
       // this is sort of like a cache, for the scraper
       Link.findOne( { url : url }, function(err, link) {
@@ -206,33 +229,54 @@ module.exports = function (app) {
     }
   }) // end GET /[bin-name]/[link]
   
+  /**
+   * [ description]
+   * @param  {[type]}   req  [description]
+   * @param  {[type]}   res  [description]
+   * @param  {Function} next [description]
+   * @return {[type]}        [description]
+   */
   app.get('/_/bin/:binID/link/:linkID/remove',function(req,res,next){
     Bin.findById(req.params.binID,function(err,bin){
-      if(err) return next(err)
-      if(!bin) return next(new Error("That bin doesnt exist"))
-      if(req.sessionID !== bin.sessionID) return next(new Error("You dont have permission to remove links from bins you dont own"))
+      if (err) return next(err)
+      if (!bin) return next(new Error("That bin doesnt exist"))
+
+      if (req.sessionID !== bin.sessionID) return next(
+        new Error("You dont have permission to remove links from bins you dont own"))
+
       bin.removeLinkById(req.params.linkID).save(function(err){
         if(err) return next(err)
         else res.redirect(bin.path)
       })
     })
   })
-  
+
+  /**
+   * [ description]
+   * @param  {[type]}   req  [description]
+   * @param  {[type]}   res  [description]
+   * @param  {Function} next [description]
+   * @return {[type]}        [description]
+   */
   app.get('/_/bin/:binID/remove',function(req,res,next){
     Bin.findById(req.params.binID,function(err,bin){
-      if(err) return next(err)
-      if(!bin) return next(new Error("That bin doesnt exist"))
-      if(req.sessionID !== bin.sessionID) return next(new Error("You dont have permission to remove bins you dont own"))
+      if (err) return next(err)
+      if (!bin) return next(new Error("That bin doesnt exist"))
+
+      if (req.sessionID !== bin.sessionID) 
+        return next(new Error("You dont have permission to remove bins you dont own"))
+
       bin.getChildren(function(err,children){
-        if(err) return next(err)
-        if(children.length>0) return next(new Error("You can only remove bins that are empty"))
-        else{
-          var parent = bin.parent;
-          bin.remove(function(err){
-            if(err) return next(err)
-            else return res.redirect(parent)
-          })
-        }
+        if (err) return next(err)
+
+        if (children.length>0) 
+          return next(new Error("You can only remove bins that are empty"))
+
+        var parent = bin.parent;
+        bin.remove(function(err){
+          if(err) return next(err)
+          else return res.redirect(parent)
+        })
       })
     })
   })
