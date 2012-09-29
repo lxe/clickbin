@@ -33,14 +33,10 @@ module.exports = function (app) {
    * @return {[type]}        [description]
    */
   app.get(uri_regexp, function (req, res, next) {
-    function linkError(errStr) {
-      req.session.flash.linkError = errStr
-      return res.redirect('/')
-    }
 
     var matches = uri_regexp.exec(req.url)
     if (!matches || matches.length === 0) 
-        return linkError('Invalid URL')
+      return next(new Error('Invalid URL'))
 
     // use http if no protocol was specified
     var protocol = matches[matches.length - 2] || 'http://'
@@ -166,7 +162,8 @@ module.exports = function (app) {
           return res.redirect(path)
         })
         else{
-          return next(new Error("This bin already has that same link"))
+          req.flash('error','This bin already has that same link')
+          return res.redirect(path)
         }
       })
     }

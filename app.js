@@ -10,6 +10,7 @@ var _          = require('underscore')
   , MongoStore = require('connect-mongo')(express)
   , mongo      = require('mongoose')
   , less       = require('less')
+  , flash = require('connect-flash')
   , config     = require('./config')
 
 /*
@@ -59,24 +60,8 @@ app.configure(function() {
     maxAge: new Date(Date.now() + 3600000),
     store:  new MongoStore({ db: 'clickbin' })
   }))
-
-  /**
-   * Custom middleware
-   */
-  app.use(function(req, res, next) {
-
-    /**
-     * Custom "flash" middleware. Unlike the
-     * original connect-flash 
-     * (https://github.com/jaredhanson/connect-flash),
-     * this one is simpler, and allows any sort
-     * of objects, not just flat strings.
-     */
-    req.session.flash = req.session.flash || {}
-    res.locals.flash  = req.session.flash
-    req.session.flash = {}
-    next()
-  })
+  
+  app.use(flash())
 
   /**
    * Router middleware

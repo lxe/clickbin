@@ -40,6 +40,7 @@ block breadcrumb
       a(href="#{path}").bin-link #{bin} 
 
 block body
+  p #{req.flash}
   if(isOwner)
     .row
       .span12
