@@ -82,75 +82,78 @@ body {
   }
 
   .bin-link {
-  	font-weight: bold;
+    font-weight: bold;
   }
 }
 
 ul.bin {
-	margin: 0;
-	padding: 0;
-	list-style: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 
-	li {
-		&:not(:last-child) {
+  li {
+    &:not(:last-child) {
       border-bottom: #e4e4e4 1px solid;
     }
     &:not(:first-child) {
       border-top: #ffffff 1px solid;
     }
-		padding: 5px;
-		a {
-			display: block;
-			.minwidth {
-				min-width:100px; 
-				width: auto !important; 
-				width: 100px;
-			}
-			.text {
-				display: block;
-				float: left;
-				// clear: none;
-				// margin-left: 100px;
-				// padding: 5px 10px;
-				// display: inline;
-				padding: 10px 5px;
-				// padding-left: 100px;
-				// margin-left: 100px;
-				// display: inline;
-			}
-			.link {
-				font-size: 120%;
-				line-height: 1;
-			}
-			.url {
-				color: #666 !important;
-				font-size: 12px;
-				line-height: 1;
-				margin-top: 2px;
-			}
-		}
-		.icon {
-			width: 64px;
-			height: 64px;
-			margin: 5px;
-			border-radius: 5px;
-			// box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-			display: block;
-			// clear: right;
-			line-height: 64px;
-			text-align: center;
+    padding: 5px;
+    a {
+      display: block;
+      .minwidth {
+        min-width:100px; 
+        width: auto !important; 
+        width: 100px;
+      }
+      .text {
+        display: block;
+        float: left;
+        // clear: none;
+        // margin-left: 100px;
+        // padding: 5px 10px;
+        // display: inline;
+        padding: 10px 5px;
+        // padding-left: 100px;
+        // margin-left: 100px;
+        // display: inline;
+      }
+      .link {
+        font-size: 120%;
+        line-height: 1;
+      }
+      .url {
+        color: #666 !important;
+        font-size: 12px;
+        line-height: 1;
+        margin-top: 2px;
+      }
+    }
+    .icon {
+      width: 64px;
+      height: 64px;
+      margin: 5px;
+      border-radius: 5px;
+      // box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+      display: block;
+      // clear: right;
+      line-height: 64px;
+      text-align: center;
+      float: left;
+      #gradient > .vertical(@navbarBackgroundHighlight, @navbarBackground);
+      border: 1px solid @navbarBorder;
+      .border-radius(4px);
+      .box-shadow(0 1px 4px rgba(0,0,0,.065));
+      font-size: 32px;
+    }
+  }
+}
 
-			float: left;
 
-			#gradient > .vertical(@navbarBackgroundHighlight, @navbarBackground);
-			border: 1px solid @navbarBorder;
-			.border-radius(4px);
-			.box-shadow(0 1px 4px rgba(0,0,0,.065));
-
-			font-size: 32px;
-
-		}
-	}
+@media (max-width: 768px){
+  .git-ribbon{
+    display: none;
+  }
 }
 
 
