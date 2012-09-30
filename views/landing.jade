@@ -8,9 +8,9 @@ block body
     p.help For example, 
       a(href="/reddit.com") reddit.com
     form#linkform(action="/link/add", method="post")
-      .input-append
+      .input-append.input-prepend
+        span.add-on.btn-large clickb.in/
         input(type="text",name="uri")
         button.btn.btn-inverse.btn-large(type="submit")
           strong 
-            i.icon-hand-right
-            |  Go!
+            i.icon-hand-right  Go!
