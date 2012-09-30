@@ -82,9 +82,11 @@ module.exports = function (app) {
         else if (!bin) {
           // add a new bin (possibly recursively adding all the bins above it)
           var bins = path.substring(1).split('/')
-          if(bins.length === 1) 
-            return next(new Error("Only random top level bins can be "
-              + "created"))
+          if(bins.length === 1){
+            req.session.flash.error = "Only random top level bins can be "
+              + "created"
+            return res.redirect('back')
+          }
           // TODO: recursively check and create bins up until the give path
           // check to see if the root bin exists
             // if not, show error
