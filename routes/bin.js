@@ -222,7 +222,7 @@ module.exports = function (app) {
         else if(link) return cb(null,link)
         // go, and _actually_ scrape the page
         else scraper.get(url,function(err,link){
-          if(err) return cb(err)
+          if(err) link = { url : url }
           link = new Link(link)
           link.save(function(err){
             if(err) return cb(err)
