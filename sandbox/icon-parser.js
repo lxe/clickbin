@@ -65,14 +65,30 @@ fs.readFile('../public/images/favicon.ico', function (err, buffer) {
     }
   });
   
-  // var canvas = new Canvas(ico.,200)
-  //   , ctx = canvas.getContext('2d')
-  
   var ico = parser.parse('file');
+  
+  var canvas = new Canvas(ico.images[0].width,ico.images[0].height)
+    , ctx = canvas.getContext('2d')
+    , img = ctx.createImageData(canvas.width,canvas.height)
+  
+  var i = 0
   _.each(ico.images[0].content.pixels,function(col){
     _.each(col,function(row){
-      console.log(row.toString(16))
+      console.log('row: '+row)
+      var pixel = row.toString(16)
+      console.log('pixel: '+pixel)
+      img.data[i++] = parseInt( pixel.substr(2,2), 16)
+      console.log(img.data[i-1])
+      img.data[i++] = parseInt( pixel.substr(4,2), 16)
+      console.log(img.data[i-1])
+      img.data[i++] = parseInt( pixel.substr(6,2), 16)
+      console.log(img.data[i-1])
+      img.data[i++] = parseInt( pixel.substr(0,2), 16)
+      console.log(img.data[i-1])
     })
   })
+  ctx.putImageData(img, 0, 0); // at coords 0,0
+  var out = fs.createWriteStream(__dirname + '/test.png')
+   , stream = canvas.createPNGStream().pipe(out)
   //console.log(require('util').inspect(ico, false, 10));
 });
