@@ -9,8 +9,9 @@ block body
       a(href="/reddit.com") reddit.com
     form#linkform(action="/link/add", method="post")
       .input-append.input-prepend
-        span.add-on.btn-large clickb.in/
+        span.add-on.btn-large#clickbin-prepend clickb.in/
         input(type="text",name="uri")
         button.btn.btn-inverse.btn-large(type="submit")
           strong 
-            i.icon-hand-right  Go!
+            i.icon-hand-right 
+            |  Go!
