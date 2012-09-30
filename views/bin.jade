@@ -44,11 +44,13 @@ block body
     .alert.alert-error
       i.icon-exclamation-sign  
       != flash.error
-
+  if (flash.success)
+    .alert.alert-success
+      i.icon-exclamation-sign 
+      != flash.success
   if(isOwner)
-    .row
-      .span12
-        [You own this Bin]
+    .alert.alert-warn
+      i.icon-exlamantion-sign You will own this bin as long as you access it from your current computer
   .row
     .span6
       h1 Links:

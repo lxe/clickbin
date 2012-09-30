@@ -83,7 +83,7 @@ module.exports = function (app) {
           // add a new bin (possibly recursively adding all the bins above it)
           var bins = path.substring(1).split('/')
           if(bins.length === 1) 
-            return next(new Error("Only randomly top level bins can be "
+            return next(new Error("Only random top level bins can be "
               + "created"))
           // TODO: recursively check and create bins up until the give path
           // check to see if the root bin exists
@@ -144,6 +144,7 @@ module.exports = function (app) {
           })
           bin.save(function (err) {
             if (err) return next(err)
+            req.session.flash.success = "You just created a new bin! Only you can add or remove stuff from it."
             return res.redirect(bin.path)
           }) // end save bin
         })
@@ -161,7 +162,9 @@ module.exports = function (app) {
 
       if (bin.sessionID !== req.sessionID) {
         req.session.flash.error = 'You can\'t add links to this bin. '
-          + '<a href="ask">Ask for permission</a>'
+          // TODO: ask permission feature should only be available for 
+          // non-anounymous bins (which dont exist. (yet))
+          // + '<a href="ask">Ask for permission</a>'
         return res.redirect(path)
       }
 
@@ -173,7 +176,7 @@ module.exports = function (app) {
           return res.redirect(path)
         })
         
-        req.session.flash.error = 'This bin already has that same link'
+        req.session.flash.error = 'This bin already has that link'
         return res.redirect(path)
       })
     }
@@ -184,7 +187,6 @@ module.exports = function (app) {
      * @return {[type]}      [description]
      */
     function ensureBinsExistAlongPath(bins){
-
       for(var i = bins.length; i > 1; i--){
         // go create the bins, if they dont exist yet
         var path = '/' + bins.slice(0,i).join('/')
@@ -201,7 +203,8 @@ module.exports = function (app) {
             }
           }
           , { upsert : true }               // options
-        ,function(){}) // we dont need to wait for this callback. fire and forget
+        // we dont need to wait for this callback. fire and forget
+        , function(){})
       }
     }
     
@@ -227,7 +230,7 @@ module.exports = function (app) {
         })
       })
     }
-  }) // end GET /[bin-name]/[link]
+  }) // end GET /path/[link]
   
   /**
    * [ description]
@@ -237,19 +240,24 @@ module.exports = function (app) {
    * @return {[type]}        [description]
    */
   app.get('/_/bin/:binID/link/:linkID/remove',function(req,res,next){
-    Bin.findById(req.params.binID,function(err,bin){
+    Bin.findById(req.params.binID, function(err,bin){
       if (err) return next(err)
-      if (!bin) return next(new Error("That bin doesnt exist"))
-
-      if (req.sessionID !== bin.sessionID) return next(
-        new Error("You dont have permission to remove links from bins you dont own"))
-
+      if(!bin){
+        req.session.flash.error = "Looks like you tried to remove a link from "
+          + "a bin that no longer exists."
+        return res.redirect('back')
+      }
+      if (req.sessionID !== bin.sessionID){
+        req.session.flash.error = "You dont have permission to remove links "
+          + "from bins you don't own."
+        return res.redirect(bin.path)
+      }
       bin.removeLinkById(req.params.linkID).save(function(err){
         if(err) return next(err)
         else res.redirect(bin.path)
       })
     })
-  })
+  }) // end GET /_/:binID/link/:linkID/remove
 
   /**
    * [ description]
@@ -258,21 +266,26 @@ module.exports = function (app) {
    * @param  {Function} next [description]
    * @return {[type]}        [description]
    */
-  app.get('/_/bin/:binID/remove',function(req,res,next){
-    Bin.findById(req.params.binID,function(err,bin){
+  app.get('/_/bin/:binID/remove',function(req, res, next){
+    Bin.findById(req.params.binID,function(err, bin){
       if (err) return next(err)
-      if (!bin) return next(new Error("That bin doesnt exist"))
+      else if (!bin){
+        req.session.flash.error = "That bin doesn't exist"
+        return res.redirect('back')
+      }
+      else if (req.sessionID !== bin.sessionID){
+        req.session.flash.error = "You dont have permission to remove bins you "
+          + "don't own"
+        return res.redirect('back')
+      }
 
-      if (req.sessionID !== bin.sessionID) 
-        return next(new Error("You dont have permission to remove bins you dont own"))
-
-      bin.getChildren(function(err,children){
+      bin.getChildren(function(err, children){
+        var parent = bin.parent
         if (err) return next(err)
-
-        if (children.length>0) 
-          return next(new Error("You can only remove bins that are empty"))
-
-        var parent = bin.parent;
+        else if (children.length > 0){
+          req.session.flash.error = "You can only remove bins that are empty."
+          return res.redirect(parent)
+        }
         bin.remove(function(err){
           if(err) return next(err)
           else return res.redirect(parent)
