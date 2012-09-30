@@ -30,8 +30,8 @@ mixin bin(bin)
 extends layout
 
 block breadcrumb
-  - var bins = bin.path.split('/').slice(1)
-  - var path = ''
+  bins = bin.path.split('/').slice(1)
+  path = ''
   each bin, i in bins
     - path = path + '/' + bin
     li.divider-bin
@@ -44,13 +44,18 @@ block body
     .alert.alert-error
       i.icon-exclamation-sign  
       != flash.error
+
   if (flash.success)
     .alert.alert-success
-      i.icon-exclamation-sign 
-      != flash.success
+      i.icon-link  
+      != flash.success  
+
   if(isOwner)
     .alert.alert-warn
-      i.icon-exclamation-sign You will own this bin as long as you access it from your current computer
+      i.icon-exclamation-sign   
+      |  You can modify this bin as long as you access it from this computer. 
+      a(href="/signup") Sign up
+      |  if you would like to modify this bin later.
   .row
     .span6
       h1 Links:

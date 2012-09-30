@@ -144,7 +144,8 @@ module.exports = function (app) {
           })
           bin.save(function (err) {
             if (err) return next(err)
-            req.session.flash.success = "You just created a new bin! Only you can add or remove stuff from it."
+            req.session.flash.success = "You have just created a new clickbin! "
+              + "You can now add or remove links and create new bins here."
             return res.redirect(bin.path)
           }) // end save bin
         })
