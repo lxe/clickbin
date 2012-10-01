@@ -1,9 +1,9 @@
-var fs = require('fs');
-var jParser = require('jparser');
-var _ = require('underscore');
-var Canvas = require('canvas');
+var fs = require('fs')
+  , jParser = require('jparser')
+  , _ = require('underscore')
+  , Canvas = require('canvas')
 
-fs.readFile('../public/images/favicon.ico', function (err, buffer) {
+fs.readFile('favicon.ico', function (err, buffer) {
   var parser = new jParser(buffer, {
     uint4: function () {
       // By default, we can only parse 8 bits at a time.
@@ -11,20 +11,20 @@ fs.readFile('../public/images/favicon.ico', function (err, buffer) {
       // return the first 4 and cache the 4 others for
       // the next call.
       if (this.hasUint4Buffer) {
-        this.hasUint4Buffer = false;
-        return this.uint4Buffer;
+        this.hasUint4Buffer = false
+        return this.uint4Buffer
       } else {
-        this.hasUint4Buffer = true;
-        var uint8 = this.parse('uint8');
-        this.uint4Buffer = uint8 >>> 4;
-        return uint8 & 0x0f;
+        this.hasUint4Buffer = true
+        var uint8 = this.parse('uint8')
+        this.uint4Buffer = uint8 >>> 4
+        return uint8 & 0x0f
       }
     },
 
     rgba: {
-      r: 'uint8',
-      g: 'uint8',
       b: 'uint8',
+      g: 'uint8',
+      r: 'uint8',
       a: 'uint8'
     },
 
@@ -45,50 +45,56 @@ fs.readFile('../public/images/favicon.ico', function (err, buffer) {
       size: 'uint32',
       offset: 'uint32',
       content: function () {
-        var that = this;
+        var that = this
         return that.seek(that.current.offset, function () {
           return that.parse({
             palette: ['array', 'rgba', that.current.paletteCount],
-            pixels: [
-              'array',
-              ['array', 'uint' + that.current.bitsPerPixel, that.current.width],
-              that.current.height
-            ]
-          });
-        });
+            pixels: ['array', 'rgba', that.current.width * that.current.height + that.current.offset]
+          })
+        })
       }
     },
 
     file: {
       header: 'header',
-      images: ['array', 'image', function () { return this.current.header.imageCount; }]
+      images: ['array', 'image', function () { return this.current.header.imageCount }]
     }
-  });
+  })
   
-  var ico = parser.parse('file');
+  var ico = parser.parse('file')
+  
+  // console.log('meta data: ')
+  // console.log(ico.header)
+  // console.log('paletteCount: '+ico.images[0].paletteCount)
+  // console.log('colorPlanes: '+ico.images[0].colorPlanes)
+  // console.log('bitsPerPixel: '+ico.images[0].bitsPerPixel)
+  // console.log('size: '+ico.images[0].size)
+  // console.log('offset: '+ico.images[0].offset)
+  // console.log('palette: '+JSON.stringify(ico.images[0].content.palette))
+  //process.exit()
   
   var canvas = new Canvas(ico.images[0].width,ico.images[0].height)
     , ctx = canvas.getContext('2d')
     , img = ctx.createImageData(canvas.width,canvas.height)
   
-  var i = 0
-  _.each(ico.images[0].content.pixels,function(col){
-    _.each(col,function(row){
-      console.log('row: '+row)
-      var pixel = row.toString(16)
-      console.log('pixel: '+pixel)
-      img.data[i++] = parseInt( pixel.substr(2,2), 16)
-      console.log(img.data[i-1])
-      img.data[i++] = parseInt( pixel.substr(4,2), 16)
-      console.log(img.data[i-1])
-      img.data[i++] = parseInt( pixel.substr(6,2), 16)
-      console.log(img.data[i-1])
-      img.data[i++] = parseInt( pixel.substr(0,2), 16)
-      console.log(img.data[i-1])
-    })
+  var ind = 0, row = canvas.height-1, col = 0
+  _.each(ico.images[0].content.pixels, function(pixel){
+    if( ind++ < 10 ) return
+    img.data[row*canvas.width*4 + col++] = pixel.r
+    img.data[row*canvas.width*4 + col++] = pixel.g
+    img.data[row*canvas.width*4 + col++] = pixel.b
+    img.data[row*canvas.width*4 + col++] = pixel.a
+    if( col >= canvas.width*4){
+      col = 0
+      row--
+    }
+    // for(var k = 0; k < 4; k++){
+    //   img.data[j++] = parseInt( pixel.substr(0,2), 16)
+    //   pixel = pixel.substr(2)
+    // }
   })
-  ctx.putImageData(img, 0, 0); // at coords 0,0
+  ctx.putImageData(img, 0, 0) // at coords 0,0
   var out = fs.createWriteStream(__dirname + '/test.png')
    , stream = canvas.createPNGStream().pipe(out)
-  //console.log(require('util').inspect(ico, false, 10));
-});
+  //console.log(require('util').inspect(ico, false, 10))
+})
