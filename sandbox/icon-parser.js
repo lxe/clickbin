@@ -2,84 +2,96 @@ var fs = require('fs')
   , jParser = require('jparser')
   , _ = require('underscore')
   , Canvas = require('canvas')
+  , util = require('util')
 
+// the spec: http://msdn.microsoft.com/en-us/library/ms997538.aspx
 fs.readFile('favicon.ico', function (err, buffer) {
   var parser = new jParser(buffer, {
-    uint4: function () {
-      // By default, we can only parse 8 bits at a time.
-      // When uint4 is called, it will parse 8 bits,
-      // return the first 4 and cache the 4 others for
-      // the next call.
-      if (this.hasUint4Buffer) {
-        this.hasUint4Buffer = false
-        return this.uint4Buffer
-      } else {
-        this.hasUint4Buffer = true
-        var uint8 = this.parse('uint8')
-        this.uint4Buffer = uint8 >>> 4
-        return uint8 & 0x0f
+    
+    header : {
+      reserved: 'uint16'
+      , type: 'uint16'
+      , imageCount: 'uint16'
+    }
+    
+    // an image entry in the directory of the ICO file
+    , iconDirEntry : {
+      bWidth : 'uint8'
+      , bHeight : 'uint8'
+      , bColorCount : 'uint8'
+      , bReserved : 'uint8'
+      , wPlanes : 'uint16'
+      , wBitCount : 'uint16'
+      , dwBytesInRes : 'uint32'
+      , dwImageOffset : 'uint32'
+    }
+    
+    , rgba: {
+      b: 'uint8'
+      , g: 'uint8'
+      , r: 'uint8'
+      , a: 'uint8'
+    }
+    // http://msdn.microsoft.com/en-us/library/windows/desktop/dd183376(v=vs.85).aspx
+    , bitmapInfoHeader : {
+      biSize : 'uint32'
+      , width : 'uint32'
+      , height : function(){
+        return this.parse('uint32') / 2
       }
-    },
-
-    rgba: {
-      b: 'uint8',
-      g: 'uint8',
-      r: 'uint8',
-      a: 'uint8'
-    },
-
-    header: {
-      reserved: 'uint8',
-      type: 'uint8',
-      imageCount: 'uint8',
-      padding: ['array', 'uint8', 3]
-    },
-
-    image: {
-      width: 'uint8',
-      height: 'uint8',
-      paletteCount: 'uint8',
-      reserved: 'uint8',
-      colorPlanes: 'uint16',
-      bitsPerPixel: 'uint16',
-      size: 'uint32',
-      offset: 'uint32',
-      content: function () {
-        var that = this
-        return that.seek(that.current.offset, function () {
-          return that.parse({
-            palette: ['array', 'rgba', that.current.paletteCount],
-            pixels: ['array', 'rgba', that.current.width * that.current.height + that.current.offset]
-          })
-        })
-      }
-    },
-
-    file: {
-      header: 'header',
-      images: ['array', 'image', function () { return this.current.header.imageCount }]
+      // a lot of these fields arent used but theyre still there, in the binary
+      , biPlanes : 'uint16'
+      , biBitCount : 'uint16'
+      , biCompression : 'uint32'
+      , biSizeImage : 'uint32'
+      , biXPelsPerMeter : 'uint32'
+      , biYPelsPerMeter : 'uint32'
+      , biClrUsed : 'uint32'
+      , biClrImportant : 'uint32'
+    }
+    
+    , images : function(){
+      var self = this
+      var res = []
+      this.current.header.imageCount
+      _.each(this.current.idEntries,function(entry){
+        self.seek(entry.dwImageOffset)
+        res.push(self.parse('iconImage'))
+      })
+      return res
+    }
+    , iconImage : {
+      header : 'bitmapInfoHeader'
+      , pixels : [ 'array' , 'rgba' , function(){ 
+        // return this.current.icHeader.biSize 
+        return this.current.header.width *  this.current.header.height
+      }]
+    }
+    
+    , file: {
+      header: 'header'
+      , idEntries : ['array','iconDirEntry', function(){ return this.current.header.imageCount }]
+      , images: 'images'
     }
   })
   
   var ico = parser.parse('file')
+  // image = ico.images[0]
+  _.each(ico.images,function(image,i){
+    var out = fs.createWriteStream(__dirname + '/image-' + i + '.png')
+    icoImageToPNGStream(image).pipe(out)
+  })
+})
+
+function icoImageToPNGStream(image){
+  var canvas = new Canvas(image.header.width,image.header.height)
+  , ctx = canvas.getContext('2d')
+  , img = ctx.createImageData(canvas.width,canvas.height)
+  , ind = 0
+  , row = canvas.height - 1
+  , col = 0
   
-  // console.log('meta data: ')
-  // console.log(ico.header)
-  // console.log('paletteCount: '+ico.images[0].paletteCount)
-  // console.log('colorPlanes: '+ico.images[0].colorPlanes)
-  // console.log('bitsPerPixel: '+ico.images[0].bitsPerPixel)
-  // console.log('size: '+ico.images[0].size)
-  // console.log('offset: '+ico.images[0].offset)
-  // console.log('palette: '+JSON.stringify(ico.images[0].content.palette))
-  //process.exit()
-  
-  var canvas = new Canvas(ico.images[0].width,ico.images[0].height)
-    , ctx = canvas.getContext('2d')
-    , img = ctx.createImageData(canvas.width,canvas.height)
-  
-  var ind = 0, row = canvas.height-1, col = 0
-  _.each(ico.images[0].content.pixels, function(pixel){
-    if( ind++ < 10 ) return
+  _.each(image.pixels, function(pixel){
     img.data[row*canvas.width*4 + col++] = pixel.r
     img.data[row*canvas.width*4 + col++] = pixel.g
     img.data[row*canvas.width*4 + col++] = pixel.b
@@ -88,13 +100,7 @@ fs.readFile('favicon.ico', function (err, buffer) {
       col = 0
       row--
     }
-    // for(var k = 0; k < 4; k++){
-    //   img.data[j++] = parseInt( pixel.substr(0,2), 16)
-    //   pixel = pixel.substr(2)
-    // }
   })
   ctx.putImageData(img, 0, 0) // at coords 0,0
-  var out = fs.createWriteStream(__dirname + '/test.png')
-   , stream = canvas.createPNGStream().pipe(out)
-  //console.log(require('util').inspect(ico, false, 10))
-})
+  return canvas.createPNGStream()
+}
