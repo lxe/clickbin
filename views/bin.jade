@@ -40,32 +40,11 @@ block breadcrumb
       a(href="#{path}").bin-link #{bin} 
 
 block body
-  if (flash.error)
-    .alert.alert-error
-      i.icon-exclamation-sign  
-      != flash.error
-
-  if (flash.success)
-    .alert.alert-success
-      i.icon-link  
-      != flash.success  
-
+  include alerts
   if(isOwner)
     .alert.alert-warn
       i.icon-exclamation-sign   
       |  You can modify this bin as long as you access it from this computer. 
       //a(href="/signup") Sign up
       //|  if you would like to modify this bin later.
-  .row
-    .span6
-      h3.icon-globe  Links
-      .well
-        ul.bin.clearfix
-          each link in bin.links
-            mixin link(link)
-    .span6
-      h3.icon-folder-open  Bins
-      .well
-        ul.bin
-          each bin in children
-            mixin bin(bin)
+  include bin-items

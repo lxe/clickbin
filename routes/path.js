@@ -17,20 +17,12 @@ var url      = require('url')
  * @return {[type]}     [description]
  */
 module.exports = function (app) {
-
-  /**
-   * [uri_regexp description]
-   * @type {RegExp}
-   */
-  // old regex
-  //var uri_regexp = /^\/((?:[^\/]+\/)+?)(\w+?:\/\/)?([^\/]+\..+)?$/
-  var uri_regexp = /^((\/(?:[a-zA-Z0-9\-^\/]+(?:\/|$)))|\/)(\w+?:\/\/)?([^\/]+\..+)?/
   
   
   function parsePathCommand(url,subdomains){
     var opts = {}
     // a users bin 
-    if(subdomains.length) opts.user = subdomains.pop()
+    if(subdomains.length) opts.username = subdomains.pop()
     
     // parse the url command
     var matches = uri_regexp.exec(url)
@@ -66,16 +58,9 @@ module.exports = function (app) {
     return opts
   }
   
+  var uri_regexp = /^((\/(?:[a-zA-Z0-9\-^\/]+(?:\/|$)))|\/)(\w+?:\/\/)?([^\/]+\..+)?/
   
-  /**
-   * GET /[bin-name]/[link]
-   * @param  {[type]}   req  [description]
-   * @param  {[type]}   res  [description]
-   * @param  {Function} next [description]
-   * @return {[type]}        [description]
-   */
   app.get(uri_regexp, function (req, res, next) {
-    console.log('get path')
     function render(bin) {
       // meanhile, in russia
       bin.getChildren(function(err,children){
@@ -95,6 +80,10 @@ module.exports = function (app) {
     // because it's actually just a subdomain. that's why the code looks
     // a little gross compared to the other routes.
     if(opts.username) return user(req,res,next,opts)
+    else{
+      console.log('"no username!')
+      process.exit()
+    }
     //else return anonymous(req,res,next,opts)
     
     var path = opts.path
