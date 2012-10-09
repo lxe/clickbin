@@ -20,7 +20,6 @@
   },
   "devDependencies": {
     "mocha": "*",
-    // sandbox deps
     "canvas": "~0.13.1",
     "fav": "0.0.2"
   },
