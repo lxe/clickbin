@@ -31,10 +31,16 @@ var UserSchema = new Schema({
     type: String
     , unique : true
     , required : true
-  },
-  name : {
+  }
+  , name : {
     first: String,
     last:  String
+  }
+  , email : {
+    type : String
+    , unique : true
+    , required : true
+    , validate : [ common.validateEmail, "email"]
   }
   , password : { 
     type : String
@@ -55,4 +61,24 @@ var UserSchema = new Schema({
   }
 }, { strict: true })
 
-module.exports = mongoose.model('User', UserSchema)
+UserSchema.statics.exists = function(username,email,cb){
+  User.findOne().or({
+    username : username
+    , email : email
+  }).exec(cb)
+}
+
+UserSchema.statics.getURI = function(req,username){
+  var host = req.get('Host').split('.').reverse()
+  return req.protocol + '://' + username + '.' + host[1] + '.' + host[0] + '/'
+}
+
+UserSchema.methods.getURI = function(req){
+  return User.getURI(req,this.username)
+}
+
+UserSchema.methods.guessPassword = function(password){
+  return this.password === common.digest(common.md5(password + salt),this.salt).digest
+}
+
+var User = module.exports = mongoose.model('User', UserSchema)

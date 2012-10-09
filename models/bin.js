@@ -24,6 +24,15 @@ var BinSchema = new Schema({
   , links : [LinkSchema]
 })
 
+BinSchema.statics.findUserBin = function(username,path,cb){
+  if(!cb){
+    cb = path
+    path = '/'
+  }
+  if(path==='') path = '/'
+  return Bin.findOne({path:username + ':' + path },cb)
+}
+
 
 BinSchema.virtual('title').get(function(){
   var path = this.path.split('/')
@@ -32,8 +41,32 @@ BinSchema.virtual('title').get(function(){
   return name
 })
 BinSchema.virtual('parent').get(function(){
-  var path = this.path.split('/')
-  if(path.length>1) return path[path.length - 2]
+  console.log('this.path: '+this.path)
+  var path = this.pathWithoutUsername().substr(1).split('/')
+  console.log('path: '+path)
+  var username = this.username
+  console.log('username: '+this.username)
+  console.log('path[path.length-2]: '+path[path.length - 2])
+  if( !username && path.length > 1 || path.length > 2){
+    path.pop()
+    return '/' + path.join('/')
+  }else if(username && path.length === 1){
+    if(path.length === 1) return '/'
+  }
+  else return null
+})
+
+/**
+  * Just get the actual path, without the user prefix
+  */
+BinSchema.methods.pathWithoutUsername = function(){
+  var path = this.path.split(':')
+  return path[path.length-1]
+}
+
+BinSchema.virtual('username').get(function(){
+  var path = this.path.split(':')
+  if(path.length>1) return path[0]
   else return null
 })
 
@@ -53,7 +86,11 @@ BinSchema.methods.removeLinkById = function(linkID){
 }
 
 BinSchema.methods.getChildren = function(cb){
-  Bin.find({path:new RegExp(this.path + '/[^/]+$')},cb)
+  // escape regex characters
+  var path = this.path.replace(/[#-.]|[[-^]|[?|{}]/g, '\\$&')
+  var regex = '^' + path + '/[^/]+$'
+  regex = regex.replace('//','/')
+  Bin.find({path:new RegExp(regex)},cb)
 }
 
 var Bin = module.exports = mongoose.model('Bin', BinSchema)

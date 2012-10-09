@@ -1,3 +1,32 @@
+mixin link(link)
+  li.clearfix.link
+    a(href="/_/bin/#{bin.id}/link/#{link.id}/remove").close &times;
+    a.clearfix(href=link.url, title=link.title)
+      .minwidth.clearfix
+        .icon
+          if (link.icon)
+            img(src="#{link.icon}")
+          else
+            .no-icon
+              i.icon-link
+        .text
+          if (link.title)
+            .url-title #{link.title}
+          else
+            .url-title #{link.url}
+          .url #{link.url}
+
+mixin bin(bin)
+  li.clearfix.bin-link
+    a(href="/_/bin/#{bin.id}/remove").close &times;
+    a.clearfix(href=bin.path.substr(bin.path.indexOf(':')+1),title=bin.title)
+      .minwidth.clearfix
+        .icon
+          .no-icon
+            i.icon-link
+        .text
+          .link #{bin.title}
+
 .row
   .span6
     h3.icon-globe  Links

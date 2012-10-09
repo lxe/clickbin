@@ -50,14 +50,21 @@ app.configure(function() {
   app.use(express.bodyParser())
   app.use(express.methodOverride())
   app.use(express.cookieParser())
+  app.use(require('express-validator'))
 
   /**
    * Store sessions in mongo
    */
   app.use(express.session({
-    secret: 'whalecopter',
-    maxAge: new Date(Date.now() + 3600000),
-    store:  new MongoStore({ db: 'clickbin' })
+    secret: 'whalecopter'
+    , maxAge: new Date(Date.now() + 3600000)
+    , store:  new MongoStore({ db: 'clickbin' })
+    , cookie : { 
+      domain : config.domain 
+      , path : '/'
+      , httpOnly : true
+      , maxAge : 1000*60*60*24*30*12    //one year(ish)  
+    }
   }))
   
   /**
@@ -77,6 +84,21 @@ app.configure(function() {
     req.session.flash = req.session.flash || {}
     res.locals.flash  = req.session.flash
     req.session.flash = {}
+    res.locals.getUserURI = function(username){
+      var host = req.get('Host').split('.').reverse()
+      return req.protocol + '://' + req.session.user.username + '.' + host[1] + '.' + host[0] + '/'
+    }
+    res.locals.getRootURI = function(){
+      var host = req.get('Host').split('.').reverse()
+      return req.protocol + '://' + host[1] + '.' + host[0] + '/'
+    }
+    next()
+  })
+  
+  app.use(function(req,res,next){
+    if(req.session && req.session.user)
+      res.locals.user = req.session.user
+    else res.locals.user = {}
     next()
   })
 

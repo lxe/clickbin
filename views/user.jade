@@ -1,1 +1,18 @@
-h1 {username}
+- var title = 'poop'
+
+extends layout
+
+block breadcrumb
+  bins = bin.path.split('/').splice(1)
+  path = ''
+  each bin, i in bins
+    - path = path + '/' + bin
+    if(path!=='/')
+      li.divider-bin
+        span / 
+      li(class=(i===bins.length-1)?"active":"")
+        a(href="#{path}").bin-link #{bin}
+
+block body
+  include alerts
+  include bin-items

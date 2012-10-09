@@ -1,61 +1,83 @@
+/**
+  * the route is for handling bin task, such as removing a link from a bin,
+  * or removing the bin, itself
+  * note: bin related requests begin with '/_/'
+  */
 
 var Bin = require('../models/bin')
-
-/**
-  * non bin related requests begin with '/_/'
-  */
+  , User = require('../models/user')
 
 module.exports = function(app){
   
-  // Bin Commands
-  
-  // remove a link from a bin
-  
+  /**
+    * remove a link from a bin
+    */
   app.get('/_/bin/:binID/link/:linkID/remove',function(req,res,next){
     Bin.findById(req.params.binID, function(err,bin){
       if (err) return next(err)
+      // bin doesn't exist
       if(!bin){
         req.session.flash.error = "Looks like you tried to remove a link from "
           + "a bin that no longer exists."
         return res.redirect('back')
       }
-      if (req.sessionID !== bin.sessionID){
-        req.session.flash.error = "You dont have permission to remove links "
-          + "from bins you don't own."
-        return res.redirect(bin.path)
-      }
+      // check permissions
+      if (!bin.username && req.sessionID !== bin.sessionID) 
+        return deny()
+      else if(!req.session.user || req.session.user.username !== bin.username) 
+        return den()
+      // actually remove the link
       bin.removeLinkById(req.params.linkID).save(function(err){
         if(err) return next(err)
-        else res.redirect(bin.path)
+        else res.redirect(bin.pathWithoutUsername())
       })
+      // helper for reporting denial error
+      function deny(){
+        req.session.flash.error = "You dont have permission to remove links "
+          + "from bins you don't own."
+        return res.redirect(bin.pathWithoutUsername())
+      }
     })
-  }) // end GET /_/:binID/link/:linkID/remove
+  })
   
-  // remove a bin
-  
+  /**
+    * remove a bin. checks permissions. then, if the bin has children, an 
+    * error is thrown preventing the bin from being removed until the child 
+    * bins are removed. However, bins can be removed if they have child links.
+    * NOTE: maybe a bin shouldn't be allowed to be removed if it has links?
+    */
   app.get('/_/bin/:binID/remove',function(req, res, next){
     Bin.findById(req.params.binID,function(err, bin){
       if (err) return next(err)
+      // bin doesn't exit
       else if (!bin){
         req.session.flash.error = "That bin doesn't exist"
         return res.redirect('back')
       }
-      else if (req.sessionID !== bin.sessionID){
+      // check permissions
+      else if (
+        req.sessionID !== bin.sessionID 
+        && (!req.session.user || req.session.user.username!==bin.username) 
+      ){
         req.session.flash.error = "You dont have permission to remove bins you "
           + "don't own"
         return res.redirect('back')
       }
-
+      // check to see if this bin has children before removing it
       bin.getChildren(function(err, children){
         var parent = bin.parent
+        var username = bin.username
         if (err) return next(err)
         else if (children.length > 0){
           req.session.flash.error = "You can only remove bins that are empty."
-          return res.redirect(parent)
+          console.log('redirecting to parent: '+parent)
+          if(parent) return res.redirect(parent)
+          else if(username) return res.redirect(User.getURI(req,username))
         }
         bin.remove(function(err){
           if(err) return next(err)
-          else return res.redirect(parent)
+          else if(parent) return res.redirect(parent)
+          else res.redirect(User.getURI(req,username))
         })
       })
     })

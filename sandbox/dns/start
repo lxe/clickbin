@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo python dnsproxy.py --server=8.8.8.8

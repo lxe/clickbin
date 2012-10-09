@@ -1,0 +1,24 @@
+extends layout
+
+block body
+  include alerts
+  h1 Login
+  br
+  form.form-horizontal(method="POST")
+    .control-group
+      label.control-label(for="inputUsername") Username
+      .controls
+        input(type="text",name="inputUsername",id="inputUsername",placeholder="Username")
+        if(errors.inputUsername)
+          p.text-error #{errors.inputUsername.msg}
+    .control-group
+      label.control-label(for="inputPassword") Password
+      .controls
+        input(type="password",name="inputPassword",id="inputPassword",placeholder="Password")
+        if(errors.inputPassword)
+          p.text-error #{errors.inputPassword.msg}
+    .control-group
+      .controls
+        button.btn.btn-primary(type="submit",style="margin-right:10px") Sign in
+        span or
+        a.btn(href="/signup",style="margin-left:10px") Sign up

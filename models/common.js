@@ -4,7 +4,7 @@
 
 var crypto = require('crypto')
 
-module.exports = {
+var common = module.exports = {
   
   /**
    * [md5 description]
@@ -23,10 +23,10 @@ module.exports = {
    */
   , digest: function(password, salt) {
     salt = salt || crypto.randomBytes(23).toString('base64')
-    var digest = this.sha2(password + salt)
+    var digest = common.sha2(password + salt)
 
     // apply stretching
-    for (var i = 0; i < 4; i++) digest = this.sha2(digest)
+    for (var i = 0; i < 4; i++) digest = common.sha2(digest)
     return { salt: salt, digest: digest }
   }
 
@@ -66,7 +66,7 @@ module.exports = {
    * @return {[type]}       [description]
    */
   , validateEmail: function(email) {
-    return this.validateRegex(email,
+    return common.validateRegex(email,
       /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,6}$/)
   }
 
@@ -76,7 +76,7 @@ module.exports = {
    * @return {[type]}          [description]
    */
   , validateUsername: function(username) {
-    return this.validateRegex(username,
+    return common.validateRegex(username,
       /^[a-zA-z]{1,}[a-zA-Z0-9]{2,}$/)
   }
 

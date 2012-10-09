@@ -8,7 +8,6 @@ var url      = require('url')
   , Bin      = require('../models/bin')
   , Link     = require('../models/link')
   , Counter  = require('../models/counter')
-  , scraper = require('../controllers/scraper')
   , user = require('./user')
 
 /**
@@ -80,11 +79,8 @@ module.exports = function (app) {
     // because it's actually just a subdomain. that's why the code looks
     // a little gross compared to the other routes.
     if(opts.username) return user(req,res,next,opts)
-    else{
-      console.log('"no username!')
-      process.exit()
-    }
-    //else return anonymous(req,res,next,opts)
+    
+    // else, the user is anonymous
     
     var path = opts.path
       , protocol = opts.protocol
@@ -93,9 +89,7 @@ module.exports = function (app) {
     if (path) {
       // bin paths should start with a '/' but not end with one
       // requesting a just a bin
-      Bin.findOne({
-        path: path
-      }, function (err, bin) {
+      Bin.findOne({ path : path}, function (err, bin) {
         if (err) return next(err)
         // just show the bin
         else if (!bin) {
@@ -118,13 +112,16 @@ module.exports = function (app) {
             path : '/' + bins[0]
           }, function(err, bin) {
             if(err) return next(err)
-            else if(!bin) return next(new Error("The root bin doesn't exist yet"
-              + " and only random top level bins can be created"))
-            else if(bin.sessionID !== req.sessionID) return next(new Error("You"
-              + " dont own that root bin"))
-            else{
+            else if(!bin){
+              req.session.flash.error = "The root bin doesn't exist yet"
+              + " and only random top level bins can be created"
+              return res.redirect('/')
+            }else if(bin.sessionID !== req.sessionID){
+              req.session.flash.error = "You dont own that root bin"
+              return res.redirect('/')
+            }else{
               if(uri){
-                scrape(protocol + uri, function(err,link){
+                Link.scrape(protocol + uri, function(err,link){
                   if(err) return next(err)
                   saveNewBin(bins,[link])
                 })
@@ -153,7 +150,7 @@ module.exports = function (app) {
       // a request of the form: clickb.in/google.com
       Counter.increment('anonymous-bin-counter', function (err, val) {
         if (err) return next(err)
-        scrape(protocol + uri, function (err, link) {
+        Link.scrape(protocol + uri, function (err, link) {
           if (err) return next(err)
           // base 36 encode the counter's value
           bin = new Bin({
@@ -190,9 +187,9 @@ module.exports = function (app) {
         return res.redirect(path)
       }
 
-      else scrape(protocol + uri, function (err, link) {
-        if (err) return cb(err)
-
+      else Link.scrape(protocol + uri, function (err, link) {
+        if (err) return next(err)
+        
         if (bin.addLink(link)) return bin.save(function(err) {
           if(err) return next(err)
           return res.redirect(path)
@@ -228,29 +225,6 @@ module.exports = function (app) {
         // we dont need to wait for this callback. fire and forget
         , function(){})
       }
-    }
-    
-    /**
-     * [scrape description]
-     * @param  {[type]}   url [description]
-     * @param  {Function} cb  [description]
-     * @return {[type]}       [description]
-     */
-    function scrape(url, cb) {
-      // this is sort of like a cache, for the scraper
-      Link.findOne( { url : url }, function(err, link) {
-        if(err) return cb(err)
-        else if(link) return cb(null,link)
-        // go, and _actually_ scrape the page
-        else scraper.get(url,function(err,link){
-          if(err) link = { url : url }
-          link = new Link(link)
-          link.save(function(err){
-            if(err) return cb(err)
-            else return cb(null,link)
-          })
-        })
-      })
     }
   }) // end GET /path/[link]
   
