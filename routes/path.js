@@ -4,7 +4,6 @@
 var url      = require('url')
   , _        = require('underscore')
   , crypto   = require('crypto')
-  , uuid     = require('node-uuid')
   , Bin      = require('../models/bin')
   , Link     = require('../models/link')
   , Counter  = require('../models/counter')

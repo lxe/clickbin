@@ -4,6 +4,7 @@ var config = {
     port: 3020
   }
   , domain : 'clickb.in' // used in the cookie
+  , maxImageSize : 2097152 /*2mb*/
 }
 
 var argv = require('optimist')

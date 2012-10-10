@@ -6,6 +6,7 @@ var LinkSchema = new Schema({
     type : String
     , required : false
   }
+  // the path to the image (local or absolute)
   , icon : {
     type : String
     , required : false
