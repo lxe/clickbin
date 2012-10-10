@@ -47,9 +47,10 @@ module.exports = {
           if(image_type){
             var name = uuid.v4() + '.' + image_type
             saveThumbnails(body,name,cb)
-          }else{ // HTML
-            // TODO: the link wasn't an image, but was an HTML document
-            jsdom.env(buf.toString('utf8'), [
+          }else if(html_type){
+            jsdom.env({
+              html : body.toString('utf8')
+            }, [
               // TODO: stop using google cdn
               'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'
             ], function(err, window) {
@@ -60,7 +61,7 @@ module.exports = {
                 , url   : url
               })
             })
-          }
+          }else fail(new Error("unsupported type: "+res.headers['content-type']))
         })
         res.on('error',function(err){
           return fail(err)
@@ -69,8 +70,8 @@ module.exports = {
       }else fail(new Error("unsupported MIME type"))
     })
     // failed to get additional meta data other then the url provided
-    function fail(){
-      if(e){
+    function fail(err){
+      if(err){
         console.error('error getting body for url: '+url)
         console.error(err)
       }

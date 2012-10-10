@@ -1,0 +1,32 @@
+#master-nav {
+  .navbar-inner {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top: none;
+
+    @media (min-width: 768px) {
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+    }
+  }
+}
+
+.navbar {
+  .brand {
+    padding-right: 0;
+  }
+
+  .divider-bin {
+    float: none;
+    // Vertically center the text given @navbarHeight
+    padding: ((@navbarHeight - @baseLineHeight) / 2) + 2 2px ((@navbarHeight - @baseLineHeight) / 2) - 6;
+    color: @navbarLinkColor;
+    text-decoration: none;
+    text-shadow: 0 1px 0 @navbarBackgroundHighlight;
+  }
+
+  .bin-link {
+    font-weight: bold;
+  }
+}

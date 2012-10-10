@@ -1,41 +1,53 @@
-.bin {
+.items {
   .link{
-    .bin-link{
-      position: relative;
-      &.close {
-        position: absolute;
-        right: 0px;
-        top: 0px;
-        display: none;
-      }
-      &:hover{
-        > .close{
-          display: block;
-        }
+    position: relative;
+    a.close {
+      position: absolute;
+      right: 0px;
+      top: -5px;
+      display: none;
+    }
+    &:hover{
+      > .close{
+        display: block;
       }
     }
-    .icon{
-      width: 19%; // i cant figure out why its 19%. it should be 20%
-      margin: 0;
+    .icon {
+      width: 20%;
+      float: left;
+      text-align: center;
+      line-height: 64px;
+      font-size: 64px;
+      //line-height: 64px;
+      // #gradient > .vertical(@navbarBackgroundHighlight, @navbarBackground);
+      // border-radius: 5px;
+      // .border-radius(4px);
+      // .box-shadow(0 1px 4px rgba(0,0,0,.065));
+      img{
+        display: inline;
+      }
     }
-    .text{
+    .text {
       width: 80%;
-      padding: 0;
-    }
-    .url, .url-title{
-      word-wrap: break-word;
-    }
-    .url-title{
-      clear: both;
-      display: block;
-      position: relative;
-      .icon{
-        width: 60px;
-        float: left;
-        margin: 10px;
-      }
-      h3{
-        float: left;
+      float: left;
+      .text-container{
+        overflow: hidden;
+        padding: 10px;
+        //word-wrap: break-word;
+        .url, .url-title{
+          //word-wrap: break-word;
+        }
+        .title{
+          display: inline;
+          position: relative;
+        }
+        .url {
+          display: inline;
+          color: #666 !important;
+          font-size: 12px;
+          line-height: 1;
+          margin-top: 2px;
+        }
       }
     }
   }
