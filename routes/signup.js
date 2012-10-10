@@ -51,12 +51,11 @@ module.exports = function(app) {
             , username : user.username
           }
           req.session.flash.succuess = "You're logged in!"
-          var user_path = user.getPath(req)
           // create a new top level bin for this user
           var bin = new Bin({ path : user.username + ':/' })
           bin.save(function(err){
             if(err) return next(err)
-            return res.redirect(user_path)
+            return res.redirect(res.locals.getUserURI())
           })
         }
       })
