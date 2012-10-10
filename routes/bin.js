@@ -24,7 +24,7 @@ module.exports = function(app){
       // check permissions
       if (!bin.username && req.sessionID !== bin.sessionID) 
         return deny()
-      else if(!req.session.user || req.session.user.username !== bin.username) 
+      else if(bin.username && (!req.session.user || req.session.user.username !== bin.username) ) 
         return deny()
       // actually remove the link
       bin.removeLinkById(req.params.linkID).save(function(err){
