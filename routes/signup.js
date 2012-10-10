@@ -3,14 +3,14 @@ var _ = require('underscore')
   , Bin = require('../models/bin')
 
 module.exports = function(app) {
-  app.get('/signup', function(req, res, next) {
+  app.get('/_/signup', function(req, res, next) {
     return res.render('signup',{
       errors:{}
       , inputUsername : ''
       , inputEmail : ''
     })
   })
-  app.post('/signup',function(req, res, next) {
+  app.post('/_/signup',function(req, res, next) {
     console.log(req.body)
     req.assert('inputUsername','must be at least 3 characters and start with a letter').len(3,64).regex(/^[a-zA-Z]+/)
     req.assert('inputPassword','must be at least 6 characters').len(6,64)

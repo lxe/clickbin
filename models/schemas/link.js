@@ -16,6 +16,10 @@ var LinkSchema = new Schema({
     type : String
     , required : true
   }
+  , mime : {
+    type : String
+    , required : false
+  }
 })
 
 module.exports = LinkSchema

@@ -1,3 +1,5 @@
+
+
 module.exports = function(Canvas){
   if(!Canvas) throw new Error("No Canvas class provided")
   /**

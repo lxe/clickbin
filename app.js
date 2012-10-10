@@ -32,17 +32,19 @@ app.configure(function() {
    * directory. I'm sure it's got some sort of caching mechanism as well.
    */
   app.set('view engine', 'jade')
+  
+  // use less to compile css
   app.use(require('connect-less')({
-    src: __dirname + '/views',
-    dst: __dirname + '/public',
-    enable: ['less']
+    src: __dirname + '/views'
+    , dst: __dirname + '/public'
+    , enable: ['less']
   }))
 
   /**
    * Set up static paths
    */
   app.use(express.static(__dirname + '/public'))
-  app.use(express.favicon(__dirname + '/public/images/favicon.ico'))
+  app.use(express.favicon(__dirname + '/public/_/images/favicon.ico'))
 
   /**
    * Pre-packaged miscellaneous middlewares
@@ -56,14 +58,14 @@ app.configure(function() {
    * Store sessions in mongo
    */
   app.use(express.session({
-    secret: 'whalecopter'
+    secret: 'whalecopter' // nice...
     , maxAge: new Date(Date.now() + 3600000)
     , store:  new MongoStore({ db: 'clickbin' })
     , cookie : { 
       domain : config.domain 
       , path : '/'
       , httpOnly : true
-      , maxAge : 1000*60*60*24*30*12    //one year(ish)  
+      , maxAge : 1000*60*60*24*30*12    //one year(ish)
     }
   }))
   

@@ -22,10 +22,9 @@ mkdirp(image_dir + '/x64',function(err) { if(err) throw err })
 module.exports = {
   
   /**
-   * [get description]
-   * @param  {[type]}   url [description]
-   * @param  {Function} cb  [description]
-   * @return {[type]}       [description]
+   * Scrape a page, pulling metadata, like the title, desc, mime type and thumbnail
+   * @param  {[type]}   url the url link to grab a thumbnail and description text for
+   * @param  {Function} cb  the callback called when that happens. of the form (err,link)
    */
   get : function(url, cb) {
     var req = request.get(url).on('response', function(res) {

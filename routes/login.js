@@ -2,10 +2,10 @@ var _ = require("underscore")
   , User = require('../models/user')
 
 module.exports = function(app) {
-  app.get('/login', function(req, res, next) {
+  app.get('/_/login', function(req, res, next) {
     return res.render('login',{errors:{}})
   })
-  app.post('/login',function(req, res, next) {
+  app.post('/_/login',function(req, res, next) {
     var errors = {}
     if(!req.body.inputUsername) errors.inputUsername = { msg : "username is missing" }
     if(!req.body.inputPassword) errors.inputPassword = { msg : "password is missing" } 
