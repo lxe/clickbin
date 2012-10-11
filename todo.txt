@@ -1,3 +1,4 @@
+issue with adding a top level anonymous bin. clickb.in/test should create an anonymous bin with `test` in it
 whats up with? http://testb.in/http://yinzcam.com/style/img/apps/nfl-ari.png
 properly handle requests for invalid paths, such as : http://testb.in/:poop
 work on styling for mobile/tablet
