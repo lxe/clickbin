@@ -42,11 +42,11 @@ module.exports = {
         var name = uuid.v4() + '.' + ext
         return saveThumbnails(body, name, function(err,icon){
           if(err) return fail(err,req,mime)
-          else return {
+          else return cb(null,{
             url : url
             , mime : mime
             , icon : icon
-          }
+          })
         })
       // is the result html?
       }else if(htmlType(mime)){
@@ -182,6 +182,8 @@ function urlRequest(url) {
   return request.get({
     url : url
     , headers : {
+      // we use a mock user agent string to `trick` sites like facebook into 
+      // serving our request properly
       'User-Agent' : config.userAgent
     }
   })
