@@ -28,7 +28,12 @@ module.exports = {
    */
   get : function(url, cb) {
     var aborted = false
-    var req = request.get(url).on('response', function(res) {
+    var req = request.get({
+      url : url 
+      , headers : {
+        'User-Agent' : config.userAgent
+      }
+    }).on('response', function(res) {
       if(res.statusCode !== 200) return fail()
       //console.log('statusCode: '+res.statusCode)
       
