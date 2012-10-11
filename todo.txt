@@ -1,3 +1,4 @@
+whats up with? http://testb.in/http://yinzcam.com/style/img/apps/nfl-ari.png
 properly handle requests for invalid paths, such as : http://testb.in/:poop
 work on styling for mobile/tablet
 figure out why the scrapper dont like this image: http://static.tvtropes.org/pmwiki/pub/images/cowboy_bebop_lineup_7846.jpg

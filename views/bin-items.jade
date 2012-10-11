@@ -1,6 +1,6 @@
 mixin link(link)
   li.clearfix.link
-    a.clearfix(href=link.url, title=link.title)
+    a.clearfix(href=link.url, title=link.title,target="_blank")
       .minwidth.clearfix
         .icon
           if (link.icon)
