@@ -29,7 +29,6 @@ module.exports = function(Canvas){
         , sr = 1
         , ir = iw / ih
         , tr = tw / th
-        , fill = fill || "#000000"
     
       // if the original image aspect ratio is greater than the new thumbnail 
       // image ratio, scale the image using the height, if not, us the width
@@ -51,8 +50,10 @@ module.exports = function(Canvas){
         iy = - (ih/2 - th/2)
       }
       if(bb){
-        if(fill) ctx.fillStyle = fill
-        ctx.fillRect(0,0,tw,th)
+        if(fill){
+          ctx.fillStyle = fill
+          ctx.fillRect(0,0,tw,th)
+        }
       }
       ctx.drawImage(img,ix,iy,iw,ih)
       return cb(null,canvas)

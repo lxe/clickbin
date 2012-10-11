@@ -92,59 +92,55 @@ module.exports = function (app) {
       // requesting a just a bin
       Bin.findOne({ path : path}, function (err, bin) {
         if (err) return next(err)
-        // just show the bin
-        else if (!bin) {
-          // add a new bin (possibly recursively adding all the bins above it)
-          var bins = path.substring(1).split('/')
-          if(bins.length === 1){
-            req.session.flash.error = "Only random top level bins can be "
-              + "created"
-            return res.redirect('back')
-          }
-          // TODO: recursively check and create bins up until the give path
-          // check to see if the root bin exists
-            // if not, show error
-            // else, check permissions
-              // if not, show error
-              // else, create the bin
-              // then add link to current child bin
-              // repeat last step until we reach the root bin
-          else Bin.findOne({
-            path : '/' + bins[0]
-          }, function(err, bin) {
-            if(err) return next(err)
-            else if(!bin){
-              req.session.flash.error = "The root bin doesn't exist yet"
-              + " and only random top level bins can be created"
-              return res.redirect('/')
-            }else if(bin.sessionID !== req.sessionID){
-              req.session.flash.error = "You dont own that root bin"
-              return res.redirect('/')
-            }else{
-              if(uri){
-                Link.scrape(protocol + uri, function(err,link){
-                  if(err) return next(err)
-                  saveNewBin(bins,[link])
-                })
-              }else saveNewBin(bins,[])
-              
-              function saveNewBin(bins,links){
-                var bin = new Bin({
-                  path : '/' + bins.join('/')
-                  , sessionID : req.sessionID
-                  , links : links
-                })
-                bin.save(function (err) {
-                  if (err) return next(err)
-                  // create sub bins
-                  ensureBinsExistAlongPath(bins)
-                  return res.redirect(bin.path)
-                })
-              }
+        // show the bin
+        if(bin && uri === undefined) return render(bin)
+        // add a link th an existing bin
+        if(bin) return addLinkToBin(path, protocol, uri, bin)
+        
+        // whatever it is we want to do, we've got to create a bin for it first
+        
+        // dont allow anonymous users create their own top level bins
+        var bins = path.substring(1).split('/')
+        if(bins.length === 1){
+          req.session.flash.error = "Only random top level bins can be "
+            + "created"
+          return res.redirect('back')
+        }
+        // for we create the bin, make sure it has a root bin.
+        Bin.findOne({
+          path : '/' + bins[0]
+        }, function(err, bin) {
+          if(err) return next(err)
+          else if(!bin){
+            req.session.flash.error = "The root bin doesn't exist yet"
+            + " and only random top level bins can be created"
+            return res.redirect('/')
+          }else if(bin.sessionID !== req.sessionID){
+            req.session.flash.error = "You dont own that root bin"
+            return res.redirect('/')
+          }else{
+            if(uri){
+              Link.scrape(protocol + uri, function(err,link){
+                if(err) return next(err)
+                saveNewBin(bins,[link])
+              })
+            }else saveNewBin(bins,[])
+            
+            function saveNewBin(bins,links){
+              var bin = new Bin({
+                path : '/' + bins.join('/')
+                , sessionID : req.sessionID
+                , links : links
+              })
+              bin.save(function (err) {
+                if (err) return next(err)
+                // create sub bins
+                ensureBinsExistAlongPath(bins)
+                return res.redirect(bin.path + '/')
+              })
             }
-          })
-        } else if(uri === undefined) return render(bin)
-        else return addLinkToBin(path, protocol, uri, bin)
+          }
+        })
       })
     } else {
       // creating an anounomous bin. ie., 
