@@ -29,6 +29,7 @@ module.exports = {
    * @param  {Function} cb  the callback called when that happens. of the form (err,link)
    */
   get : function(url, cb) {
+    
     var req = urlRequest(url)
     
     makeLimitedRequest(req,{
@@ -105,22 +106,21 @@ module.exports = {
         })
       }else return fail(new Error("unsupported type: " + mime),req)
     })
+    // failed to get additional meta data (other then the url provided)
+    function fail(err,req,mime) {
+      if(err){
+        console.error('error getting body for url: '+url)
+        console.error(err)
+        console.trace()
+      }
+      // abort the request so we're not needlessly waiting for data we dont care about
+      req.abort()
+      return cb(null,{
+        url : url
+        , mime : mime
+      })
+    }
   }
-}
-
-// failed to get additional meta data (other then the url provided)
-function fail(err,req,mime) {
-  if(err){
-    console.error('error getting body for url: '+url)
-    console.error(err)
-    console.trace()
-  }
-  // abort the request so we're not needlessly waiting for data we dont care about
-  req.abort()
-  return cb(null,{
-    url : req.url
-    , mime : mime
-  })
 }
 
 function makeLimitedRequest(req,limits,cb) {
