@@ -91,9 +91,17 @@ module.exports = {
             //console.log('getting page title: '+ window.$('title').text())
             // TODO: parse ico file and/or get <link rel="icon"> file
             // via: window.$('link[rel="icon"]').attr('href')
+            var title = window.$('title').text()
+            if(!title) title = window.$('h1').text()
+            else if(!title) title = window.$('h2').text()
+            else if(!title) title = window.$('h3').text()
+            else if(!title) title = window.$('h4').text()
+            else if(!title) title = window.$('h5').text()
+            else if(!title) title = window.$('h6').text()
             return cb(null, {
-              title : window.$('title').text()
+              title : title
               , url   : url
+              //incase there's no icon, we can also use the mime type to display an icon
               , mime : mime
             })
           })
