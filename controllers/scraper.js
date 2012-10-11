@@ -30,7 +30,7 @@ module.exports = {
     var aborted = false
     var req = request.get(url).on('response', function(res) {
       if(res.statusCode !== 200) return fail()
-      console.log('statusCode: '+res.statusCode)
+      //console.log('statusCode: '+res.statusCode)
       
       var mime = res.headers['content-type'].split(';')[0]
         , image_type = imageType(mime)
@@ -73,9 +73,9 @@ module.exports = {
           var name = uuid.v4() + '.' + image_type
           return saveThumbnails(body, name, mime, url, cb)
         }else if(html_type){
-          console.log('html type...')
-          console.log(body.toString('utf8'))
-          console.log('no body?')
+          //console.log('html type...')
+          //console.log(body.toString('utf8'))
+          //console.log('no body?')
           jsdom.env({
             html : body.toString('utf8')
           }, [
@@ -83,7 +83,7 @@ module.exports = {
             'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'
           ], function(err, window) {
             if (err) return fail(err)
-            console.log('getting page title: '+ window.$('title').text())
+            //console.log('getting page title: '+ window.$('title').text())
             // TODO: parse ico file and/or get <link rel="icon"> file
             // via: window.$('link[rel="icon"]').attr('href')
             return cb(null, {
@@ -138,7 +138,7 @@ module.exports = {
                   delete buf_64
                   return cb(null,{
                     url : url
-                    , icon : '/_/thumbs/x64/' + name
+                    , icon : '/_/images/thumbs/x64/' + name
                     , mime : mime
                   })
                 })

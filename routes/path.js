@@ -8,6 +8,7 @@ var url      = require('url')
   , Link     = require('../models/link')
   , Counter  = require('../models/counter')
   , user = require('./user')
+  , node_path = require('path')
 
 /**
  * [exports description]
@@ -31,6 +32,7 @@ module.exports = function (app) {
       , uri  = matches[matches.length - 1]
       , path = matches[1]
     
+    if(path) path = node_path.normalize(path)
     
     // prevent bins from being added to the root path '/'
     if (path === '/') {
