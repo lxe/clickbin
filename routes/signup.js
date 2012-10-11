@@ -11,12 +11,12 @@ module.exports = function(app) {
     })
   })
   app.post('/_/signup',function(req, res, next) {
-    console.log(req.body)
     req.assert('inputUsername','must be at least 3 characters and start with a letter').len(3,64).regex(/^[a-zA-Z]+/)
     req.assert('inputPassword','must be at least 6 characters').len(6,64)
     req.assert('inputPasswordAgain','passwords must match').is(req.body.inputPassword)
     if(req.body.inputEmail) 
       req.assert('inputEmail','invalid email').isEmail()
+    else delete req.body.inputEmail // make sure it's not set and not just an empty string
     //req.assert('inputUsername','username is at least 3 characters long').notEmpty() //.min(3).max(64).isAlphanumeric().regex(/^[a-zA-Z]+/)
     var errors = req.validationErrors(true)
     

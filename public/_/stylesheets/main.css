@@ -9271,10 +9271,6 @@ a.badge:hover {
   overflow: hidden;
   padding: 10px;
 }
-.items .link .text .text-container .title {
-  display: inline;
-  position: relative;
-}
 .items .link .text .text-container .url {
   display: inline;
   color: #666 !important;
@@ -9339,6 +9335,7 @@ body {
  */
 body {
   font-size: 14px;
+  background: url("/_/images/noisy_grid.png");
 }
 /* Landing */
 #landing-promo {

@@ -11,7 +11,7 @@ var fs        = require('fs')
   , config    = require('../config')
   , Canvas      = require('canvas')
   , thumb = require('../controllers/thumb')(Canvas)
-  , image_dir = __dirname + '/../public/_/thumbs'
+  , image_dir = __dirname + '/../public/_/images/thumbs'
 
 // make sure the image directories exists
 mkdirp(image_dir, function(err) { if(err) throw err })
@@ -27,60 +27,97 @@ module.exports = {
    * @param  {Function} cb  the callback called when that happens. of the form (err,link)
    */
   get : function(url, cb) {
+    var aborted = false
     var req = request.get(url).on('response', function(res) {
-      if(res.statusCode !== 200)
-        return fail()
-      var size = Number(res.headers['content-length'])
-      if( size > config.maxImageSize )
-        return fail(new Error("thumbnail image size is large then max size"))
-      var image_type = imageType(res)
-      var html_type = htmlType(res)
-      if(image_type || html_type){
-        var body = new Buffer(size)
-        var offset = 0
-        res.on('data',function(chunk){
-          chunk.copy(body,offset) // returns number of bytes written
-          offset += chunk.length
-        })
-        res.on('end',function(){
-          if(image_type){
-            var name = uuid.v4() + '.' + image_type
-            saveThumbnails(body,name,cb)
-          }else if(html_type){
-            jsdom.env({
-              html : body.toString('utf8')
-            }, [
-              // TODO: stop using google cdn
-              'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'
-            ], function(err, window) {
-              if (err) return fail(err)
-              return cb(null, {
-                  icon  : window.$('link[rel="icon"]').attr('href')
-                , title : window.$('title').text()
-                , url   : url
-              })
+      if(res.statusCode !== 200) return fail()
+      console.log('statusCode: '+res.statusCode)
+      
+      var mime = res.headers['content-type'].split(';')[0]
+        , image_type = imageType(mime)
+        , html_type = htmlType(mime)
+      
+      // content is too long to process.
+      // remember, the `content-length` header is not always required
+      // ie., with Transfer-Encoding: chunked
+      var size = res.headers['content-length']
+      if(size){
+        size = Number(size)
+        if( size > config.maxRequestSize )
+          return fail(new Error("thumbnail image size is larger then max size"))
+      }
+      
+      // unsupported mime type
+      if(!image_type && !html_type) return cb(null,{url:url,mime:mime})
+      
+      var data = []
+      var dataLength = 0
+      res.on('data',function(chunk){
+        if(aborted) return
+        data.push(chunk)
+        dataLength += chunk.length
+        if(dataLength > config.maxRequestSize) 
+          // response to large!
+          return fail(new Error("content size is larger then max size"))
+      })
+      res.on('end',function(){
+        if(aborted) return
+        
+        var body = new Buffer(dataLength)
+        // join all the chunks
+        for (var i = 0, pos = 0; i < data.length; i++) { 
+          data[i].copy(body, pos) 
+          pos += data[i].length 
+        }
+        
+        if(image_type){
+          var name = uuid.v4() + '.' + image_type
+          return saveThumbnails(body, name, mime, url, cb)
+        }else if(html_type){
+          console.log('html type...')
+          console.log(body.toString('utf8'))
+          console.log('no body?')
+          jsdom.env({
+            html : body.toString('utf8')
+          }, [
+            // TODO: stop using google cdn
+            'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'
+          ], function(err, window) {
+            if (err) return fail(err)
+            console.log('getting page title: '+ window.$('title').text())
+            // TODO: parse ico file and/or get <link rel="icon"> file
+            // via: window.$('link[rel="icon"]').attr('href')
+            return cb(null, {
+              title : window.$('title').text()
+              , url   : url
+              , mime : mime
             })
-          }else fail(new Error("unsupported type: "+res.headers['content-type']))
-        })
-        res.on('error',function(err){
-          return fail(err)
-        })
-      // unsupported MIME type
-      }else fail(new Error("unsupported MIME type"))
-    })
+          })
+        }else fail(new Error("unsupported type: "+res.headers['content-type']))
+      })
+      res.on('error',function(err){
+        return fail(err)
+      })
+    // TODO: double check this actually gets fired on error...
+    }).on('error',cb)
+    
+    
     // failed to get additional meta data other then the url provided
     function fail(err){
+      aborted = true
       if(err){
         console.error('error getting body for url: '+url)
         console.error(err)
+        console.trace()
       }
+      // end the request so we're not needlessly waiting for data we dont care about
       req.end()
-      cb(null,{url:url})
+      return cb(null,{url:url})
     }
     
-    function saveThumbnails(image,name,cb){
+    
+    function saveThumbnails(image,name,mime,url,cb){
       thumb(image, 300, 300, function(err, canvas_300) {
-        if(err) throw err;
+        if(err) return fail(err)
         var buf_300 = canvas_300.toBuffer()
         if(err) return fail(err)
         fs.writeFile(image_dir + '/x300/' + name, buf_300, function(err){
@@ -102,6 +139,7 @@ module.exports = {
                   return cb(null,{
                     url : url
                     , icon : '/_/thumbs/x64/' + name
+                    , mime : mime
                   })
                 })
               })
@@ -111,12 +149,12 @@ module.exports = {
       })
     }
     
+    
   }
 }
 
 
-function imageType(res) {
-  var type = res.headers['content-type']
+function imageType(type) {
   if(type) type = type.toLowerCase()
   else return null
   
@@ -129,8 +167,7 @@ function imageType(res) {
   return type
 }
 
-function htmlType(res){
-  var type = res.headers['content-type']
+function htmlType(type){
   if(type) type = type.toLowerCase()
   else return null
   

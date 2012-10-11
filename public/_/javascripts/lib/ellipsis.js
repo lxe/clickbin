@@ -23,9 +23,9 @@
         }
         function func(chars){
           split = Math.round(chars/2)
-          console.log('chars; '+chars)
-          console.log('split: '+split)
-          console.log('chars-split: '+(chars-split))
+          // console.log('chars; '+chars)
+          // console.log('split: '+split)
+          // console.log('chars-split: '+(chars-split))
           t = text.substring(0,split) + '...';
           if(chars > 1) t += text.substring(text.length - split,text.length)
           el.html(t);

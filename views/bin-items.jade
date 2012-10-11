@@ -5,6 +5,8 @@ mixin link(link)
         .icon
           if (link.icon)
             img(src="#{link.icon}")
+          else if(link.mime)
+            img(src="/_/images/mimetypes/" + link.mime.replace('/','-') + '.png')
           else
             .no-icon
               i.icon-link
@@ -14,7 +16,6 @@ mixin link(link)
               .title.ellipsis #{link.title}
             else
               .title.ellipsis #{link.url}
-              br
             .url.ellipsis #{link.url}
     a(href="/_/bin/#{bin.id}/link/#{link.id}/remove").close &times;
 

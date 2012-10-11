@@ -66,8 +66,9 @@ var common = module.exports = {
    * @return {[type]}       [description]
    */
   , validateEmail: function(email) {
-    return common.validateRegex(email,
+    if(email) return common.validateRegex(email,
       /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,6}$/)
+    else return true // a user can optionally not have an email
   }
 
   /**
