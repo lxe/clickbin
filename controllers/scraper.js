@@ -56,20 +56,22 @@ module.exports = {
       }else if(htmlType(mime)){
         var $ = cheerio.load(body.toString())
         console.log('the page loaded. now try to pull the meta data')
-        console.log($('link[rel="icon"]').attr().href)
         
-        // grab a proper page title
-        var title = $('title').text()
-        if(!title) title = $('h1').text()
-        else if(!title) title = $('h2').text()
-        else if(!title) title = window.$('h3').text()
-        else if(!title) title = window.$('h4').text()
-        else if(!title) title = window.$('h5').text()
-        else if(!title) title = window.$('h6').text()
+        // try to get the best title from the page
+        var title = null
+        _.any(['title','h1','h2','h3','h4','h5','h6'],function(tag){
+          tag = $(tag)
+          if(tag) title = tag.text()
+          return title
+        })
+        
+        var icon = $('link[rel="icon"]')
+        if(icon){
+          icon = icon.attr('href') // could still be empty...
+        }else icon = null
         
         // see if there's an icon we can use.
-        var rel_icon = $('link[rel="icon"]').attr('href')
-        if(!rel_icon){
+        if(!icon){
           console.log('the page didnt seem to have a useable icon')
           return cb(null, {
             title : title
@@ -79,8 +81,8 @@ module.exports = {
           })
         }else{
           // get the icon
-          console.log('get the icon rel="icon" icon from the page')
-          var req = urlRequest(rel_icon)
+          console.log('got icon: ' + icon)
+          var req = urlRequest(icon)
           makeLimitedRequest(req,{
             size : config.maxRequestSize
             , mime : [imageType]
