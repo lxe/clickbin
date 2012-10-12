@@ -55,8 +55,6 @@ module.exports = {
       // is the result html?
       }else if(htmlType(mime)){
         console.log('html type...')
-        //console.log(body.toString('utf8'))
-        //console.log('no body?')
         jsdom.env({
           html : body.toString('utf8')
         }, [
@@ -64,7 +62,7 @@ module.exports = {
           path.normalize(__dirname + '/../public/_/javascripts/lib/jquery.min.js')
         ], function(err, window) {
           if (err) return fail(err,req,mime)
-          //console.log('getting page title: '+ window.$('title').text())
+          console.log('the page loaded. now try to pull the meta data')
           
           // grab a proper page title
           var title = window.$('title').text()
@@ -174,6 +172,7 @@ function makeLimitedRequest(req,limits,cb) {
         data[i].copy(body, pos) 
         pos += data[i].length 
       }
+      console.log(body.toString())
       return cb(null, mime, body)
     })
   }).on('error',cb)
