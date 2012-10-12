@@ -222,6 +222,9 @@ function getSize(res) {
 
 function saveThumbnails(image,name,cb) {
   thumb(image, 300, 300, function(err, canvas_300) {
+    console.error('unable to produce the first thumbnail for the provided '
+        + 'image. this likely indicates that not all of node-canvas\'s '
+        + 'depencies were installed.')
     if(err) return cb(err)
     var buf_300 = canvas_300.toBuffer()
     if(err) return cb(err)
