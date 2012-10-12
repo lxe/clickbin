@@ -26,9 +26,9 @@ html(lang='en')
             a(href='/').brand 
               if(typeof(profile) !== 'undefined' && profile.username)
                 strong #{profile.username}
-                | .clickb.in
+                | .!{domain}
               else
-                strong clickb.in
+                strong !{domain}
             ul.nav
               block breadcrumb
             ul.nav.pull-right

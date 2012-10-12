@@ -86,6 +86,7 @@ app.configure(function() {
     req.session.flash = req.session.flash || {}
     res.locals.flash  = req.session.flash
     req.session.flash = {}
+    res.locals.domain = config.domain
     res.locals.getUserURI = function(username){
       var host = req.get('Host').split('.').reverse()
       return req.protocol + '://' + req.session.user.username + '.' + host[1] + '.' + host[0] + '/'
