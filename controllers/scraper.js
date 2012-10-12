@@ -5,7 +5,7 @@
 // TODO: check for a /favicon.ico if found then download, parse, resize it
 var fs            = require('fs')
   , request       = require('request')
-  , jsdom         = require("jsdom")
+  , cheerio         = require("cheerio")
   , mkdirp        = require('mkdirp')
   , uuid          = require('node-uuid')
   , config        = require('../config')
@@ -54,57 +54,51 @@ module.exports = {
         })
       // is the result html?
       }else if(htmlType(mime)){
-        jsdom.env({
-          html : body.toString()
-        }, [
-          // TODO: stop using google cdn
-          path.normalize(__dirname + '/../public/_/javascripts/lib/jquery.min.js')
-        ], function(err, window) {
-          if (err) return fail(err,req,mime)
-          console.log('the page loaded. now try to pull the meta data')
-          
-          // grab a proper page title
-          var title = window.$('title').text()
-          if(!title) title = window.$('h1').text()
-          else if(!title) title = window.$('h2').text()
-          else if(!title) title = window.$('h3').text()
-          else if(!title) title = window.$('h4').text()
-          else if(!title) title = window.$('h5').text()
-          else if(!title) title = window.$('h6').text()
-          
-          // see if there's an icon we can use.
-          var rel_icon = window.$('link[rel="icon"]').attr('href')
-          if(!rel_icon){
-            console.log('the page didnt seem to have a useable icon')
-            return cb(null, {
-              title : title
-              , url   : url
-              //incase there's no icon, we can also use the mime type to display an icon
-              , mime : mime
-            })
-          }else{
-            // get the icon
-            console.log('get the icon rel="icon" icon from the page')
-            var req = urlRequest(rel_icon)
-            makeLimitedRequest(req,{
-              size : config.maxRequestSize
-              , mime : [imageType]
-            },function(err,mime,body) {
-              if(err) return fail(err,req,mime)
-              var name = uuid.v4() + '.' + imageType(mime)
-              console.log('saving thumbs: '+name)
-              saveThumbnails(body, name, function(err, icon) {
-                if(err) return fail(err, req, mime)
-                else return cb(null,{
-                  url : url
-                  , title : title
-                  , mime : mime
-                  , icon : icon
-                })
+        var $ = cheerio.load(body.toString())
+        console.log('the page loaded. now try to pull the meta data')
+        console.log($('link[rel="icon"]').attr().href)
+        
+        // grab a proper page title
+        var title = $('title').text()
+        if(!title) title = $('h1').text()
+        else if(!title) title = $('h2').text()
+        else if(!title) title = window.$('h3').text()
+        else if(!title) title = window.$('h4').text()
+        else if(!title) title = window.$('h5').text()
+        else if(!title) title = window.$('h6').text()
+        
+        // see if there's an icon we can use.
+        var rel_icon = $('link[rel="icon"]').attr('href')
+        if(!rel_icon){
+          console.log('the page didnt seem to have a useable icon')
+          return cb(null, {
+            title : title
+            , url   : url
+            //incase there's no icon, we can also use the mime type to display an icon
+            , mime : mime
+          })
+        }else{
+          // get the icon
+          console.log('get the icon rel="icon" icon from the page')
+          var req = urlRequest(rel_icon)
+          makeLimitedRequest(req,{
+            size : config.maxRequestSize
+            , mime : [imageType]
+          },function(err,mime,body) {
+            if(err) return fail(err,req,mime)
+            var name = uuid.v4() + '.' + imageType(mime)
+            console.log('saving thumbs: '+name)
+            saveThumbnails(body, name, function(err, icon) {
+              if(err) return fail(err, req, mime)
+              else return cb(null,{
+                url : url
+                , title : title
+                , mime : mime
+                , icon : icon
               })
             })
-          }
-        })
+          })
+        }
       }else return fail(new Error("unsupported type: " + mime),req)
     })
     // failed to get additional meta data (other then the url provided)
