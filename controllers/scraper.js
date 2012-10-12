@@ -14,6 +14,7 @@ var fs            = require('fs')
   , thumb         = require('../controllers/thumb')(Canvas)
   , image_rel_dir = '/_/images/thumbs'
   , image_dir     = __dirname + '/../public' + image_rel_dir
+  , path     = require('path')
 
 // make sure the image directories exists
 mkdirp(image_dir, function(err) { if(err) throw err })
@@ -31,7 +32,7 @@ module.exports = {
   get : function(url, cb) {
     
     var req = urlRequest(url)
-    
+    console.log('scrapping url: ' + url)
     makeLimitedRequest(req,{
       size : config.maxRequestSize
       , mime : [imageType,htmlType]
@@ -40,7 +41,9 @@ module.exports = {
       // is the result an image?
       var ext = imageType(mime)
       if(ext){
+        console.log('type image')
         var name = uuid.v4() + '.' + ext
+        console.log('name: '+name)
         return saveThumbnails(body, name, function(err,icon){
           if(err) return fail(err,req,mime)
           else return cb(null,{
@@ -51,14 +54,14 @@ module.exports = {
         })
       // is the result html?
       }else if(htmlType(mime)){
-        //console.log('html type...')
+        console.log('html type...')
         //console.log(body.toString('utf8'))
         //console.log('no body?')
         jsdom.env({
           html : body.toString('utf8')
         }, [
           // TODO: stop using google cdn
-          'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'
+          path.normalize(__dirname + '/../public/_/javascripts/lib/jquery.min.js')
         ], function(err, window) {
           if (err) return fail(err,req,mime)
           //console.log('getting page title: '+ window.$('title').text())
@@ -75,6 +78,7 @@ module.exports = {
           // see if there's an icon we can use.
           var rel_icon = window.$('link[rel="icon"]').attr('href')
           if(!rel_icon){
+            console.log('the page didnt seem to have a useable icon')
             return cb(null, {
               title : title
               , url   : url
@@ -83,7 +87,7 @@ module.exports = {
             })
           }else{
             // get the icon
-            console.log('get the icon ')
+            console.log('get the icon rel="icon" icon from the page')
             var req = urlRequest(rel_icon)
             makeLimitedRequest(req,{
               size : config.maxRequestSize
@@ -222,7 +226,7 @@ function getSize(res) {
 
 function saveThumbnails(image,name,cb) {
   thumb(image, 300, 300, function(err, canvas_300) {
-    console.error('unable to produce the first thumbnail for the provided '
+    if(err) console.error('unable to produce the first thumbnail for the provided '
         + 'image. this likely indicates that not all of node-canvas\'s '
         + 'depencies were installed.')
     if(err) return cb(err)
