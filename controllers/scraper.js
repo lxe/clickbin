@@ -54,9 +54,8 @@ module.exports = {
         })
       // is the result html?
       }else if(htmlType(mime)){
-        console.log('html type...')
         jsdom.env({
-          html : body.toString('utf8')
+          html : body.toString()
         }, [
           // TODO: stop using google cdn
           path.normalize(__dirname + '/../public/_/javascripts/lib/jquery.min.js')
@@ -172,7 +171,6 @@ function makeLimitedRequest(req,limits,cb) {
         data[i].copy(body, pos) 
         pos += data[i].length 
       }
-      console.log(body.toString())
       return cb(null, mime, body)
     })
   }).on('error',cb)
