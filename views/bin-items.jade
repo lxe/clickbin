@@ -16,7 +16,10 @@ mixin link(link)
               .title.ellipsis #{link.title}
             else
               .title.ellipsis #{link.url}
-            .url.ellipsis #{link.url}
+            if(link.desc)
+              .url.ellipsis #{link.desc}
+            else
+              .url.ellipsis #{link.url}
     a(href="/_/bin/#{bin.id}/link/#{link.id}/remove").close &times;
 
 mixin bin(bin)

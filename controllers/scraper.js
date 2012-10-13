@@ -1,22 +1,21 @@
 /**
  * Scraper module - scrapes icons from web pages
  */
-// TODO: in the event the <title> is available, pull the first <h1> tag
-// TODO: check for a /favicon.ico if found then download, parse, resize it
-var fs            = require('fs')
-  , request       = require('request')
-  , cheerio         = require("cheerio")
-  , mkdirp        = require('mkdirp')
-  , uuid          = require('node-uuid')
-  , config        = require('../config')
-  , Canvas        = require('canvas')
-  , _             = require('underscore')
-  , thumb         = require('../controllers/thumb')(Canvas)
-  , image_rel_dir = '/_/images/thumbs'
-  , image_dir     = __dirname + '/../public' + image_rel_dir
-  , path     = require('path')
+var fs                        = require('fs')
+  , request                   = require('request')
+  , cheerio                   = require("cheerio")
+  , mkdirp                    = require('mkdirp')
+  , uuid                      = require('node-uuid')
+  , config                    = require('../config')
+  , Canvas                    = require('canvas')
+  , _                         = require('underscore')
+  , thumb                     = require('../controllers/thumb')(Canvas)
+  , image_rel_dir             = '/_/images/thumbs'
+  , image_dir                 = __dirname + '/../public' + image_rel_dir
+  , path                      = require('path')
+  , hostnameSpecificScrapers  = require('./hostname-specific-scrapers')
 
-// make sure the image directories exists
+// make sure the image directories exists. (dirp.. dirp..)
 mkdirp(image_dir, function(err) { if(err) throw err })
 mkdirp(image_dir + '/x300',function(err) { if(err) throw err })
 mkdirp(image_dir + '/x100',function(err) { if(err) throw err })
@@ -55,34 +54,23 @@ module.exports = {
       // is the result html?
       }else if(htmlType(mime)){
         var $ = cheerio.load(body.toString())
-        console.log('the page loaded. now try to pull the meta data')
         
-        // try to get the best title from the page
-        var title = null
-        _.any(['title','h1','h2','h3','h4','h5','h6'],function(tag){
-          tag = $(tag)
-          if(tag) title = tag.text()
-          return title
-        })
-        
-        var icon = $('link[rel="icon"]')
-        if(icon){
-          icon = icon.attr('href') // could still be empty...
-        }else icon = null
+        var page = hostnameSpecificScrapers(url,$)
         
         // see if there's an icon we can use.
-        if(!icon){
+        if(!page.icon){
           console.log('the page didnt seem to have a useable icon')
           return cb(null, {
-            title : title
+            title : page.title
             , url   : url
+            , desc : page.desc
             //incase there's no icon, we can also use the mime type to display an icon
             , mime : mime
           })
         }else{
           // get the icon
-          console.log('got icon: ' + icon)
-          var req = urlRequest(icon)
+          console.log('go get the icon: ' + page.icon)
+          var req = urlRequest(page.icon)
           makeLimitedRequest(req,{
             size : config.maxRequestSize
             , mime : [imageType]
@@ -94,7 +82,8 @@ module.exports = {
               if(err) return fail(err, req, mime)
               else return cb(null,{
                 url : url
-                , title : title
+                , title : page.title
+                , desc : page.desc
                 , mime : mime
                 , icon : icon
               })

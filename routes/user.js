@@ -14,11 +14,6 @@ module.exports = function(req,res,next,opts){
     , path = opts.path
     , uri = opts.uri
     , bins = (path)?path.substr(1).split('/'):null
-  console.log('request for user bin')
-  console.log('username: ' + username)
-  console.log('path: ' + path)
-  console.log('uri: ' + uri)
-  console.log('bins: ' + bins)
   if(path===undefined) path = '/'
   if(path==='/' && !uri){
     // show the user `root` bin. aka, their profile page
