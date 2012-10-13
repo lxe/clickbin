@@ -3,7 +3,6 @@
  */
 var fs                        = require('fs')
   , request                   = require('request')
-  , cheerio                   = require("cheerio")
   , mkdirp                    = require('mkdirp')
   , uuid                      = require('node-uuid')
   , config                    = require('../config')
@@ -54,10 +53,7 @@ module.exports = {
         })
       // is the result html?
       }else if(htmlType(mime)){
-        var $ = cheerio.load(body.toString())
-        
-        var page = hostnameSpecificScrapers(url,$)
-        
+        var page = hostnameSpecificScrapers(url,body)
         // see if there's an icon we can use.
         if(!page.icon || page.__dont_scrape_icon){
           console.log('the page didnt seem to have a useable icon')

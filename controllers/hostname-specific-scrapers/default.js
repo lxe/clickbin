@@ -12,13 +12,13 @@ module.exports = function(url,$){
   page.title = null
   _.any(['title','h1','h2','h3','h4','h5','h6'],function(tag){
     tag = $(tag)
-    if(tag) page.title = tag.text()
+    if(tag.length) page.title = tag.first().text()
     return page.title // stop if we found a title
   })
   
   page.icon = $('link[rel="icon"]')
-  if(page.icon){
-    page.icon = page.icon.attr('href') // could still be empty...
+  if(page.icon.length){
+    page.icon = page.icon.first().attr('href') // could still be empty...
     var icon_url = node_url.parse(page.icon)
     if(!icon_url.hostname) page.icon = url.protocol + '//' + url.hostname + icon_url.pathname
   }else page.icon = null
