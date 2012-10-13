@@ -4,6 +4,7 @@
   */
 
 var _ = require('underscore')
+  , node_url = require('url')
 
 module.exports = function(url,$){
   var page = {}
@@ -18,6 +19,8 @@ module.exports = function(url,$){
   page.icon = $('link[rel="icon"]')
   if(page.icon){
     page.icon = page.icon.attr('href') // could still be empty...
+    var icon_url = node_url.parse(page.icon)
+    if(!icon_url.hostname) page.icon = url.protocol + '//' + url.hostname + icon_url.pathname
   }else page.icon = null
   
   return page

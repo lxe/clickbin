@@ -1,3 +1,4 @@
+keep in touch with niggler: my email is nirk.niggler@gmail.com
 issue with adding a top level anonymous bin. clickb.in/test should create an anonymous bin with `test` in it
 whats up with? http://testb.in/http://yinzcam.com/style/img/apps/nfl-ari.png
 didn't generate an icon for: http://en.wikipedia.org/wiki/File:Edificio_del_Distrito_C_de_Telefonica_en_Las_Tablas_(Madrid).jpg

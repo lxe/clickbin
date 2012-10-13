@@ -2,12 +2,11 @@
 var _ = require('underscore')
 
 /**
-  * youtube specific scraper
+  * ycombinator specific scraper
   */
 
 module.exports = function(url,$){
   // this scraper only works with video pages
-  if( url.pathname.indexOf('/watch') === -1 ) return null
   var page = {}
   // try to get the best title from the page
   _.any(['title','h1','h2','h3','h4','h5','h6'],function(tag){
@@ -15,7 +14,7 @@ module.exports = function(url,$){
     if(tag) page.title = tag.text()
     return page.title // stop if we found a title
   })
-  if(url.query.v) // the video id
-    page.icon = 'http://img.youtube.com/vi/' + url.query.v + '/default.jpg' 
+  page.icon = '/_/images/thumbs/hostnames/ycombinator.com.png'
+  page.__dont_scrape_icon = true // just use the url we pass in directly. dont go and scrape it
   return page
 }

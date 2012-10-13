@@ -13,6 +13,7 @@ var fs                        = require('fs')
   , image_rel_dir             = '/_/images/thumbs'
   , image_dir                 = __dirname + '/../public' + image_rel_dir
   , path                      = require('path')
+  , node_url                  = require('url')
   , hostnameSpecificScrapers  = require('./hostname-specific-scrapers')
 
 // make sure the image directories exists. (dirp.. dirp..)
@@ -58,18 +59,18 @@ module.exports = {
         var page = hostnameSpecificScrapers(url,$)
         
         // see if there's an icon we can use.
-        if(!page.icon){
+        if(!page.icon || page.__dont_scrape_icon){
           console.log('the page didnt seem to have a useable icon')
           return cb(null, {
             title : page.title
             , url   : url
             , desc : page.desc
+            , icon : page.icon
             //incase there's no icon, we can also use the mime type to display an icon
             , mime : mime
           })
         }else{
           // get the icon
-          console.log('go get the icon: ' + page.icon)
           var req = urlRequest(page.icon)
           makeLimitedRequest(req,{
             size : config.maxRequestSize
