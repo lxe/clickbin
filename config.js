@@ -1,3 +1,6 @@
+
+var fs = require('fs')
+
 var config = {
   salt : 'example-salt'
   , server: {
@@ -8,6 +11,8 @@ var config = {
   , userAgent : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2) '
     + 'AppleWebKit/537.4 (KHTML, like Gecko) Chrome/22.0.1229.94 Safari/537.4'
   , logging : true
+  // just incase, reserve these usernames (aka, subdomains)
+  , reservedUsernames : fs.readFileSync( __dirname + '/reserved.txt').toString().split('\n')
 }
 
 // "In an extreme view, the world can be seen as only connections, nothing 

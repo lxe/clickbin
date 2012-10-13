@@ -106,6 +106,10 @@ module.exports = function (app) {
           req.session.flash.error = "Only random top level bins can be "
             + "created"
           return res.redirect('back')
+        }else if(bins.length > 20){
+          // make sure bins dont get crazy...
+          req.session.flash.error = "Sorry! There's a max depth of 20 on all bin paths."
+          return res.redirect('back')
         }
         // for we create the bin, make sure it has a root bin.
         Bin.findOne({

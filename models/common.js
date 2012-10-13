@@ -77,6 +77,9 @@ var common = module.exports = {
    * @return {[type]}          [description]
    */
   , validateUsername: function(username) {
+    if(_.any(config.reservedUsernames,function(name){
+      return username === name
+    })) return false
     return common.validateRegex(username,
       /^[a-zA-z]{1,}[a-zA-Z0-9]{2,}$/)
   }

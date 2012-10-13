@@ -1,4 +1,5 @@
 var _ = require('underscore')
+  , config = require('../config')
   , User = require('../models/user')
   , Bin = require('../models/bin')
 
@@ -19,6 +20,14 @@ module.exports = function(app) {
     else delete req.body.inputEmail // make sure it's not set and not just an empty string
     //req.assert('inputUsername','username is at least 3 characters long').notEmpty() //.min(3).max(64).isAlphanumeric().regex(/^[a-zA-Z]+/)
     var errors = req.validationErrors(true)
+    
+    if(_.any(config.reservedUsernames,function(name){
+      return req.body.inputUsername.toLowerCase() === name
+    })){
+      errors.inputUsername = {
+        msg : 'Sorry! That username is already taken'
+      }
+    }
     
     if(!_.isEmpty(errors)){
       // show the proper error message
