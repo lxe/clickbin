@@ -13,8 +13,12 @@ module.exports = function(req,res,next,opts){
   var username = opts.username
     , path = opts.path
     , uri = opts.uri
-    , protocol = opts.protocol
     , bins = (path)?path.substr(1).split('/'):null
+  console.log('request for user bin')
+  console.log('username: ' + username)
+  console.log('path: ' + path)
+  console.log('uri: ' + uri)
+  console.log('bins: ' + bins)
   if(path===undefined) path = '/'
   if(path==='/' && !uri){
     // show the user `root` bin. aka, their profile page
@@ -90,7 +94,7 @@ module.exports = function(req,res,next,opts){
           })
         }else{
           // the bin already exists, so add the link to it
-          return addLinkToUserBin(path,protocol,uri,bin)
+          return addLinkToUserBin(path,uri,bin)
         }
       }
     })
@@ -115,8 +119,8 @@ module.exports = function(req,res,next,opts){
   
   // add the link to a user bin
   
-  function addLinkToUserBin(path, protocol, uri, bin) {
-    Link.scrape(protocol + uri, function (err, link) {
+  function addLinkToUserBin(path, uri, bin) {
+    Link.scrape(uri, function (err, link) {
       if (err) return cb(err)
       if (bin.addLink(link)) return bin.save(function(err) {
         if(err) return next(err)

@@ -47,14 +47,14 @@ module.exports = function (app) {
       // remove the trailling '/'
       path = path.substring(0, path.length - 1)
     
-    opts.path = path
-    opts.uri = uri
-    
     // check to make sure the protocol is valid
     if (!/ftp|http|https|mailto|file/.test(protocol.split(':')[0])) 
       return new Error('Invalid protocol')
     
-    opts.protocol = protocol
+    if(uri) opts.uri = protocol + uri
+    else opts.uri = undefined
+    opts.path = path
+    
     return opts
   }
   
@@ -84,7 +84,6 @@ module.exports = function (app) {
     // else, the user is anonymous
     
     var path = opts.path
-      , protocol = opts.protocol
       , uri = opts.uri
     
     if (path) {
@@ -95,7 +94,7 @@ module.exports = function (app) {
         // show the bin
         if(bin && uri === undefined) return render(bin)
         // add a link th an existing bin
-        if(bin) return addLinkToBin(path, protocol, uri, bin)
+        if(bin) return addLinkToBin(path, uri, bin)
         
         // whatever it is we want to do, we've got to create a bin for it first
         
@@ -120,7 +119,7 @@ module.exports = function (app) {
             return res.redirect('/')
           }else{
             if(uri){
-              Link.scrape(protocol + uri, function(err,link){
+              Link.scrape(uri, function(err,link){
                 if(err) return next(err)
                 saveNewBin(bins,[link])
               })
@@ -147,7 +146,7 @@ module.exports = function (app) {
       // a request of the form: clickb.in/google.com
       Counter.increment('anonymous-bin-counter', function (err, val) {
         if (err) return next(err)
-        Link.scrape(protocol + uri, function (err, link) {
+        Link.scrape(uri, function (err, link) {
           if (err) return next(err)
           // base 36 encode the counter's value
           bin = new Bin({
@@ -174,7 +173,7 @@ module.exports = function (app) {
      * @param {[type]} uri      [description]
      * @param {[type]} bin      [description]
      */
-    function addLinkToBin(path, protocol, uri, bin) {
+    function addLinkToBin(path, uri, bin) {
 
       if (bin.sessionID !== req.sessionID) {
         req.session.flash.error = 'You can\'t add links to this bin. '
@@ -184,7 +183,7 @@ module.exports = function (app) {
         return res.redirect(path)
       }
 
-      else Link.scrape(protocol + uri, function (err, link) {
+      else Link.scrape(uri, function (err, link) {
         if (err) return next(err)
         
         if (bin.addLink(link)) return bin.save(function(err) {
