@@ -21,7 +21,7 @@ module.exports = function(url,$){
   var username = $('.profile-card-inner .username').text()
   if(username) page.desc = username
   
-  page.icon = $('img.avatar.size128')
+  page.icon = $('.profile-header-inner img.avatar')
   console.log('page.icon: '+page.icon)
   if(page.icon){
     page.icon = page.icon.attr('src') // could still be empty...
