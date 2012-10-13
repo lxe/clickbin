@@ -71,20 +71,32 @@ module.exports = {
           makeLimitedRequest(req,{
             size : config.maxRequestSize
             , mime : [imageType]
-          },function(err,mime,body) {
-            if(err) return fail(err,req,mime)
-            var name = uuid.v4() + '.' + imageType(mime)
-            console.log('saving thumbs: '+name)
-            saveThumbnails(body, name, function(err, icon) {
-              if(err) return fail(err, req, mime)
-              else return cb(null,{
+          },function(err,icon_mime,body) {
+            if(err){
+              // unable to get the icon, for whatever reason
+              console.error('unable to get icon for:' + page.icon)
+              console.error(err)
+              return done()
+            }else{
+              var name = uuid.v4() + '.' + imageType(icon_mime)
+              saveThumbnails(body, name, function(err, icon) {
+                if(err){
+                  console.error('save thunbnail for image ' + page.icon)
+                  console.error(err)
+                  icon = null
+                }
+                return done(icon)
+              })
+            }
+            function done(icon){
+              return cb(null,{
                 url : url
                 , title : page.title
                 , desc : page.desc
                 , mime : mime
                 , icon : icon
               })
-            })
+            }
           })
         }
       }else return fail(new Error("unsupported type: " + mime),req)
