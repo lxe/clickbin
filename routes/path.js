@@ -40,8 +40,7 @@ module.exports = function (app) {
       if (uri === undefined) 
         // no path and no uri? we should never get here.
         // the earlier '/' route should take precidence but just incase...
-        return new Error("the bin route should not handle requests "
-          + "for '/'")
+        return new Error("Invalid clickbin path.")
     
     }else if (path[path.length - 1] === '/') 
       // remove the trailling '/'
@@ -74,7 +73,10 @@ module.exports = function (app) {
       })
     }
     opts = parsePathCommand(req.url,req.subdomains)
-    if(opts instanceof Error) return next(opts)
+    if(opts instanceof Error){
+      req.session.flash.error = opts.message
+      return res.redirect('/')
+    }
     
     // the user 'route' but it's a little different then a regular route 
     // because it's actually just a subdomain. that's why the code looks
@@ -111,7 +113,7 @@ module.exports = function (app) {
         }, function(err, bin) {
           if(err) return next(err)
           else if(!bin){
-            req.session.flash.error = "The root bin doesn't exist yet"
+            req.session.flash.error = "That root bin doesn't exist yet"
             + " and only random top level bins can be created"
             return res.redirect('/')
           }else if(bin.sessionID !== req.sessionID){
