@@ -15,5 +15,5 @@ node_modules
 npm-debug.log
 
 public/stylesheets/*.css
-public/_/images/thumbs/*
+public/_/images/thumbs/x*
 public/.DS_Store
