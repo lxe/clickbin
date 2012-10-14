@@ -19,8 +19,6 @@ module.exports = function (app) {
   
   app.get('/*', pathCommand, function (req, res, next) {
     var command = req.parsedPathCommand
-    console.log('command: ')
-    console.log(command)
     // TODO: put this inside an error handler middleware
     // if(opts instanceof Error){
     //   req.session.flash.error = opts.message

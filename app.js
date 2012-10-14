@@ -22,7 +22,8 @@ app.configure(function() {
   
   if(config.logging){
     app.use(function(req, res, next){
-      console.log('%s %s %s', new Date(), req.method, req.url)
+      if(req.url.length < 2 || req.url.length > 2 && req.url[1] !== '_')
+        console.log('%s %s %s', new Date(), req.method, req.url)
       next()
     })
   }
