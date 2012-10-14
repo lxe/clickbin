@@ -18,8 +18,8 @@ html(lang='en')
     // "In an extreme view, the world can be seen as only connections, nothing else. We think of a dictionary as the repository of meaning, but it defines words only in terms of other words. I liked the idea that a piece of information is really defined only by what it's related to, and how it's related. There really is little else to meaning. The structure is everything. There are billions of neurons in our brains, but what are neurons? Just cells. The brain has no knowledge until connections are made between neurons. All that we know, all that we are, comes from the way our neurons are connected." - Tim Berners-Lee, inventor of the world wide web
   body 
     .wrapper
-      //a.git-ribbon(href="https://github.com/lxe/clickbin")
-      //  img(style="position: absolute; top: 0; right: 0; border: 0;", src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png", alt="Fork me on GitHub")
+      //- a.git-ribbon(href="https://github.com/lxe/clickbin")
+      //-  img(style="position: absolute; top: 0; right: 0; border: 0;", src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png", alt="Fork me on GitHub")
       .navbar#master-nav
         .navbar-inner
           .nav-collapse
@@ -41,9 +41,7 @@ html(lang='en')
                   a(href=getRootURI() + "_/login") login
                 else
                   a(href=getRootURI() + "_/logout") logout
-      //
-      // Body block
-      //        
+      //- Body block
       .container#body 
         block body
   
