@@ -116,6 +116,7 @@ app.configure(function() {
    * Router middleware
    */
   app.use(app.router)
+  app.use(require('./routes/errors'))
 })
 
 app.configure('development', function() {
@@ -136,7 +137,7 @@ require('./routes')(app)
  * ============================================================================
  * Go go go go!
  */
-mongo.connect('mongodb://localhost/clickbin')
+mongo.connect(config.mongoPath)
 mongo.connection.on('open', function() {
   app.listen(config.server.port, function() {
     console.log("Express server listening on port %d in %s mode", 

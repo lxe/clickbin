@@ -8,7 +8,7 @@ var url      = require('url')
   , Link     = require('../models/link')
   , Counter  = require('../models/counter')
   , user = require('./user')
-  , node_path = require('path')
+  , pathCommand = require('../middleware/path-command')
 
 /**
  * [exports description]
@@ -17,88 +17,47 @@ var url      = require('url')
  */
 module.exports = function (app) {
   
-  
-  function parsePathCommand(url,subdomains){
-    var opts = {}
-    // a users bin 
-    if(subdomains.length) opts.username = subdomains.pop()
-    
-    // parse the url command
-    var matches = uri_regexp.exec(url)
-    if (!matches || matches.length === 0) return new Error('Invalid URL')
-    
-    // use http if no protocol was specified
-    var protocol = matches[matches.length - 2] || 'http://'
-      , uri  = matches[matches.length - 1]
-      , path = matches[1]
-    
-    if(path) path = node_path.normalize(path)
-    
-    // prevent bins from being added to the root path '/'
-    if (path === '/') {
-      path = undefined
-      if (uri === undefined) 
-        // no path and no uri? we should never get here.
-        // the earlier '/' route should take precidence but just incase...
-        return new Error("Invalid clickbin path.")
-    
-    }else if (path[path.length - 1] === '/') 
-      // remove the trailling '/'
-      path = path.substring(0, path.length - 1)
-    
-    // check to make sure the protocol is valid
-    if (!/ftp|http|https|mailto|file/.test(protocol.split(':')[0])) 
-      return new Error('Invalid protocol')
-    
-    if(uri) opts.uri = protocol + uri
-    else opts.uri = undefined
-    opts.path = path
-    
-    return opts
-  }
-  
-  var uri_regexp = /^((\/(?:[a-zA-Z0-9\-^\/]+(?:\/|$)))|\/)(\w+?:\/\/)?([^\/]+\..+)?/
-  
-  app.get(uri_regexp, function (req, res, next) {
-    function render(bin) {
-      // meanhile, in russia
-      bin.getChildren(function(err,children){
-        if(err) return next(err)
-        return res.render('bin', {
-          path: path
-          , bin: bin
-          , isOwner : bin.sessionID === req.sessionID
-          , children : children
-        })
-      })
-    }
-    opts = parsePathCommand(req.url,req.subdomains)
-    if(opts instanceof Error){
-      req.session.flash.error = opts.message
-      return res.redirect('/')
-    }
+  app.get('/*', pathCommand, function (req, res, next) {
+    var command = req.parsedPathCommand
+    console.log('command: ')
+    console.log(command)
+    // TODO: put this inside an error handler middleware
+    // if(opts instanceof Error){
+    //   req.session.flash.error = opts.message
+    //   return res.redirect('/')
+    // }
     
     // the user 'route' but it's a little different then a regular route 
     // because it's actually just a subdomain. that's why the code looks
     // a little gross compared to the other routes.
-    if(opts.username) return user(req,res,next,opts)
+    if(command.username) return user(req,res,next,command)
     
-    // else, the user is anonymous
+    // else, the user is anonymous...
+    // TODO: move this code its own file called `anonymous`
     
-    var path = opts.path
-      , uri = opts.uri
+    var path = command.path
+      , uri = command.uri
     
     if (path) {
       // bin paths should start with a '/' but not end with one
       // requesting a just a bin
       Bin.findOne({ path : path}, function (err, bin) {
         if (err) return next(err)
-        // show the bin
-        if(bin && uri === undefined) return render(bin)
-        // add a link th an existing bin
-        if(bin) return addLinkToBin(path, uri, bin)
         
-        // whatever it is we want to do, we've got to create a bin for it first
+        // just show the bin
+        if(bin && uri === undefined){
+          return bin.getChildren(function(err,children){
+            if(err) return next(err)
+            return res.render('bin', {
+              path: path
+              , bin: bin
+              , isOwner : bin.sessionID === req.sessionID
+              , children : children
+            })
+          })
+        }
+        // add a link th an existing bin
+        else if(bin) return addLinkToBin(path, uri, bin)
         
         // dont allow anonymous users create their own top level bins
         var bins = path.substring(1).split('/')
@@ -111,7 +70,7 @@ module.exports = function (app) {
           req.session.flash.error = "Sorry! There's a max depth of 20 on all bin paths."
           return res.redirect('back')
         }
-        // for we create the bin, make sure it has a root bin.
+        // before we create the bin, make sure it has a root bin.
         Bin.findOne({
           path : '/' + bins[0]
         }, function(err, bin) {
@@ -231,3 +190,4 @@ module.exports = function (app) {
   }) // end GET /path/[link]
   
 }
+

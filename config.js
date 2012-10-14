@@ -13,6 +13,7 @@ var config = {
   , logging : true
   // just incase, reserve these usernames (aka, subdomains)
   , reservedUsernames : fs.readFileSync( __dirname + '/reserved.txt').toString().split('\n')
+  , mongoPath : 'mongodb://localhost/clickbin'
 }
 
 // "In an extreme view, the world can be seen as only connections, nothing 
