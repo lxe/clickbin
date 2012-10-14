@@ -5,8 +5,23 @@
     , "links" : [
         "/nodejs.org"
       , "/npmjs.org"
-      , "/docs/nodejs.org/api/"
+      , "/core-community/twitter.com/ryah"
+      , "/core-community/twitter.com/izs"
       , "/core-community/twitter.com/substack"
+      , "/core-community/twitter.com/tjholowaychuk"
+      , "/core-community/twitter.com/mikeal"
+      , "/core-community/twitter.com/maxogden"
+      , "/core-community/twitter.com/rauchg"
+      , "/core-community/twitter.com/felixge"
+      , "/core-community/twitter.com/rwaldron"
+      , "/core-community/twitter.com/indexzero"
+      , "/core-community/twitter.com/TooTallNate"
+      , "/core-community/twitter.com/mranney"
+      , "/docs/nodejs.org/api/"
+      , "/docs/izs.me/v8-docs/"
+      , "/docs/developer.mozilla.org/en-US/docs/JavaScript"
+      , "/docs/npm/package.json.jit.su/"
+      , "/docs/npm/npmjs.org/doc/json.html"
     ]
   }
 ]
