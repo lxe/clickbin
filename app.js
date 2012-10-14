@@ -23,7 +23,7 @@ app.configure(function() {
   if(config.logging){
     app.use(function(req, res, next){
       if(req.url.length < 2 || req.url.length > 2 && req.url[1] !== '_')
-        console.log('%s %s %s', new Date(), req.method, req.url)
+        console.log('%s %s %s.clickb.in%s', new Date(), req.method, req.subdomains.join('.'), req.url)
       next()
     })
   }
