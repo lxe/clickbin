@@ -36,7 +36,7 @@ module.exports = {
       size : config.maxRequestSize
       , mime : [imageType,htmlType]
     }, function(err, mime, body){
-      if(err) return fail(err,req,mime)
+      if(err) return fail(err, mime)
       // is the result an image?
       var ext = imageType(mime)
       if(ext){
@@ -44,7 +44,7 @@ module.exports = {
         var name = uuid.v4() + '.' + ext
         console.log('name: '+name)
         return saveThumbnails(body, name, function(err,icon){
-          if(err) return fail(err,req,mime)
+          if(err) return fail(err, mime)
           else return cb(null,{
             url : url
             , mime : mime
@@ -99,17 +99,18 @@ module.exports = {
             }
           })
         }
-      }else return fail(new Error("unsupported type: " + mime),req)
+      }else return fail(new Error("unsupported type: " + mime))
     })
     // failed to get additional meta data (other then the url provided)
-    function fail(err,req,mime) {
+    function fail(err, mime) {
       if(err){
         console.error('error getting body for url: '+url)
         console.error(err)
         console.trace()
       }
       // abort the request so we're not needlessly waiting for data we dont care about
-      req.abort()
+      if(req) req.abort()
+      else console.error('somehow req is undefined...')
       return cb(null,{
         url : url
         , mime : mime

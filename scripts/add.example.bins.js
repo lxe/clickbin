@@ -19,13 +19,15 @@ mongo.connection.on('open', function() {
         , password : user.password
       })
       new_user.save(function(err){
-        if(err) return done()
+        //if(err) return done()
+        if(err) console.error(err)
         var username = user.username
         // save the root bin
         var bin = new Bin({ path : user.username + ':/' })
         // create the root bin
         bin.save(function(err){
-          if(err) throw err
+          //if(err) throw err
+          if(err) console.error(err)
           var cbs = []
           _.each(user.links,function(link){
             cbs.push(function(done){
@@ -60,7 +62,10 @@ mongo.connection.on('open', function() {
                         if(err) throw err
                         return done()
                       }) 
-                    else throw new Error("the bin already has that link")
+                    else{
+                      console.error('bin already has link: '+link)
+                      return done()
+                    }
                   })
                 }
               })
