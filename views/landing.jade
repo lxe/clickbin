@@ -5,9 +5,7 @@ block body
   #landing-promo
     h1 
       i.icon-link
-      |  Enter a link to start:
-    p.help For example, 
-      a(href="/reddit.com") reddit.com
+      |  enter a link to start:
     form#linkform(action="/_/link/add", method="post")
       .input-append.input-prepend
         span.add-on.btn-large#clickbin-prepend clickb.in/
@@ -15,4 +13,17 @@ block body
         button.btn.btn-inverse.btn-large(type="submit")
           strong 
             i.icon-hand-right 
-            |  Go!
+            |  go!
+    h3 rtfm
+    p.help as an example, to create an anonymous bin with a link to reddit, just go to 
+      a(href="/reddit.com") clickb.in/reddit.com
+    p.help this will create a public bin, only you can modify, at clickb.in/[your-bin] (where `your-bin` is your random bin name)
+    p.help you can add more links to this bin by appending them to the end of the url. ie., clickb.in/[your-bin]/google.com
+    p.help you can even add new sub bins the same way! ie., clickb.in/[your-bin]/bin1/bin2/food.com
+    p.help if you want the ability to access bins you create later 
+      a(href="/_/login") setup an account
+    h3 Examples bins
+    a(href="http://nodejs.clickb.in") 
+      h4 nodejs.clickb.in
+    a(href="http://yc.clickb.in") 
+      h4 yc.clickb.in

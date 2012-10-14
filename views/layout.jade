@@ -23,11 +23,12 @@ html(lang='en')
       .navbar#master-nav
         .navbar-inner
           .nav-collapse
-            a(href='/').brand 
-              if(typeof(profile) !== 'undefined' && profile.username)
+            if(typeof(profile) !== 'undefined' && profile.username)
+              a(href='/').brand 
                 strong #{profile.username}
                 | .!{domain}
-              else
+            else
+              a(href="http://"+domain).brand
                 strong !{domain}
             ul.nav
               block breadcrumb
