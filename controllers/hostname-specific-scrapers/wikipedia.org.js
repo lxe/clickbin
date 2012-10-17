@@ -20,7 +20,10 @@ module.exports = function(url,$){
     // wikipedia's got some weird image links... missing protocol
     if(page.icon && page.icon.length > 2 && page.icon.substr(0,2) === '//' )
       page.icon = 'http:' + page.icon
-  }else page.icon = null
-  
+  }else{
+    page.icon = '/_/images/thumbs/hostnames/wikipedia.org.png'
+    // just use the url we pass in directly. dont go and scrape it
+    page.__dont_scrape_icon = true
+  }
   return page
 }
