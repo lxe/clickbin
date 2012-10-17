@@ -16,4 +16,5 @@ npm-debug.log
 
 public/stylesheets/*.css
 public/_/images/thumbs/x*
+public/_/images/.DS_Store
 public/.DS_Store
