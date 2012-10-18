@@ -3,33 +3,36 @@ extends layout
 block body
   include alerts
   #landing-promo
-    h1 
+    h2 
       i.icon-link
-      |  enter a link to start
+      |  just enter a link!
     form#linkform(action="/_/link/add", method="post")
       .input-append.input-prepend
         span.add-on.btn-large#clickbin-prepend clickb.in/
-        input(type="text",name="uri")
+        input(type="text",name="uri",placeholder="ie., reddit.com")
         button.btn.btn-primary.btn-large(type="submit")
           strong 
             i.icon-hand-right 
             |  go!
-    h3 getting started
-    p to create an anonymous bin, add clickb.in/ before the URL
-    p try: clickb.in/reddit.com
-    p now you have a public bin at clickb.in/[your-bin]
-    p put more links in your bin by appending the url's 
-    p try: clickb.in/[your-bin]/github.com
-    p 
-      a(href="/_/login") setup an account
-      |  to save and organize bins
-    p it's that easy!
-    
-    h3 example anonymous bins
-      h4 
-        a(href="http://clickb.in/5") cute animal photos
-    h3 example user bins
-    a(href="http://vicapow.clickb.in") 
-      h4 vicapow.clickb.in
-    a(href="http://lxe.clickb.in") 
-      h4 lxe.clickb.in
+    .row-fluid.span12
+      .span6
+        h3 getting started
+        .well
+          p to create an anonymous bin, add clickb.in/ before the URL
+          p try: clickb.in/reddit.com
+          p now you have a public bin at clickb.in/[your-bin]
+          p put more links in your bin by appending the url's 
+          p try: clickb.in/[your-bin]/github.com
+          p 
+            a(href="/_/login") setup an account
+            |  to save and organize bins
+          p it's that easy!
+      .span6
+        h3 example bins
+        .well
+          a(href="http://clickb.in/5")
+            h4 cute animal photos
+          a(href="http://vicapow.clickb.in") 
+            h4 vicapow.clickb.in
+          a(href="http://lxe.clickb.in") 
+            h4 lxe.clickb.in
