@@ -18,6 +18,9 @@
 @btnPrimaryBackgroundHighlight: #69d2e7;
 @wellBackground: @btnPrimaryBackground;
 
+@linkColor: #333;
+
+
 body {
   font-size: 14px;
   //background: url("/_/images/noisy_grid.png");
@@ -26,6 +29,9 @@ body {
 
 /* Landing */
 #landing-promo {
+  a{
+    text-decoration: underline;
+  }
   margin-top: 40px;
   @media (max-width: 768px) {
     margin-top: 10px;
@@ -68,10 +74,10 @@ ul.items {
 
   li {
     &:not(:last-child) {
-      border-bottom: #e4e4e4 1px solid;
+      border-bottom: #8ED1CD 1px solid;
     }
     &:not(:first-child) {
-      border-top: #ffffff 1px solid;
+      border-top: #8ED1CD 1px solid;
     }
     padding: 5px;
     a {
