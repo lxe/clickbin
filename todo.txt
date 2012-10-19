@@ -1,3 +1,4 @@
+IMPORTANT: add rel="nofollow" really important. did i say it was important?
 gotta implement password reset. maybe use this module? https://github.com/substack/node-password-reset
 look into bug with creating a bin, but not it's subbins
 setup redirects for the login.clickb.in to clickb.in/_/login
