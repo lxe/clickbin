@@ -1,9 +1,9 @@
-if (flash.error)
+if (flash.error || true)
   .alert.alert-error
     i.icon-exclamation-sign 
     != flash.error
 
-if (flash.success)
+if (flash.success || true)
   .alert.alert-success
     i.icon-link  
     != flash.success

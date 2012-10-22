@@ -12,15 +12,13 @@ block breadcrumb
     //- li(class="#{ i === bins.length - 1 ? 'active' : '' }")
     a(href="#{path}", class="#{ i === bins.length - 1 ? 'active' : '' }").btn.bin-link #{bin} 
   
-
-
 block body
-  .container
+  .container.bin
     include alerts
     if isOwner
       .alert.alert-warn
         i.icon-exclamation-sign   
-        |  You can modify this bin as long as you access it from this computer. 
+        |  You can modify this bin as long as you access it from this device. 
         //a(href="/_/signup") Sign up
         //|  if you would like to modify this bin later.
     .row
