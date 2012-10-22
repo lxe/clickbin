@@ -1,21 +1,36 @@
 extends layout
+include bin-items
 
 block breadcrumb
   bins = bin.path.split('/').slice(1)
   path = ''
   each bin, i in bins
     - path = path + '/' + bin
-    li.divider-bin
-      span.icon-caret-right
-    li(class=(i===bins.length-1)?"active":"")
-      a(href="#{path}").bin-link #{bin} 
+    //- li.divider-bin 
+    //-   span.icon-caret-right
+      //- span /
+    //- li(class="#{ i === bins.length - 1 ? 'active' : '' }")
+    a(href="#{path}", class="#{ i === bins.length - 1 ? 'active' : '' }").btn.bin-link #{bin} 
+  
+
 
 block body
-  include alerts
-  if(isOwner)
-    .alert.alert-warn
-      i.icon-exclamation-sign   
-      |  You can modify this bin as long as you access it from this computer. 
-      //a(href="/_/signup") Sign up
-      //|  if you would like to modify this bin later.
-  include bin-items
+  .container
+    include alerts
+    if isOwner
+      .alert.alert-warn
+        i.icon-exclamation-sign   
+        |  You can modify this bin as long as you access it from this computer. 
+        //a(href="/_/signup") Sign up
+        //|  if you would like to modify this bin later.
+    .row
+      .span6
+        h4.icon-globe  Links
+        ul.items.clearfix
+          each link in bin.links
+            mixin link(link)
+      .span6
+        h4.icon-folder-open  Bins
+        ul.items
+          each bin in children
+            mixin bin(bin)

@@ -3,36 +3,66 @@ extends layout
 block body
   include alerts
   #landing-promo
-    h2 
-      i.icon-link
-      |  just enter a link!
-    form#linkform(action="/_/link/add", method="post")
-      .input-append.input-prepend
-        span.add-on.btn-large#clickbin-prepend clickb.in/
-        input(type="text",name="uri",placeholder="ie., reddit.com")
-        button.btn.btn-primary.btn-large(type="submit")
-          strong 
-            i.icon-hand-right 
-            |  go!
-    .row-fluid.span12
-      .span6
-        h3 read the f*ing manual
-        .well
-          p to create an anonymous bin, add clickb.in/ before the URL
-          p try: clickb.in/reddit.com
-          p now you have a public bin at clickb.in/[your-bin]
-          p put more links in your bin by appending the url's 
-          p try: clickb.in/[your-bin]/github.com
-          p 
-            a(href="/_/login") setup an account
-            |  to save and organize bins
-          p it's that easy!
-      .span6
-        h3 example bins
-        .well
-          a(href="http://clickb.in/5")
-            h4 cute animal photos
-          a(href="http://vicapow.clickb.in") 
-            h4 vicapow.clickb.in
-          a(href="http://lxe.clickb.in") 
-            h4 lxe.clickb.in
+    .anchor-wrap
+      .container
+        .row
+          .span8
+            #landing-form
+              .clearfix
+                .pull-left
+                  h2 
+                    span.subtitle step 1:  
+                    | paste a link   
+                    i.icon-circle-arrow-down.arrow   
+              form#linkform(action="/_/link/add", method="post")
+                .input-append
+                  div(style="width:160px").pull-right
+                    button.input-block-level.btn.btn-large(type="submit")
+                      strong Place in a bin 
+                  div(style="margin-right:160px")
+                    input#linkinput(type="text", name="uri", placeholder="ie., reddit.com")
+              .clearfix
+                .pull-right
+                
+                  h2 
+                    span.subtitle step 2:  
+                    | place it in a clickbin  
+                    i.icon-circle-arrow-up.arrow  
+          .span4
+            p 
+              a.btn.btn-large(href="#") Clickbin
+          
+                    
+         //- .span4
+         //-    span.subtitle Step 3:
+         //-    h2 Get Organized!
+
+  #info
+    .container 
+      //- span.subtitle &nbsp;
+      h2 What does this do?
+      .row
+        .span4
+          p With clickbin you no longer have to email yourself links. Easily organize all your bookmarks by placing them in clickbins:
+          .well
+            #pokemon
+        .span4
+          p Easily bookmark anything by placing <strong>clickb.in/</strong> in front of the URL:
+          .well
+            #address-bar
+        .span4
+          p Easily bookmark anything by placing <strong>clickb.in/</strong> in front of the URL:
+          .well
+            #address-bar
+
+   
+
+    //- .span6
+    //-   h3 example bins
+    //-   .well
+    //-     a(href="http://clickb.in/5")
+    //-       h4 cute animal photos
+    //-     a(href="http://vicapow.clickb.in") 
+    //-       h4 vicapow.clickb.in
+    //-     a(href="http://lxe.clickb.in") 
+    //-       h4 lxe.clickb.in

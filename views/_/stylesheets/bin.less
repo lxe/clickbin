@@ -17,23 +17,25 @@
       }
     }
     .icon {
-      width: 20%;
+      width: 64px;
       float: left;
       text-align: center;
       line-height: 64px;
       font-size: 64px;
-      //line-height: 64px;
-      // #gradient > .vertical(@navbarBackgroundHighlight, @navbarBackground);
-      // border-radius: 5px;
-      // .border-radius(4px);
-      // .box-shadow(0 1px 4px rgba(0,0,0,.065));
+      line-height: 64px;
+      #gradient > .vertical(@navbarBackgroundHighlight, @navbarBackground);
+      border: 1px solid @navbarBorder;
+      .border-radius(4px);
+      .box-shadow(0 1px 4px rgba(0,0,0,.065));
+
+      // Prevent floats from breaking the navbar
+      .clearfix();
+      
       img{
         display: inline;
       }
     }
     .text {
-      width: 80%;
-      float: left;
       .text-container{
         overflow: hidden;
         padding: 10px;
