@@ -2,17 +2,7 @@ extends layout
 include bin-items
 
 block breadcrumb
-  bins = bin.path.split('/').slice(1)
-  path = ''
-  each bin, i in bins
-    - path = path + '/' + bin
-    //- li.divider-bin 
-    //-   span.icon-caret-right
-      //- span /
-    //- li(class="#{ i === bins.length - 1 ? 'active' : '' }")
-    a(href="#{path}", class="#{ i === bins.length - 1 ? 'active' : '' }").btn.bin-link #{bin} 
-  
-
+  include bin-breadcrumbs
 
 block body
   .container
