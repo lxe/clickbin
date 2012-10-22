@@ -1,0 +1,6 @@
+bins = bin.path.split('/').slice(1)
+if bins.length > 1
+  path = ''
+  each bin, i in bins
+    - path = path + '/' + bin
+    a(href="#{path}", class="#{ i === bins.length - 1 ? 'active' : '' }").btn.bin-link #{bin}
