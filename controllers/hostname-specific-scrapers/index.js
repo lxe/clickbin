@@ -25,13 +25,13 @@ module.exports = function(url,body){
   var hostname = url.hostname
   parts = hostname.split('.')
   
-  console.log('hostname parts: ')
-  console.log(parts)
   
   if(parts.length > 1) hostname = parts.slice(-2).join('.')
   else hostname = parts[0]
   url.hostname = hostname
   var scraper = scrapers[url.hostname]
+  // we pass along the parts incase subdomain specific actions are required. 
+  // (ie., do something special for `plus.google.com` but not `google.com` )
   if(scraper) page = scraper(url,parts,$)
   if(page) return page
   else return defaultScraper(url,parts,$)
