@@ -1,3 +1,52 @@
+mixin link(link)
+  li.clearfix.link
+    .well
+      a(href="/_/bin/#{bin.id}/link/#{link.id}/remove").close &times;
+      a.clearfix(href=link.url, title=link.title,target="_blank")
+        .minwidth.clearfix
+          .icon
+            if (link.icon)
+              img(src="#{link.icon}")
+            else if(link.mime)
+              img(src="/_/images/mimetypes/" + link.mime.replace('/','-') + '.png')
+            else
+              .no-icon
+                i.icon-link
+          .text
+            .text-container
+              if (link.title)
+                .title.ellipsis #{link.title}
+              else
+                .title.ellipsis #{link.url}
+              if(link.desc)
+                .url.ellipsis #{link.desc}
+              else
+                .url.ellipsis #{link.url}
+    
+
+mixin bin(bin)
+  li.clearfix.bin
+    if user && user.loggedIn
+      a(href="/_/bin/#{bin.id}/remove").close.pull-right &times;
+    a.binlink.clearfix(href="#{bin.path.substr(bin.path.indexOf(':') + 1)}", title="#{bin.title}")
+      .inner 
+        i.icon-folder-close   
+        |   #{bin.title}
+   
+
+//- .row
+//-   .span6
+//-     h4.icon-globe  Links
+//-     ul.items.clearfix
+//-       each link in bin.links
+//-         mixin link(link)
+//-   .span6
+//-     h4.icon-folder-open  Bins
+//-     ul.items
+//-       each bin in children
+//-         mixin bin(bin)
+
+
 .bin.main.container
   .row
     .span3.bins
