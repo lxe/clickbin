@@ -152,6 +152,7 @@ service
 shop
 signup
 signin
+signout
 search
 security
 settings
@@ -202,6 +203,8 @@ username
 usuario
 usage
 vendas
+vic
+victor
 video
 videos
 visitor
