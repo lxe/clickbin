@@ -3,7 +3,7 @@ mixin link(link)
     .well
       if user && user.loggedIn && typeof(profile) !== 'undefined' && profile.username === user.username || typeof(isOwner) !== 'undefined' && isOwner
         a(href="/_/bin/#{bin.id}/link/#{link.id}/remove").close &times;
-      a.clearfix(href=link.url, title=link.title,target="_blank")
+      a.clearfix(href=link.url, title=link.title,target="_blank",rel="nofollow")
         .minwidth.clearfix
           .icon
             if (link.icon)
