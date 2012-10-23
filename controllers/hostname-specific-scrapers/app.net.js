@@ -5,7 +5,7 @@ var _ = require('underscore')
   * twitter specific scraper
   */
 
-module.exports = function(url,$){
+module.exports = function(url,parts,$){
   var page = {}
   // try to get the best title from the page
   var fullname = $('h1 small')

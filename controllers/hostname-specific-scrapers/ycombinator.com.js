@@ -5,7 +5,7 @@ var _ = require('underscore')
   * ycombinator specific scraper
   */
 
-module.exports = function(url,$){
+module.exports = function(url,parts,$){
   // this scraper only works with video pages
   var page = {}
   // try to get the best title from the page

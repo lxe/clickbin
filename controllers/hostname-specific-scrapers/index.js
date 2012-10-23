@@ -16,19 +16,23 @@ _.each(files,function(file){
 
 module.exports = function(url,body){
   var $ = cheerio.load(body.toString())
-  var page = {}
+  var page = null
   // TODO: check for errors? try catch, maybe? or is that never gonna happen?
   // the `true` bellow forces the query parameters to be parsed
   url = node_url.parse(url,true)
   
   // default scrapers
   var hostname = url.hostname
-  hostname = hostname.split('.')
+  parts = hostname.split('.')
   
-  if(hostname.length > 1) hostname = hostname.slice(-2).join('.')
-  else hostname = hostname[0]
+  console.log('hostname parts: ')
+  console.log(parts)
+  
+  if(parts.length > 1) hostname = parts.slice(-2).join('.')
+  else hostname = parts[0]
   url.hostname = hostname
   var scraper = scrapers[url.hostname]
-  if(scraper) return scraper(url,$)
-  else return defaultScraper(url,$)
+  if(scraper) page = scraper(url,parts,$)
+  if(page) return page
+  else return defaultScraper(url,parts,$)
 }
