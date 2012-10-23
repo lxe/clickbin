@@ -3,8 +3,9 @@
  * ie., `username.clickb.in`
  */
 
-var Bin = require('../models/bin'),
-  Link = require('../models/link')
+var Bin = require('../models/bin')
+  , Link = require('../models/link')
+  , config = require('../config')
 
 
   module.exports = function(req, res, next, opts) {
@@ -32,11 +33,12 @@ var Bin = require('../models/bin'),
         bin.getChildren(function(err, children) {
           if(err) return next(err)
           else return res.render('user', {
-            profile: {
-              username: username
-            },
-            bin: bin,
-            children: children
+            title : username + '.' + config.domain
+            , profile : {
+              username : username
+            }
+            , bin : bin
+            , children: children
           })
         })
       })
@@ -57,8 +59,8 @@ var Bin = require('../models/bin'),
           } else {
             if(!bin) return res.render('errors/404', {
               error: {
-                title: 'Bin Not Found',
-                msg: username + ' doesn\'t have a bin with that name.'
+                title: 'Bin Not Found'
+                , msg: username + ' doesn\'t have a bin with that name.'
               }
             })
           }
@@ -83,8 +85,7 @@ var Bin = require('../models/bin'),
               var bin = new Bin({
                 path: username + ':' + path
                 // since the bin deosnt exist yet, this has got to be the first link
-                ,
-                links: [link]
+                , links : [link]
               })
               bin.save(function(err) {
                 if(err) return next(err)
@@ -107,12 +108,12 @@ var Bin = require('../models/bin'),
       bin.getChildren(function(err, children) {
         if(err) return next(err)
         return res.render('user', {
-          path: path,
-          title: username,
-          bin: bin,
-          children: children,
-          profile: {
-            username: username
+          path : path
+          , title : username + '.' + config.domain + path
+          , bin : bin
+          , children : children
+          , profile : {
+            username : username
           }
         })
       })
@@ -155,9 +156,6 @@ function ensureBinsExistAlongPath(username, bins) {
       upsert: true
     } // options
     // we dont need to wait for this callback. fire and forget
-    ,
-
-
-    function() {})
+    , function() {})
   }
 }
