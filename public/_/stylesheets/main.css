@@ -8209,7 +8209,7 @@ body#landing {
   color: #333 !important;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.09);
   -webkit-font-smoothing: antialiased;
-  margin-bottom: 5px;
+  margin-bottom: 0px;
 }
 #info h2 {
   color: #ffffff;
