@@ -38,12 +38,21 @@ html(lang='en')
               if user && user.loggedIn && typeof(profile)!=='undefined' && profile.username !== user.username
                 li
                   a(href=getUserURI(user.username)) home
-              li 
-                .btn-group
-                  if(!user || !user.loggedIn)
-                    a.btn(href=getRootURI() + "_/login") Sign In
-                  else
-                    a.btn(href=getRootURI() + "_/logout") Log Out
+           
+              if !user || !user.loggedIn
+                li 
+                  a(href=getRootURI() + "_/login") 
+                    i.icon-signin 
+                    |  sign in
+                li 
+                  .btn-group
+                    a.btn.btn-info(href=getRootURI() + "_/signup") 
+                      strong join!
+              else
+                li
+                  a(href=getRootURI() + "_/logout") 
+                    i.icon-signout 
+                    |  Sign Out
 
       //- Body block
       //- .container#body 

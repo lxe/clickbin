@@ -8000,20 +8000,35 @@ body {
 }
 #body {
   padding: 10px;
-  padding-bottom: 24px;
-  /* Height of the footer */
-
+  padding-bottom: 80px;
 }
 #footer {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 24px;
-  /* Height of the footer */
-
+  height: 80px;
   font-size: 11px;
   color: #999;
   text-align: right;
+  background: url('/_/images/waves.png') top center repeat-x;
+  color: #fff;
+  text-shadow: 1px 0 0 #0f293c;
+}
+#footer a {
+  color: #c1dbef;
+}
+#footer .container {
+  padding-top: 50px;
+}
+#landing #body {
+  padding-bottom: 24px;
+}
+#landing #footer {
+  height: 24px;
+  background: none;
+}
+#landing #footer .container {
+  padding-top: 0px;
 }
 /**
  * User Styles
@@ -8322,6 +8337,7 @@ body#landing {
 .alert.alert-warn a,
 .alert.alert-warn a:link,
 .alert.alert-warn a:visited {
+  text-decoration: underline;
   display: inline-block;
   color: #ededed;
 }
