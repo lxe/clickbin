@@ -60,8 +60,7 @@ module.exports = function (app) {
         // dont allow anonymous users create their own top level bins
         var bins = path.substring(1).split('/')
         if(bins.length === 1){
-          req.session.flash.error = "Only random top level bins can be "
-            + "created"
+          req.session.flash.error = "You must <a href=\"/_/login\">register or sign in</a> to name your bins. "
           return res.redirect('back')
         }else if(bins.length > 20){
           // make sure bins dont get crazy...

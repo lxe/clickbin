@@ -8,7 +8,7 @@ block body
       .span4.offset4
         h1 sign up
         .well
-          form(method="POST")
+          form(method="POST", style="margin-bottom: 0")
             // Username
             .control-group
               label.control-label(for="inputUsername") User name:
@@ -36,9 +36,9 @@ block body
                   p.text-error #{errors.inputPasswordAgain.msg}
             // Email
             .control-group
-              label.control-label(for="inputEmail") Email (optional)
+              label.control-label(for="inputEmail") Email (optional):
               .controls
-                input.input-block-level(type="text",name="inputEmail",id="inputEmail",placeholder="",value=inputEmail)
+                input.input-block-level(type="text",name="inputEmail",id="inputEmail",placeholder="",value=inputEmail, style="margin-bottom: 0")
                 if(errors.inputEmail)
                   p.text-error #{errors.inputEmail.msg}
                 else

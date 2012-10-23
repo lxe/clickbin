@@ -1,13 +1,14 @@
 extends layout
 
 block body
-  .container.main
+  .container.alerts
     include alerts
+  .container.main
     .row
       .span4.offset4
         h1 sign in
         .well 
-          form(method="POST")
+          form(method="POST", style="margin-bottom: 0")
             .control-group
               label.control-label(for="inputUsername") Username:
               .controls
@@ -26,4 +27,4 @@ block body
               .controls
                 button.btn.btn-navy(type="submit",style="margin-right:10px") Sign in
                 span or
-                a.btn(href="/_/signup",style="margin-left:10px") Sign up
+                a.btn(href="/_/signup",style="margin-left:10px") Register

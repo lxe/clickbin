@@ -1,12 +1,13 @@
 extends layout
 
 block body
-  include alerts
   #landing-promo
+    .container.alerts
+      include alerts
     .anchor-wrap
       .container
         .row
-          .span6
+          .span8
             #landing-form
               .clearfix
                 .pull-left
@@ -28,16 +29,16 @@ block body
                     span.subtitle step 2:  
                     | place it in a clickbin  
                     i.icon-circle-arrow-up.arrow  
-          .span1
-            .or or 
+          //- .span1
+          //-   .or or 
 
-          .span5 
-            a.btn.btn-large.btn-navy(href="#").input-block-level#bookmarklet-button 
-              strong drag me to your bookmarks bar
-            .clearfix
-              p#bookmarklet-help 
-                | Bookmark as you browse.  
-                a(href="/help#bookmarklet") Show me how.
+          //- .span5 
+          //-   a.btn.btn-large.btn-navy(href="#").input-block-level#bookmarklet-button 
+          //-     strong drag me to your bookmarks bar
+          //-   .clearfix
+          //-     p#bookmarklet-help 
+          //-       | Bookmark as you browse.  
+          //-       a(href="/help#bookmarklet") Show me how.
   
           
                     
@@ -59,9 +60,31 @@ block body
           .well
             #address-bar
         .span4
-          p Use our bookmarklet when you're at a page you'd like to place in a bin for easy bookmarking as you surf the web!
+          iframe.hidden(src="about:blank", id="newsletter-target", name="newsletter-target")
+          p More features are coming soon. Sign up for our newsletter to stay tuned:
           .well
-            #address-bar
+            form.form-inline#newsletter(action='https://docs.google.com/spreadsheet/formResponse?formkey=dHpHWkpHNWEwYjhRUmVlX2Z3bFZsc2c6MQ&ifq', 
+              method='POST', target="newsletter-target")
+              input(type="hidden", value="Submit", name="submit")
+              input(type="hidden", value="0", name="pageNumber")
+              input(type="hidden", value="", name="backupCache")
+              input.input-medium#newsletter-email(
+                type="text", 
+                name="entry.0.single", 
+                placeholder="email")
+              | &nbsp;
+
+              button.btn(type="submit") Sign Up
+
+  #newsletter-thanks.modal.hide
+    .modal-header
+      button.close(type="button", data-dismiss="modal", aria-hidden="true")&times;
+      h3 Thanks!
+    .modal-body
+      p Thanks for signing up! We'll keep you informed about new features of clickb.in.
+    .modal-footer
+      a.btn(href="#", data-dismiss="modal") Close
+
 
    
 
