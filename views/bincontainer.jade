@@ -26,7 +26,7 @@ mixin link(link)
 
 mixin bin(bin)
   li.clearfix.bin
-    if user && user.loggedIn
+    if user && user.loggedIn && typeof(profile)!=='undefined' && profile.username === user.username
       a(href="/_/bin/#{bin.id}/remove").close.pull-right &times;
     a.binlink.clearfix(href="#{bin.path.substr(bin.path.indexOf(':') + 1)}", title="#{bin.title}")
       .inner 
