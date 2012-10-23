@@ -1,7 +1,8 @@
 mixin link(link)
   li.clearfix.link
     .well
-      a(href="/_/bin/#{bin.id}/link/#{link.id}/remove").close &times;
+      if user && user.loggedIn && typeof(profile) !== 'undefined' && profile.username === user.username
+        a(href="/_/bin/#{bin.id}/link/#{link.id}/remove").close &times;
       a.clearfix(href=link.url, title=link.title,target="_blank")
         .minwidth.clearfix
           .icon
