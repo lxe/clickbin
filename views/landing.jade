@@ -6,7 +6,7 @@ block body
     .anchor-wrap
       .container
         .row
-          .span8
+          .span6
             #landing-form
               .clearfix
                 .pull-left
@@ -28,9 +28,17 @@ block body
                     span.subtitle step 2:  
                     | place it in a clickbin  
                     i.icon-circle-arrow-up.arrow  
-          .span4
-            p 
-              a.btn.btn-large(href="#").bookmarklet Drag me to your bookmarks bar
+          .span1
+            .or or 
+
+          .span5 
+            a.btn.btn-large.btn-navy(href="#").input-block-level#bookmarklet-button 
+              strong drag me to your bookmarks bar
+            .clearfix
+              p#bookmarklet-help 
+                | Bookmark as you browse.  
+                a(href="/help#bookmarklet") Show me how.
+  
           
                     
          //- .span4
@@ -40,18 +48,18 @@ block body
   #info
     .container 
       //- span.subtitle &nbsp;
-      h2 What does this do?
+      h2 What does clickb.in do?
       .row
         .span4
           p With clickbin you no longer have to email yourself links. Easily organize all your bookmarks by placing them in clickbins:
           .well
             #pokemon
         .span4
-          p Easily bookmark anything by placing <strong>clickb.in/</strong> in front of the URL:
+          p Easily bookmark pages you enjoy by placing <strong>clickb.in/</strong> in front of the address:
           .well
             #address-bar
         .span4
-          p Easily bookmark anything by placing <strong>clickb.in/</strong> in front of the URL:
+          p Use our bookmarklet when you're at a page you'd like to place in a bin for easy bookmarking as you surf the web!
           .well
             #address-bar
 

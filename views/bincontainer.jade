@@ -1,0 +1,35 @@
+.bin.main.container
+  .row
+    .span3.bins
+      .well
+        h4 Bins
+        ul.items
+          if children.length > 0
+            each bin in children
+              mixin bin(bin)
+          else
+            li.nobins
+              | Add a bin over there 
+              i.icon-arrow-right
+          //- li
+          //-   form(action="#{bin.path}")#new-bin-form
+          //-     .input-append
+          //-       input.span2(type="text", placeholder="add bin")#new-bin-title
+          //-       button.btn(href="#")
+          //-         i.icon-plus-sign
+    .span9.links
+      //- h4.icon-globe  Links
+      ul.items.clearfix.row-fluid
+        if bin.links.length == 0
+          li.emptybin
+            | Nothing here yet. Add something:
+        else  
+          each link in bin.links
+            mixin link(link)
+
+      form(action="#{bin.path}")#new-item-form
+        .input-append
+          input.span4(type="text", placeholder="add link or bin")#new-item-title
+          button.btn(href="#")
+            //- i.icon-plus-sign 
+            | Put it here

@@ -5,22 +5,16 @@ block breadcrumb
   include bin-breadcrumbs
 
 block body
-  .container.bin
+  .container.alerts
     include alerts
     if isOwner
       .alert.alert-warn
-        i.icon-exclamation-sign   
-        |  You can modify this bin as long as you access it from this device. 
-        //a(href="/_/signup") Sign up
-        //|  if you would like to modify this bin later.
-    .row
-      .span6
-        h4.icon-globe  Links
-        ul.items.clearfix
-          each link in bin.links
-            mixin link(link)
-      .span6
-        h4.icon-folder-open  Bins
-        ul.items
-          each bin in children
-            mixin bin(bin)
+        .clearfix
+          //- i.icon-exclamation-sign   
+          |  You can place bookmarks in this bin as long as you access it from this device. 
+          .pull-right
+            //- TODO:
+            //- a(href="#{'http://save.clickb.in' +  bin.path}") Save this bin
+
+  include bincontainer
+ 

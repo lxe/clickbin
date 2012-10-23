@@ -1,11 +1,11 @@
-- var title = 'poop'
-
 extends layout
+include bin-items
 
 block breadcrumb
   include bin-breadcrumbs
 
 block body
-  .container
+  .container.alerts
     include alerts
-    include bin-items
+
+  include bincontainer
