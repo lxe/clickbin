@@ -1,5 +1,10 @@
-fix the style issues on mobile
-saving to bins
-gotta implement password reset. maybe use this module? https://github.com/substack/node-password-reset
+-- before release --
+make mobile friendly!!
+allow anonymous bin users to save their bins to an account, if they choose.
+implement password reset. maybe use this module? https://github.com/substack/node-password-reset
+
+-- eventually --
 bookmarklet
 better icons
+make bins/links nameable/movable/sortable
+allow the titles of links to be changeable
