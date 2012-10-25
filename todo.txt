@@ -9,3 +9,4 @@ bookmarklet
 better icons
 make bins/links nameable/movable/sortable
 allow the titles of links to be changeable
+add scraper for github profiles. ie., https://github.com/paulmillr
