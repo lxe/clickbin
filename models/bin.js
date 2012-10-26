@@ -10,6 +10,7 @@ var BinSchema = new Schema({
     , required : true
     , index : true
   }
+  // is this bin publicically accessible by anyone?
   , public : {
     type : Boolean
     , required : true
@@ -20,6 +21,10 @@ var BinSchema = new Schema({
       , unique : false
       , required : false
       , default : null
+  }
+  , created : {
+    type : Date
+    , default : Date.now
   }
   , links : [LinkSchema]
 })

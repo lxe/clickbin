@@ -6,4 +6,7 @@ test:
 			--reporter $(REPORTER) \
 			$(MOCHA_OPTS)
 
+dev:
+	sudo nodemon app.js --port=80 --domain=testb.in
+
 .PHONY: test
