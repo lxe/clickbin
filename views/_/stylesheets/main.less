@@ -112,6 +112,11 @@ body {
   border-color:#2b6d20 #2b6d20 hsl(112,54%,26%);
 }
 
+.btn-orangered { background-color: hsl(13, 61%, 45%) !important; background-repeat: repeat-x; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ce5635", endColorstr="#b84b2c"); background-image: -khtml-gradient(linear, left top, left bottom, from(#ce5635), to(#b84b2c)); background-image: -moz-linear-gradient(top, #ce5635, #b84b2c); background-image: -ms-linear-gradient(top, #ce5635, #b84b2c); background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ce5635), color-stop(100%, #b84b2c)); background-image: -webkit-linear-gradient(top, #ce5635, #b84b2c); background-image: -o-linear-gradient(top, #ce5635, #b84b2c); background-image: linear-gradient(#ce5635, #b84b2c); border-color: #b84b2c #b84b2c hsl(13, 61%, 43.5%); color: #fff !important; text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.09); -webkit-font-smoothing: antialiased; }
+
+
+.btn-lightorange { background-color: hsl(22, 85%, 69%) !important; background-repeat: repeat-x; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f5b089", endColorstr="#f39e6c"); background-image: -khtml-gradient(linear, left top, left bottom, from(#f5b089), to(#f39e6c)); background-image: -moz-linear-gradient(top, #f5b089, #f39e6c); background-image: -ms-linear-gradient(top, #f5b089, #f39e6c); background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5b089), color-stop(100%, #f39e6c)); background-image: -webkit-linear-gradient(top, #f5b089, #f39e6c); background-image: -o-linear-gradient(top, #f5b089, #f39e6c); background-image: linear-gradient(#f5b089, #f39e6c); border-color: #f39e6c #f39e6c hsl(22, 85%, 67.5%); color: #333 !important; text-shadow: 0 1px 1px rgba(255, 255, 255, 0.09); -webkit-font-smoothing: antialiased; }
+
 
 .btn {
   // .btn-lightblue;
@@ -248,6 +253,7 @@ body#landing {
     padding: 20px;
     .btn-lightgray;
     margin-bottom: 0px;
+    box-shadow: 1px 1px 2px #0D2233;
   }
   h2 {
     color: #ffffff;
@@ -270,6 +276,63 @@ body#landing {
   #pokemon {
     height: 32px;
     background: url('/_/images/victorpokemon.png') top left no-repeat;
+  }
+  .newsletter-wrapper {
+    .btn-lightorange;
+    border-radius: 4px;
+    box-shadow: 1px 1px 2px #0D2233;
+    & > .inner {
+      padding: 20px 20px 22px 20px;
+      p {
+
+        text-shadow: 0 1px 1px hsl(22, 85%, 85%);
+        color: hsl(22, 85%, 20%);
+        .headline {
+          font-weight: bold;
+          display: block;
+        }
+        i {
+          display: block;
+          font-size: 60px;
+          float: left;
+          line-height: 60px;
+          margin: 0 10px 10px 0;
+          color: hsl(22, 55%, 60%);
+        }
+      }
+      form {
+        input[type="text"] {
+          border-color: hsl(22, 50%, 60%);
+          // width: 60%;
+          // float: left;
+          // margin-right: 20% !important;
+          color: hsl(22, 85%, 20%);
+          font-weight: bold;
+          &:-webkit-input-placeholder {
+            color: #999;
+          }
+          &:-moz-placeholder {
+            color: #999;
+          }
+        }
+        .block-input-wrapper {
+          // margin-right: 120px;
+          // float: left;
+          // width: 100%;
+          margin-right: 90px;
+          // margin-right: 60px;
+          // width: 100%;
+        }
+        .button-wrapper {
+          width: 85px;
+          float: right;
+          button {
+            // margin-left: 5px;
+            // margin-right: 5px;
+          }
+        }
+      }
+    }
   }
   #newsletter {
     min-height: 32px;

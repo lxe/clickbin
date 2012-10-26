@@ -60,21 +60,27 @@ block body
           .well
             #address-bar
         .span4
-          iframe.hidden(src="about:blank", id="newsletter-target", name="newsletter-target")
-          p More features are coming soon. Sign up for our newsletter to stay tuned:
-          .well
-            form.form-inline#newsletter(action='https://docs.google.com/spreadsheet/formResponse?formkey=dHpHWkpHNWEwYjhRUmVlX2Z3bFZsc2c6MQ&ifq', 
-              method='POST', target="newsletter-target")
-              input(type="hidden", value="Submit", name="submit")
-              input(type="hidden", value="0", name="pageNumber")
-              input(type="hidden", value="", name="backupCache")
-              input.input-medium#newsletter-email(
-                type="text", 
-                name="entry.0.single", 
-                placeholder="email")
-              | &nbsp;
-
-              button.btn(type="submit") Sign Up
+          .newsletter-wrapper
+            .inner
+              iframe.hidden(src="about:blank", id="newsletter-target", name="newsletter-target")
+              p 
+                i.icon-envelope  
+                span.headline More features are coming soon! 
+                | Sign up for our newsletter to stay tuned:
+              form.form-inline#newsletter(action='https://docs.google.com/spreadsheet/formResponse?formkey=dHpHWkpHNWEwYjhRUmVlX2Z3bFZsc2c6MQ&ifq', 
+                method='POST', target="newsletter-target")
+                input(type="hidden", value="Submit", name="submit")
+                input(type="hidden", value="0", name="pageNumber")
+                input(type="hidden", value="", name="backupCache")
+                .clearfix
+                  .button-wrapper
+                    button.btn.btn-orangered(type="submit") Sign Up
+                  .block-input-wrapper
+                    input.input-block-level#newsletter-email(
+                      type="text", 
+                      name="entry.0.single", 
+                      placeholder="email")
+                
 
   #newsletter-thanks.modal.hide
     .modal-header
