@@ -42,8 +42,10 @@ module.exports = function(app) {
       var user = new User({
         username : req.body.inputUsername.toLowerCase() // all usernames are lowercased to avoid collision
         , password : req.body.inputPassword
-        , email : req.body.inputEmail
       })
+      // dont add the field unless it has a value
+      if(req.body.inputEmail) user.email  = req.body.inputEmail
+      
       user.save(function(err){
         if(err){
           if( err.toString().indexOf('dup key') !==-1 
