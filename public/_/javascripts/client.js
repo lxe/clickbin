@@ -38,4 +38,6 @@ $(function() {
     $('#newsletter-thanks').modal()
     return true
   })
+
+  $('[rel=tooltip]').tooltip() 
 })
