@@ -25,9 +25,10 @@ var BinSchema = new Schema({
   , created : {
     type : Date
     , default : Date.now
+    , index : true
   }
   , links : [LinkSchema]
-})
+}, { strict: true })
 
 BinSchema.statics.findUserBin = function(username,path,cb){
   if(!cb){

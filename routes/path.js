@@ -41,44 +41,42 @@ module.exports = function (app) {
       // requesting a just a bin
       Bin.findOne({ path : path}, function (err, bin) {
         if (err) return next(err)
-        
-        // just show the bin
+        var isOwner = bin && bin.sessionID === req.sessionID
+        // if the user accessing the bin isn't the owner and the bin isn't 
+        // public
+        if(bin && !isOwner && !bin.public) return errorTopLevelBin(req,res)
+        // show the bin
         if(bin && uri === undefined){
           return bin.getChildren(function(err,children){
             if(err) return next(err)
             return res.render('bin', {
               path: path
               , bin: bin
-              , isOwner : bin.sessionID === req.sessionID
+              , isOwner : isOwner
               , children : children
             })
           })
         }
-        // add a link th an existing bin
+        // add a link to an existing bin
         else if(bin) return addLinkToBin(path, uri, bin)
         
-        // dont allow anonymous users create their own top level bins
+        // dont allow anonymous users to create their own top level bins
         var bins = path.substring(1).split('/')
-        if(bins.length === 1){
-          req.session.flash.error = "You must <a href=\"/_/login\">register or sign in</a> to name your bins. "
-          return res.redirect('back')
-        }else if(bins.length > 20){
-          // make sure bins dont get crazy...
-          req.session.flash.error = "Sorry! There's a max depth of 20 on all bin paths."
-          return res.redirect('back')
-        }
+        if(bins.length === 1) return errorNameBin(req,res)
+        else if(bins.length > 10) return errorMaxBinPath(req,res)
+        
         // before we create the bin, make sure it has a root bin.
         Bin.findOne({
           path : '/' + bins[0]
         }, function(err, bin) {
           if(err) return next(err)
-          else if(!bin){
-            req.session.flash.error = "That root bin doesn't exist yet"
-            + " and only random top level bins can be created"
-            return res.redirect('/')
-          }else if(bin.sessionID !== req.sessionID){
-            req.session.flash.error = "You dont own that root bin"
-            return res.redirect('/')
+          else if(!bin) return errorTopLevelBin(req,res)
+          var isOwner = bin.sessionID === req.sessionID
+          // there is a bin there, but the use is not the owner
+          if(!isOwner){
+             // and the bin is not a public bin
+            if(!bin.public) return errorTopLevelBin(req,res)
+            else return errorNotRootBinOwner(req,res)
           }else{
             if(uri){
               Link.scrape(uri, function(err,link){
@@ -104,7 +102,7 @@ module.exports = function (app) {
         })
       })
     } else {
-      // creating an anounomous bin. ie., 
+      // creating an new anounomous bin. ie., 
       // a request of the form: clickb.in/google.com
       Counter.increment('anonymous-bin-counter', function (err, val) {
         if (err) return next(err)
@@ -188,3 +186,26 @@ module.exports = function (app) {
   
 }
 
+
+
+function errorTopLevelBin(req,res){
+  req.session.flash.error = "That root bin doesn't exist yet"
+  + " and only random top level bins can be created"
+  return res.redirect('/')
+}
+function errorNotRootBinOwner(req,res){
+  req.session.flash.error = "You dont own that root bin"
+  return res.redirect('/')
+}
+function errorMaxBinPath(req,res){
+  // make sure bins dont get crazy...
+  req.session.flash.error = "Sorry! There's a max bin depth of 10 on all bin "
+    + "paths."
+  return res.redirect('back')
+}
+
+function errorNameBin(req,res){
+  req.session.flash.error = "You must <a href=\"/_/login\">register or sign "
+    + "in</a> to name your bins. "
+  return res.redirect('back')
+}

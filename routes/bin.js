@@ -82,4 +82,51 @@ module.exports = function(app){
       })
     })
   })
+  
+  /**
+    * make a bin public or private
+    */
+  app.get('/_/bin/:binID/public',function(req,res,next){
+    setBinAccess(true,req,res,next);
+  });
+  app.get('/_/bin/:binID/private',function(req,res,next){
+    setBinAccess(false,req,res,next);
+  });
+  
+  function setBinAccess(access,req,res,next){
+    Bin.findById(req.params.binID,function(err, bin){
+      console.log(bin)
+      if(err) return next(err)
+      if(
+        // the bin exists
+        bin
+        // the user has a session
+        && req.session 
+        && ( 
+          // the user is logged in and owns this bin
+          req.session.user 
+            && req.session.user.loggedIn 
+            && req.session.user.username === bin.username
+          // or
+          ||
+          // the user is loggedout but owns the bin, and the bin is an anounymous 
+          // bin
+          !bin.username
+            && req.sessionID === bin.sessionID
+        )
+      ){
+        // TODO: make the bin public/private
+        console.log('access: '+access)
+        bin.public = access
+        bin.save(function(err){
+          if(err) return next(err)
+          return res.redirect('back')
+        })
+      }else{
+        req.session.flash.error = "That bin doesn't exist or is a private bin that you don't own."
+        return res.redirect('back')
+      }
+    })
+  }
+  
 }

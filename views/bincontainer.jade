@@ -11,8 +11,8 @@ mixin link(link)
             else if(link.mime)
               img(src="/_/images/mimetypes/" + link.mime.replace('/','-') + '.png')
             else
-              .no-icon
-                i.icon-link
+              .icon(style="font-size: 64px; line-height:64px")
+                i.icon-warning-sign(style="width:64px;height:64px") 
           .text
             .text-container
               if (link.title)
@@ -49,6 +49,15 @@ mixin bin(bin)
 
 
 .bin.main.container
+  if isOwner
+    div(style='float:right;margin-bottom:15px')
+      .btn-group
+        a.btn(href="/_/bin/#{bin.id}/public",class=bin.public?'active':'')
+          i.icon-unlock
+          |  public
+        a.btn(href="/_/bin/#{bin.id}/private",class=bin.public?'':'active')
+          i.icon-lock
+          |  private
   .row
     .span3.bins
       .well

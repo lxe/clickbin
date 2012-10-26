@@ -56,6 +56,7 @@ var UserSchema = new Schema({
   , created : {
     type : Date
     , default : Date.now
+    , index : true
   }
 
   // did the user activate their account via email?

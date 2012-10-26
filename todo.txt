@@ -3,7 +3,6 @@ make mobile friendly!!
 allow anonymous bin users to save their bins to an account, if they choose.
 implement password reset. maybe use this module? https://github.com/substack/node-password-reset
 404 icon
-allow bins to be private
 -- eventually --
 bookmarklet
 better icons
