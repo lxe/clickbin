@@ -16,6 +16,7 @@ module.exports = function(app) {
     req.assert('inputPassword','must be at least 6 characters').len(6,64)
     req.assert('inputPasswordAgain','passwords must match').is(req.body.inputPassword)
     if(req.body.inputEmail) 
+      // if an email was provided, name sure its valid
       req.assert('inputEmail','invalid email').isEmail()
     else delete req.body.inputEmail // make sure it's not set and not just an empty string
     //req.assert('inputUsername','username is at least 3 characters long').notEmpty() //.min(3).max(64).isAlphanumeric().regex(/^[a-zA-Z]+/)
@@ -45,12 +46,18 @@ module.exports = function(app) {
       })
       user.save(function(err){
         if(err){
-          if( err.toString().indexOf('dup key') !==-1 && err.toString().indexOf('$username') !== -1)
+          if( err.toString().indexOf('dup key') !==-1 
+              && err.toString().indexOf('$username') !== -1
+          ){
             req.session.flash.error = 'Sorry! That username is already taken'
-          else if( err.toString().indexOf('dup key') !==-1 && err.toString().indexOf('$email') !== -1)
+          }else if( 
+            err.toString().indexOf('dup key') !==-1 
+            && err.toString().indexOf('$email') !== -1
+          ){
             req.session.flash.error = 'Sorry! That email address is already taken'
-          else{
-            req.session.flash.error = 'An unkown error occured. Please try again. If the problem continues, please contact an admin.'
+          }else{
+            req.session.flash.error = 'An unkown error occured. Please try '
+              + 'again. If the problem continues, please contact an admin.'
             console.error(err.toString())
           }
           return res.redirect('back')
@@ -64,7 +71,7 @@ module.exports = function(app) {
           var bin = new Bin({ path : user.username + ':/' })
           bin.save(function(err){
             if(err) return next(err)
-            return res.redirect(res.locals.getUserURI())
+            return res.redirectToProfile(user.username)
           })
         }
       })

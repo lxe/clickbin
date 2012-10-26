@@ -104,7 +104,8 @@ app.configure(function() {
       return req.protocol + '://' + host[1] + '.' + host[0] + '/'
     }
     res.redirectToLanding = function(){
-      this.redirect(this.locals.getRootURI())
+      var uri = this.locals.getRootURI()
+      this.redirect(uri)
     }
     res.redirectToProfile = function(username){
       this.redirect(this.locals.getUserURI(username))

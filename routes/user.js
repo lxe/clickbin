@@ -17,8 +17,6 @@ var Bin = require('../models/bin')
       , uri  = opts.uri
       , bins = (path) ? path.substr(1).split('/') : null
     
-    console.log(opts)
-    
     function isBinOwner(bin){
       return req.session 
         && req.session.user 
@@ -46,7 +44,8 @@ var Bin = require('../models/bin')
         var isOwner = isBinOwner(bin)
         if(err) return next(err)
         else if(!bin) {
-          res.session.flash.error = "That user root bin does not exist"
+          req.session.flash.error = "That user root bin does not exist"
+          console.log(' user root bin doesn not exist for user: ' + username)
           return res.redirectToLanding()
         } else if(!isOwner && !bin.public) {
           req.session.flash.error = "That user's root bin is private"
