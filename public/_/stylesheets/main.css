@@ -9657,22 +9657,6 @@ body {
 #landing #footer .container {
   padding-top: 0px;
 }
-@media (max-width: 767px) {
-  #master-nav {
-    margin: 0;
-  }
-  #landing-promo {
-    margin-top: 10px;
-  }
-  #landing-promo .anchor-wrap .container {
-    margin-left: 7px;
-    margin-right: 7px;
-  }
-  #info .container {
-    padding-left: 7px;
-    padding-right: 7px;
-  }
-}
 /**
  * User Styles
  */
@@ -10119,4 +10103,25 @@ a {
   text-shadow: 0px -1px 1px #ffffff;
   padding-top: 16px;
   padding-left: 5px;
+}
+@media (max-width: 767px) {
+  #master-nav {
+    margin: 0;
+  }
+  #landing-promo {
+    margin-top: 10px;
+  }
+  #landing-promo .anchor-wrap .container {
+    margin-left: 7px;
+    margin-right: 7px;
+  }
+  #info .container {
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+  #info p {
+    min-height: 2em;
+    margin: 0;
+    margin-top: 20px;
+  }
 }
