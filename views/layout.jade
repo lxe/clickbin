@@ -11,54 +11,55 @@ html(lang='en')
     // "In an extreme view, the world can be seen as only connections, nothing else. We think of a dictionary as the repository of meaning, but it defines words only in terms of other words. I liked the idea that a piece of information is really defined only by what it's related to, and how it's related. There really is little else to meaning. The structure is everything. There are billions of neurons in our brains, but what are neurons? Just cells. The brain has no knowledge until connections are made between neurons. All that we know, all that we are, comes from the way our neurons are connected." - Tim Berners-Lee, inventor of the world wide web
   body(id="#{locals.bodyId ? locals.bodyId : 'main'}") 
     .wrapper
-      //- a.git-ribbon(href="https://github.com/lxe/clickbin")
-      //-  img(style="position: absolute; top: 0; right: 0; border: 0;", src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png", alt="Fork me on GitHub")
-      .navbar.navbar-static-top#master-nav
-        .navbar-inner
-          .alpha.pull-left alpha
-          .container
-            ul.nav
-              li
-                .btn-group.bins
-                  if typeof(profile) !== 'undefined' && profile.username
-                    a(href='/').brand 
-                      strong #{profile.username}
-                      | .clickb.in
-                  else
-                    a(href="#{'http://' + domain}").brand clickb.in
-                  block breadcrumb
+      #body
+        //- a.git-ribbon(href="https://github.com/lxe/clickbin")
+        //-  img(style="position: absolute; top: 0; right: 0; border: 0;", src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png", alt="Fork me on GitHub")
+        .navbar.navbar-static-top#master-nav
+          .navbar-inner
+            .alpha.pull-left alpha
+            .container
+              ul.nav
+                li
+                  .btn-group.bins
+                    if typeof(profile) !== 'undefined' && profile.username
+                      a(href='/').brand 
+                        strong #{profile.username}
+                        | .clickb.in
+                    else
+                      a(href="#{'http://' + domain}").brand clickb.in
+                    block breadcrumb
+               
+
+                //- li
+                //-   form.navbar-form.form-inline.pull-left#newbin-form
+                //-     .input-prepend(style="margin-top: 12px")
+                //-       span.add-on /
+                //-       input.input-small(type="text", placeholder="new bin")
+
+              ul.nav.pull-right
+                if user && user.loggedIn && typeof(profile)!=='undefined' && profile.username !== user.username
+                  li
+                    a(href=getUserURI(user.username)) home
              
+                if !user || !user.loggedIn
+                  li 
+                    a(href=getRootURI() + "_/login") 
+                      i.icon-signin 
+                      |  sign in
+                  li 
+                    .btn-group
+                      a.btn.btn-orangered(href="#{getRootURI() + '_/signup'}",
+                        rel="tooltip", data-placement="bottom", data-original-title="Join to get your own 'you.clickb.in'!") 
+                        strong join!
+                else
+                  li
+                    a(href=getRootURI() + "_/logout") 
+                      i.icon-signout 
+                      |  Sign Out
 
-              //- li
-              //-   form.navbar-form.form-inline.pull-left#newbin-form
-              //-     .input-prepend(style="margin-top: 12px")
-              //-       span.add-on /
-              //-       input.input-small(type="text", placeholder="new bin")
-
-            ul.nav.pull-right
-              if user && user.loggedIn && typeof(profile)!=='undefined' && profile.username !== user.username
-                li
-                  a(href=getUserURI(user.username)) home
-           
-              if !user || !user.loggedIn
-                li 
-                  a(href=getRootURI() + "_/login") 
-                    i.icon-signin 
-                    |  sign in
-                li 
-                  .btn-group
-                    a.btn.btn-orangered(href="#{getRootURI() + '_/signup'}",
-                      rel="tooltip", data-placement="bottom", data-original-title="Join to get your own 'you.clickb.in'!") 
-                      strong join!
-              else
-                li
-                  a(href=getRootURI() + "_/logout") 
-                    i.icon-signout 
-                    |  Sign Out
-
-      //- Body block
-      //- .container#body 
-      block body
+        //- Body block
+        //- .container#body 
+        block body
   
       footer#footer
         .container by 

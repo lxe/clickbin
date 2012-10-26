@@ -1,7 +1,9 @@
+authosizedUser = user && user.loggedIn && typeof(profile) !== 'undefined' && profile.username === user.username || typeof(isOwner) !== 'undefined' && isOwner
+
 mixin link(link)
   li.clearfix.link
     .well
-      if user && user.loggedIn && typeof(profile) !== 'undefined' && profile.username === user.username || typeof(isOwner) !== 'undefined' && isOwner
+      if authosizedUser
         a(href="/_/bin/#{bin.id}/link/#{link.id}/remove").close &times;
       a.clearfix(href=link.url, title=link.title,target="_blank",rel="nofollow")
         .minwidth.clearfix
@@ -27,7 +29,7 @@ mixin link(link)
 
 mixin bin(bin)
   li.clearfix.bin
-    if user && user.loggedIn && typeof(profile) !== 'undefined' && profile.username === user.username || typeof(isOwner) !== 'undefined' && isOwner
+    if authosizedUser
       a(href="/_/bin/#{bin.id}/remove").close.pull-right &times;
     a.binlink.clearfix(href="#{bin.path.substr(bin.path.indexOf(':') + 1)}", title="#{bin.title}")
       .inner 
@@ -49,15 +51,7 @@ mixin bin(bin)
 
 
 .bin.main.container
-  if isOwner
-    div(style='float:right;margin-bottom:15px')
-      .btn-group
-        a.btn(href="/_/bin/#{bin.id}/public",class=bin.public?'active':'')
-          i.icon-unlock
-          |  public
-        a.btn(href="/_/bin/#{bin.id}/private",class=bin.public?'':'active')
-          i.icon-lock
-          |  private
+
   .row
     .span3.bins
       .well
@@ -68,7 +62,7 @@ mixin bin(bin)
               mixin bin(bin)
           else
             li.nobins
-              | Add a bin over there 
+              | Add a bin over there  
               i.icon-arrow-right
           //- li
           //-   form(action="#{bin.path}")#new-bin-form
@@ -77,18 +71,31 @@ mixin bin(bin)
           //-       button.btn(href="#")
           //-         i.icon-plus-sign
     .span9.links
-      //- h4.icon-globe  Links
-      ul.items.clearfix.row-fluid
-        if bin.links.length == 0
-          li.emptybin
-            | Nothing here yet. Add something:
-        else  
-          each link in bin.links
-            mixin link(link)
 
-      form(action="#{bin.path}")#new-item-form
-        .input-append
-          input.span4(type="text", placeholder="add link or bin")#new-item-title
-          button.btn(href="#")
-            //- i.icon-plus-sign 
-            | Put it here
+      .clearfix
+        if authosizedUser
+          form(action="#{bin.path}", style="margin-bottom: 0")#new-item-form.pull-left
+            .input-append
+              input.span4(type="text", placeholder="add link or bin")#new-item-title
+              button.btn(href="#")
+                //- i.icon-plus-sign 
+                | Put it here
+
+        if isOwner
+          .btn-group.pull-right
+            a.btn(href="/_/bin/#{bin.id}/public",class=bin.public?'active':'')
+              i.icon-unlock
+              |  public
+            a.btn(href="/_/bin/#{bin.id}/private",class=bin.public?'':'active')
+              i.icon-lock
+              |  private
+
+      .links
+        ul.items.clearfix.row-fluid
+          if bin.links.length == 0
+            li.emptybin
+              | Nothing here yet. Add something:
+          else  
+            each link in bin.links
+              mixin link(link)
+
