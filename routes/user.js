@@ -3,40 +3,66 @@
  * ie., `username.clickb.in`
  */
 
-var Bin = require('../models/bin'),
-  Link = require('../models/link')
+var Bin = require('../models/bin')
+  , Link = require('../models/link')
+  , config = require('../config')
+  , _ = require('underscore')
 
 
   module.exports = function(req, res, next, opts) {
     // this route is called from the `path` route. the path route first parses out
     // the following parameters and gives it to us via the `opts` object above
-    var username = opts.username,
-      path = opts.path || '/',
-      uri  = opts.uri,
-      bins = (path) ? path.substr(1).split('/') : null
-
-      console.log(opts)
-
+    var username = opts.username
+      , path = opts.path || '/'
+      , uri  = opts.uri
+      , bins = (path) ? path.substr(1).split('/') : null
+    
+    function isBinOwner(bin){
+      return req.session 
+        && req.session.user 
+        && req.session.user.username === username 
+        && bin
+        && bin.username === username
+    }
+    
+    function isBinRootOwner(){
+      return req.session
+        && req.session.user 
+        && req.session.user.username === username
+    }
+    
+    function errorUserNoBin(req,res){
+      req.session.flash.error = username + " doesn't have a bin with "
+        + "that name."
+      return res.redirectToProfile(username)
+    }
+    
     if(path === '/' && !uri) {
-
+      
       // show the user `root` bin. aka, their profile page
       Bin.findUserBin(username, function(err, bin) {
+        var isOwner = isBinOwner(bin)
         if(err) return next(err)
-        if(!bin) return res.render('errors/404', {
-          error: {
-            title: 'User Not Found',
-            msg: 'No user exists with that name'
-          }
-        })
-
+        else if(!bin) {
+          req.session.flash.error = "That user root bin does not exist"
+          console.log(' user root bin doesn not exist for user: ' + username)
+          return res.redirectToLanding()
+        } else if(!isOwner && !bin.public) {
+          req.session.flash.error = "That user's root bin is private"
+          return res.redirectToLanding()
+        }
         bin.getChildren(function(err, children) {
           if(err) return next(err)
           else return res.render('user', {
-            profile: {
-              username: username
-            },
-            bin: bin,
-            children: children
+            title : username + '.' + config.domain
+            , isOwner : isOwner
+            , profile : {
+              username : username
+            }
+            , bin : bin
+            , children: _.filter(children, function(child){
+              return isOwner || child.public
+            })
           })
         })
       })
@@ -44,26 +70,27 @@ var Bin = require('../models/bin'),
       // create/show a bin
       Bin.findUserBin(username, path, function(err, bin) {
         if(err) return next(err)
+        var isOwner = isBinOwner(bin)
         if(!bin) {
-          if(req.session.user && req.session.user.username === username) {
-            var bin = new Bin({
-              path: username + ':' + path
-            })
+          // the bin doesnt exist but we own the root
+          if(isBinRootOwner()) {
+            var bin = new Bin({ path : username + ':' + path })
             bin.save(function(err) {
               ensureBinsExistAlongPath(username, bins)
               if(err) return next(err)
               return render(bin)
             })
           } else {
-            if(!bin) return res.render('errors/404', {
-              error: {
-                title: 'Bin Not Found',
-                msg: username + ' doesn\'t have a bin with that name.'
-              }
-            })
+            // we're not the owner of this bin and the bin doesnt exist yet
+            req.session.flash.error = "You can't add links to bins you don't "
+              + "own."
+            return res.redirectToLanding()
           }
-        } else // show the bin
-        return render(bin)
+        } else {
+          // show the bin
+          if(!isOwner && !bin.public) return errorUserNoBin(req,res)
+          else return render(bin)
+        }
       })
     } else if(uri) {
       // add a link to a users bin
@@ -83,8 +110,7 @@ var Bin = require('../models/bin'),
               var bin = new Bin({
                 path: username + ':' + path
                 // since the bin deosnt exist yet, this has got to be the first link
-                ,
-                links: [link]
+                , links : [link]
               })
               bin.save(function(err) {
                 if(err) return next(err)
@@ -106,13 +132,18 @@ var Bin = require('../models/bin'),
       // meanhile, in russia
       bin.getChildren(function(err, children) {
         if(err) return next(err)
+        var isOwner = isBinRootOwner()
         return res.render('user', {
-          path: path,
-          title: username,
-          bin: bin,
-          children: children,
-          profile: {
-            username: username
+          isOwner : isOwner
+          , path : path
+          , title : username + '.' + config.domain + path
+          , bin : bin
+          , children: _.filter(children, function(child){
+            console.log('child: '+child.path+' public:'+child.public+' isOwner: '+isOwner)
+            return isOwner || child.public
+          })
+          , profile : {
+            username : username
           }
         })
       })
@@ -155,9 +186,6 @@ function ensureBinsExistAlongPath(username, bins) {
       upsert: true
     } // options
     // we dont need to wait for this callback. fire and forget
-    ,
-
-
-    function() {})
+    , function() {})
   }
 }

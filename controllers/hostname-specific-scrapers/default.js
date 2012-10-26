@@ -6,7 +6,7 @@
 var _ = require('underscore')
   , node_url = require('url')
 
-module.exports = function(url,$){
+module.exports = function(url,parts,$){
   var page = {}
   // try to get the best title from the page
   page.title = null

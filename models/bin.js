@@ -10,6 +10,7 @@ var BinSchema = new Schema({
     , required : true
     , index : true
   }
+  // is this bin publicically accessible by anyone?
   , public : {
     type : Boolean
     , required : true
@@ -21,8 +22,13 @@ var BinSchema = new Schema({
       , required : false
       , default : null
   }
+  , created : {
+    type : Date
+    , default : Date.now
+    , index : true
+  }
   , links : [LinkSchema]
-})
+}, { strict: true })
 
 BinSchema.statics.findUserBin = function(username,path,cb){
   if(!cb){

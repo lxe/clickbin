@@ -5,7 +5,7 @@ var _ = require('underscore')
   * youtube specific scraper
   */
 
-module.exports = function(url,$){
+module.exports = function(url,parts,$){
   // this scraper only works with video pages
   if( url.pathname.indexOf('/watch') === -1 ) return null
   var page = {}

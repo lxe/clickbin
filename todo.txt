@@ -1,10 +1,11 @@
-IMPORTANT: add rel="nofollow" really important. did i say it was important?
-gotta implement password reset. maybe use this module? https://github.com/substack/node-password-reset
-look into bug with creating a bin, but not it's subbins
-setup redirects for the login.clickb.in to clickb.in/_/login
-fix the style issues on mobile
-keep in touch with niggler: my email is nirk.niggler@gmail.com
-didn't generate an icon for: http://en.wikipedia.org/wiki/File:Edificio_del_Distrito_C_de_Telefonica_en_Las_Tablas_(Madrid).jpg
-figure out why the scrapper dont like this image: http://static.tvtropes.org/pmwiki/pub/images/cowboy_bebop_lineup_7846.jpg
-setup example bins: http://nodejs.clickb.in/
-
+-- before release --
+make mobile friendly!!
+allow anonymous bin users to save their bins to an account, if they choose.
+implement password reset. maybe use this module? https://github.com/substack/node-password-reset
+404 icon
+-- eventually --
+bookmarklet
+better icons
+make bins/links nameable/movable/sortable
+allow the titles of links to be changeable
+add scraper for github profiles. ie., https://github.com/paulmillr

@@ -97,11 +97,18 @@ app.configure(function() {
     res.locals.domain = config.domain
     res.locals.getUserURI = function(username){
       var host = req.get('Host').split('.').reverse()
-      return req.protocol + '://' + req.session.user.username + '.' + host[1] + '.' + host[0] + '/'
+      return req.protocol + '://' + username + '.' + host[1] + '.' + host[0] + '/'
     }
     res.locals.getRootURI = function(){
       var host = req.get('Host').split('.').reverse()
       return req.protocol + '://' + host[1] + '.' + host[0] + '/'
+    }
+    res.redirectToLanding = function(){
+      var uri = this.locals.getRootURI()
+      this.redirect(uri)
+    }
+    res.redirectToProfile = function(username){
+      this.redirect(this.locals.getUserURI(username))
     }
     next()
   })

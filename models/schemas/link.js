@@ -24,6 +24,11 @@ var LinkSchema = new Schema({
     type : String
     , required : false
   }
-})
+  , created : {
+    type : Date
+    , default : Date.now
+    , index : true
+  }
+}, {strict : true})
 
 module.exports = LinkSchema
