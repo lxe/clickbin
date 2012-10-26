@@ -182,11 +182,6 @@ body {
   //   text-decoration: underline;
   // }
   // margin-top: 40px;
-  
-  @media (max-width: 768px) {
-    margin-top: 10px;
-  }
-
 }
 
 h2, h1 {
@@ -600,21 +595,6 @@ a {
   padding-left: 5px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// we put the responsive elements at the end to take priority over the over
+// styles
+@import "responsive-768px-max";
