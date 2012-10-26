@@ -203,6 +203,9 @@ h2 {
   line-height: 1.2;
   // color: darken(#D9CEC6, 20%);
   color: #20547B;
+  &.orangered {
+    color: hsl(13, 61%, 45%);
+  }
   // text-shadow: 1px 0 1px #FFF;
   &.wow {
     font-size: 42px;
@@ -273,26 +276,30 @@ body#landing {
     background: url('/_/images/victorpokemon.png') top left no-repeat;
   }
   .newsletter-wrapper {
-    .btn-lightorange;
+    .btn-lightgray;
     border-radius: 4px;
     box-shadow: 1px 1px 2px #0D2233;
     & > .inner {
       padding: 20px 20px 22px 20px;
       p {
 
-        text-shadow: 0 1px 1px hsl(22, 85%, 85%);
-        color: hsl(22, 85%, 20%);
+        // text-shadow: 0 1px 1px hsl(22, 85%, 85%);
+        text-shadow: none;
+        color: #333;
+        // color: hsl(22, 60%, 40%);
+        // color: hsl(22, 85%, 20%);
         .headline {
           font-weight: bold;
           display: block;
         }
         i {
-          display: block;
+          display: none;
           font-size: 60px;
           float: left;
           line-height: 60px;
           margin: 0 10px 10px 0;
-          color: hsl(22, 55%, 60%);
+          color: hsl(22, 80%, 70%);
+          // color: hsl(22, 55%, 60%);
         }
       }
       form {
@@ -304,10 +311,10 @@ body#landing {
           color: hsl(22, 85%, 20%);
           font-weight: bold;
           &:-webkit-input-placeholder {
-            color: #999;
+            color: hsl(22, 40%, 60%);
           }
           &:-moz-placeholder {
-            color: #999;
+           color: hsl(22, 40%, 60%);
           }
         }
         .block-input-wrapper {

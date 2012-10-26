@@ -47,7 +47,8 @@ html(lang='en')
                     |  sign in
                 li 
                   .btn-group
-                    a.btn.btn-orangered(href=getRootURI() + "_/signup") 
+                    a.btn.btn-orangered(href="#{getRootURI() + '_/signup'}",
+                      rel="tooltip", data-tooltip="true", title="Join to get your own 'you.clickb.in'!") 
                       strong join!
               else
                 li
