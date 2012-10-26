@@ -9657,6 +9657,22 @@ body {
 #landing #footer .container {
   padding-top: 0px;
 }
+@media (max-width: 767px) {
+  #master-nav {
+    margin: 0;
+  }
+  #landing-promo {
+    margin-top: 10px;
+  }
+  #landing-promo .anchor-wrap .container {
+    margin-left: 7px;
+    margin-right: 7px;
+  }
+  #info .container {
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+}
 /**
  * User Styles
  */
@@ -9780,11 +9796,6 @@ body {
 }
 #landing-promo .subtitle {
   color: #999;
-}
-@media (max-width: 768px) {
-  #landing-promo {
-    margin-top: 10px;
-  }
 }
 h2,
 h1 {
