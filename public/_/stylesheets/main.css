@@ -8316,15 +8316,14 @@ body#landing {
   color: #f0a275;
 }
 #info .newsletter-wrapper > .inner form input[type="text"] {
-  border-color: #cc8b66;
-  color: #5e2708;
+  border-color: #96a8b6;
   font-weight: bold;
 }
 #info .newsletter-wrapper > .inner form input[type="text"]:-webkit-input-placeholder {
-  color: #c28e70;
+  color: #96a8b6;
 }
 #info .newsletter-wrapper > .inner form input[type="text"]:-moz-placeholder {
-  color: #c28e70;
+  color: #96a8b6;
 }
 #info .newsletter-wrapper > .inner form .block-input-wrapper {
   margin-right: 90px;
@@ -8353,6 +8352,7 @@ body#landing {
   padding-bottom: 7px;
 }
 #linkform #linkinput {
+  border-right: none;
   padding: 8px 14px 8px 14px;
   font-size: 16px;
   line-height: normal;
