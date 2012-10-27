@@ -19,7 +19,7 @@ var fs = require('fs'),
 
         // show the landing page
         return res.render('landing', {
-          title: 'ClickBin',
+          title: 'clickbin',
           bodyId: 'landing'
         })
       } else {

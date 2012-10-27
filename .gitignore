@@ -1,3 +1,4 @@
+.DS_Store
 lib-cov
 *.seed
 *.log
@@ -14,7 +15,8 @@ results
 node_modules
 npm-debug.log
 
-public/stylesheets/*.css
+public/_/stylesheets/*.css
 public/_/images/thumbs/x*
 public/_/images/.DS_Store
+public/_/.DS_Store
 public/.DS_Store

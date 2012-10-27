@@ -169,7 +169,18 @@ body {
   .anchor-wrap {
     padding: 60px 0 150px 0;
     background: transparent url('/_/images/waves.png') center 280px repeat-x;
+    -webkit-animation: waves 10s infinite linear;
   }
+  
+  @-webkit-keyframes waves{
+    from {
+      background-position: 0px 280px;
+    }
+    to {
+      background-position: 169px 280px;
+    }
+  }
+  
   .arrow {
     font-size: 20px;
     // color: #999;

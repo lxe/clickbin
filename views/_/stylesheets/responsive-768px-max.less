@@ -35,15 +35,29 @@
   .bin{
     padding-left: 10px;
     padding-right: 10px;
-    .privacy-controls{
-      text-align: center;
+    
+    .bins{
+      clear: both;
       float: none;
     }
-    .add-bin-or-link-container{
-      margin-right: 100px;
-      input#new-item-title{
-        width: 100%;
+    .controls{
+      // the point at which the link input field bumps up against the 
+      // public/private controls
+    }
+    .controls{
+      .privacy-controls{
+        text-align: center;
+        clear: both;
         float: none;
+        margin-bottom: 15px;
+        margin-top: 10px;
+      }
+      .add-link-controls{
+        .new-item-form{
+          .item-title-container{
+            margin-right:100px;
+          }
+        }
       }
     }
   }

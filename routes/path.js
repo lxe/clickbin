@@ -188,23 +188,24 @@ module.exports = function (app) {
 
 
 
-function errorTopLevelBin(req,res){
-  req.session.flash.error = "That root bin doesn't exist yet"
-  + " and only random top level bins can be created"
+function errorTopLevelBin(req, res){
+  req.session.flash.error = "Sorry. We couldn not find the clickbin you requested."
   return res.redirect('/')
 }
-function errorNotRootBinOwner(req,res){
-  req.session.flash.error = "You dont own that root bin"
+
+function errorNotRootBinOwner(req, res){
+  req.session.flash.error = "Sorry. You cannot access the clickbin you requested."
   return res.redirect('/')
 }
-function errorMaxBinPath(req,res){
+
+function errorMaxBinPath(req, res){
   // make sure bins dont get crazy...
-  req.session.flash.error = "Sorry! There's a max bin depth of 10 on all bin "
+  req.session.flash.error = "Too many levels of bins!"
     + "paths."
   return res.redirect('back')
 }
 
-function errorNameBin(req,res){
+function errorNameBin(req, res){
   req.session.flash.error = "You must <a href=\"/_/login\">register or sign "
     + "in</a> to name your bins. "
   return res.redirect('back')
