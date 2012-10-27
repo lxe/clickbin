@@ -9247,6 +9247,22 @@ a.badge:hover {
     overflow: visible !important;
   }
 }
+@-webkit-keyframes waves-landing {
+  from {
+    background-position: 0px 280px;
+  }
+  to {
+    background-position: 169px 280px;
+  }
+}
+@-webkit-keyframes waves-footer {
+  from {
+    background-position: 0px top;
+  }
+  to {
+    background-position: 169px top;
+  }
+}
 .bin .controls {
   /*    .add-link-controls{
       .new-item-form{
@@ -9673,6 +9689,7 @@ body {
   color: #999;
   text-align: right;
   background: url('/_/images/waves.png') top center repeat-x;
+  -webkit-animation: waves-footer 15s infinite linear;
   color: #fff;
   text-shadow: 1px 0 0 #0f293c;
 }
@@ -9842,15 +9859,7 @@ body {
 #landing-promo .anchor-wrap {
   padding: 60px 0 150px 0;
   background: transparent url('/_/images/waves.png') center 280px repeat-x;
-  -webkit-animation: waves 10s infinite linear;
-}
-@-webkit-keyframes waves {
-  from {
-    background-position: 0px 280px;
-  }
-  to {
-    background-position: 169px 280px;
-  }
+  -webkit-animation: waves-landing 15s infinite linear;
 }
 #landing-promo .arrow {
   font-size: 20px;
