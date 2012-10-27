@@ -51,6 +51,10 @@ mixin bin(bin)
 
 
 .bin.main.container
+  if publicBin
+    div.moon
+  else
+    div.sun
   .row
     .span9.controls
       .clearfix
