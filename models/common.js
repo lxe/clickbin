@@ -82,7 +82,7 @@ var common = module.exports = {
     if(_.any(config.reservedUsernames,function(name){
       return username === name
     })) return false
-    var valid = common.validateRegex(username,config.usernameRegex)
+    var valid = common.validateRegex(username,config.usernameRegexp)
     console.log('validateUsername: ' + valid)
     return valid
   }
