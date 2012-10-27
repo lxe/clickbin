@@ -31,16 +31,17 @@ var UserSchema = new Schema({
     type: String
     , unique : true
     , required : true
+    , validate : [ common.validateUsername, "username"]
   }
   , name : {
-    first: String,
-    last:  String
+    first: String
+    , last:  String
   }
   , email : {
     type : String
     , unique : true
     , sparse: true
-    , required : false
+    , required : true
     , validate : [ common.validateEmail, "email"]
   }
   , password : { 

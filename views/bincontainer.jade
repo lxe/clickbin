@@ -61,7 +61,7 @@ mixin bin(bin)
                 .input-append
                   button.btn(href="#")
                     //- i.icon-plus-sign 
-                    | Put it here
+                    | put it here
                   .item-title-container
                     input.span4.new-item-title#new-item-title(type="text", placeholder="add link or bin")
         if isOwner
@@ -82,15 +82,15 @@ mixin bin(bin)
               mixin bin(bin)
         else
           if authosizedUser
-            h4 Bins
+            h4 bins
             ul.items
               li.nobins
-                | Add a bin over there  
+                | add a bin over there  
                 i.icon-arrow-right
           else
             ul.items
               li.nobins
-                | This bin is empty
+                | this bin is empty
           //- li
           //-   form(action="#{bin.path}")#new-bin-form
           //-     .input-append
@@ -104,7 +104,7 @@ mixin bin(bin)
           
           if authosizedUser && bin.links.length == 0
             li.emptybin
-              | Nothing here yet. Add something:
+              | nothing here yet. add something:
           else  
             each link in bin.links
               mixin link(link)

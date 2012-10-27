@@ -11,7 +11,7 @@ block body
           form(method="POST", style="margin-bottom: 0")
             // Username
             .control-group
-              label.control-label(for="inputUsername") User name:
+              label.control-label(for="inputUsername") user name:
               .controls
                 input.input-block-level(type="text",name="inputUsername",
                   id="inputUsername",
@@ -20,7 +20,7 @@ block body
                   p.text-error #{errors.inputUsername.msg}
             // Password
             .control-group
-              label.control-label(for="inputPassword") Password:
+              label.control-label(for="inputPassword") password:
               .controls
                 input.input-block-level(type="password",name="inputPassword",
                   id="inputPassword",
@@ -29,20 +29,20 @@ block body
                   p.text-error #{errors.inputPassword.msg}
             // Password again
             .control-group
-              label.control-label(for="inputPasswordAgain") Password again:
+              label.control-label(for="inputPasswordAgain") password again:
               .controls
                 input.input-block-level(type="password",name="inputPasswordAgain",id="inputPasswordAgain",placeholder="Password")
                 if(errors.inputPasswordAgain)
                   p.text-error #{errors.inputPasswordAgain.msg}
             // Email
             .control-group
-              label.control-label(for="inputEmail") Email (optional):
+              label.control-label(for="inputEmail") email:
               .controls
                 input.input-block-level(type="text",name="inputEmail",id="inputEmail",placeholder="",value=inputEmail, style="margin-bottom: 0")
                 if(errors.inputEmail)
                   p.text-error #{errors.inputEmail.msg}
                 else
-                  p.muted In case you forget your password
+                  p.muted in case you forget your password
             .control-group
               .controls
-                button.btn.btn-navy(type="submit",style="margin-right:10px") Sign up
+                button.btn.btn-navy(type="submit",style="margin-right:10px") sign up
