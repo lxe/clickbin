@@ -9263,6 +9263,17 @@ a.badge:hover {
     background-position: 169px top;
   }
 }
+@-webkit-keyframes planets {
+  25% {
+    -webkit-transform: translatey(-300px);
+  }
+  50% {
+    -webkit-transform: translatey(0px);
+  }
+  75% {
+    -webkit-transform: translatey(-300px);
+  }
+}
 .bin .controls {
   /*    .add-link-controls{
       .new-item-form{
@@ -9716,6 +9727,25 @@ body {
 body {
   font-size: 14px;
   background: #f9f8f7;
+}
+body.private {
+  background-color: #222;
+}
+body .moon,
+body .sun {
+  background-repeat: no-repeat;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  right: 30px;
+  bottom: 0px;
+  -webkit-animation: planets 160s infinite linear;
+}
+body .moon {
+  background-image: url('/_/images/moon.png');
+}
+body .sun {
+  background-image: url('/_/images/sun.png');
 }
 .btn-lightblue {
   background-color: #bacbd8 !important;

@@ -30,7 +30,24 @@
 body {
   font-size: 14px;
   background: lighten(#E5DED8, 10%);
-  // background-color: #e0e4cc;
+  &.private{
+    background-color: #222;
+  }
+  .moon, .sun{
+    background-repeat: no-repeat;
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    right: 30px;
+    bottom: 0px;
+    -webkit-animation: planets @planetSpeed infinite linear;
+  }
+  .moon{
+    background-image: url('/_/images/moon.png');
+  }
+  .sun{
+    background-image: url('/_/images/sun.png');
+  }
 }
 
 
