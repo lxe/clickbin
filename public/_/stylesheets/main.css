@@ -9755,12 +9755,16 @@ body .sun {
   right: 30px;
   bottom: 0px;
   -webkit-animation: planets 160s infinite linear;
+  z-index: -1;
 }
 body .moon {
   background-image: url('/_/images/moon.png');
 }
 body .sun {
   background-image: url('/_/images/sun.png');
+}
+body .breadcrumbs {
+  white-space: normal;
 }
 .btn-lightblue {
   background-color: #bacbd8 !important;

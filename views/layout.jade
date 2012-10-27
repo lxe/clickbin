@@ -21,7 +21,7 @@ html(lang='en')
             .container
               ul.nav
                 li
-                  .btn-group.bins
+                  .btn-group.bins.breadcrumbs
                     if typeof(profile) !== 'undefined' && profile.username
                       a(href='/').brand 
                         strong #{profile.username}
