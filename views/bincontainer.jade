@@ -50,7 +50,7 @@ mixin bin(bin)
 
 .bin.main.container
   if isOwner
-    div(style='float:right;margin-bottom:15px')
+    .privacy-controls
       .btn-group
         a.btn(href="/_/bin/#{bin.id}/public",class=bin.public?'active':'')
           i.icon-unlock
@@ -88,7 +88,9 @@ mixin bin(bin)
 
       form(action="#{bin.path}")#new-item-form
         .input-append
-          input.span4(type="text", placeholder="add link or bin")#new-item-title
-          button.btn(href="#")
-            //- i.icon-plus-sign 
-            | Put it here
+          div.pull-right(style="width:110px")
+            button.input-block-level.btn(href="#")
+              | Put it here 
+              i.icon-plus-sign
+          .add-bin-or-link-container
+            input.span4(type="text", placeholder="add link or bin")#new-item-title

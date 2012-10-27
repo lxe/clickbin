@@ -9247,6 +9247,13 @@ a.badge:hover {
     overflow: visible !important;
   }
 }
+.bin .privacy-controls {
+  float: right;
+  margin-bottom: 15px;
+}
+.bin input#new-item-title {
+  float: right;
+}
 .btn-superlight {
   background-color: #cae0e8 !important;
   background-repeat: repeat-x;
@@ -9645,7 +9652,7 @@ body {
   color: #c1dbef;
 }
 #footer .container {
-  padding-top: 7px;
+  padding-top: 55px;
   padding-right: 17px;
 }
 #landing #body {
@@ -9654,6 +9661,9 @@ body {
 #landing #footer {
   height: 24px;
   background: none;
+}
+#landing #footer .container {
+  padding-top: 0px;
 }
 /**
  * User Styles
@@ -10215,5 +10225,26 @@ a {
   }
   #info .newsletter-wrapper {
     margin-top: 20px;
+  }
+  #landing #footer .container {
+    padding-top: 7px;
+  }
+  .bin {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .bin .privacy-controls {
+    text-align: center;
+    float: none;
+  }
+  .bin .add-bin-or-link-container {
+    margin-right: 100px;
+  }
+  .bin .add-bin-or-link-container input#new-item-title {
+    width: 100%;
+    float: none;
+  }
+  .alert {
+    border-radius: 0px 0px 0px 0px;
   }
 }
