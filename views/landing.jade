@@ -54,9 +54,14 @@ block body
           h2 what does clickb.in do?
           p use bins to collect the things you find online without ever having to login. Think of it like a desktop for the internet.
           .well
-            #pokemon
+            .bins
+              .btn-group(style="overflow:hidden")
+                a.btn.brand(href="http://vicapow.clickb.in") vicapow.clickb.in
+                a.btn(href="http://vicapow.clickb.in/entertainment") entertainment
+                a.btn(href="http://vicapow.clickb.in/entertainment/funny") funny
+                a.btn(href="http://vicapow.clickb.in/entertainment/funny/videos") videos
         .span4
-          h2 Example Bins
+          h2 example bins
           .well
             .example-bins
               a.btn(href="http://clickb.in/2u") hipsters
@@ -71,12 +76,11 @@ block body
         //-   .well
         //-     #address-bar
         .span4
+          h2 more features coming soon!
           .newsletter-wrapper
             .inner
               iframe.hidden(src="about:blank", id="newsletter-target", name="newsletter-target")
               p 
-                i.icon-envelope  
-                span.headline more features are coming soon! 
                 | sign up for our newsletter to stay tuned or send us a 
                 a(href="http://clickb.in/2p",style="text-decoration:underline") tweet 
                 | to request a feature
