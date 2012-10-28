@@ -97,9 +97,10 @@ mixin bin(bin)
                 | add a bin over there  
                 i.icon-arrow-right
           else
-            ul.items
-              li.nobins
-                | this bin is empty
+            if bin.links.length === 0
+              ul.items
+                li.nobins
+                  | this bin is empty
           //- li
           //-   form(action="#{bin.path}")#new-bin-form
           //-     .input-append
@@ -111,7 +112,7 @@ mixin bin(bin)
       .links
         ul.items.clearfix.row-fluid
           
-          if authosizedUser && bin.links.length == 0
+          if authosizedUser && bin.links.length === 0
             li.emptybin
               | nothing here yet. add something:
           else  

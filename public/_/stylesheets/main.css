@@ -10066,6 +10066,9 @@ body#landing {
   min-height: 32px;
   margin: 0;
 }
+#info .example-bins .btn {
+  margin: 5px;
+}
 #linkform {
   margin-bottom: 0;
 }
