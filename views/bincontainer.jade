@@ -52,6 +52,9 @@ mixin bin(bin)
 
 .bin.main.container
   if publicBin
+    //- .alert(style="margin-bottom:20px;border-radius: 4px 4px 4px 4px")
+    //-   i.icon-exclamation-sign 
+    //-   | Your bin has now become private! only you can access it.
     div.moon
   else
     div.sun
@@ -71,10 +74,12 @@ mixin bin(bin)
         if isOwner
           .privacy-controls
             .btn-group
-              a.btn(href="/_/bin/#{bin.id}/public",class=bin.public?'active':'')
+              a.btn.public(href="/_/bin/#{bin.id}/public",class=bin.public?'active':''
+                , data-placement="top")
                 i.icon-unlock
                 |  public
-              a.btn(href="/_/bin/#{bin.id}/private",class=bin.public?'':'active')
+              a.btn.private(href="/_/bin/#{bin.id}/private",class=bin.public?'':'active'
+                , rel="tooltip", data-placement="top", data-original-title="prevent others from seeing this bin")
                 i.icon-lock
                 |  private
     .span3.bins
