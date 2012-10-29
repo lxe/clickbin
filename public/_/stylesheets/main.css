@@ -9729,7 +9729,22 @@ body {
   background: #f9f8f7;
 }
 body.private {
-  background-color: #222;
+  background-color: #190a14;
+  background-image: -moz-linear-gradient(top, #290e00, #000432);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#290e00), to(#000432));
+  background-image: -webkit-linear-gradient(top, #290e00, #000432);
+  background-image: -o-linear-gradient(top, #290e00, #000432);
+  background-image: linear-gradient(to bottom, #290e00, #000432);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff290e00', endColorstr='#ff000432', GradientType=0);
+  background-color: #190a14;
+  background-image: -moz-linear-gradient(top, #290e00, #000432);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#290e00), to(#000432));
+  background-image: -webkit-linear-gradient(top, #290e00, #000432);
+  background-image: -o-linear-gradient(top, #290e00, #000432);
+  background-image: linear-gradient(to bottom, #290e00, #000432);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff290e00', endColorstr='#ff000432', GradientType=0);
 }
 body .moon,
 body .sun {
@@ -9740,12 +9755,16 @@ body .sun {
   right: 30px;
   bottom: 0px;
   -webkit-animation: planets 160s infinite linear;
+  z-index: -1;
 }
 body .moon {
   background-image: url('/_/images/moon.png');
 }
 body .sun {
   background-image: url('/_/images/sun.png');
+}
+body .breadcrumbs {
+  white-space: normal;
 }
 .btn-lightblue {
   background-color: #bacbd8 !important;
@@ -9876,7 +9895,7 @@ body .sun {
   text-shadow: 0 1px 0px #ffffff;
 }
 #info h2 {
-  padding-bottom: 15px;
+  padding-top: 15px;
 }
 #landing-promo .add-on.brand {
   font-size: 28px;
@@ -10046,6 +10065,9 @@ body#landing {
 #info #newsletter {
   min-height: 32px;
   margin: 0;
+}
+#info .example-bins .btn {
+  margin: 5px;
 }
 #linkform {
   margin-bottom: 0;

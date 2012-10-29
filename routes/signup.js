@@ -13,15 +13,21 @@ module.exports = function(app) {
     })
   })
   app.post('/_/signup',function(req, res, next) {
-    req.assert('inputUsername','must be at least 3 characters and start with a letter').len(3,64).regex(/^[a-zA-Z]+/)
-    req.assert('inputPassword','must be at least 6 characters').len(6,64)
-    req.assert('inputPasswordAgain','passwords must match').is(req.body.inputPassword)
-    if(req.body.inputEmail) 
-      // if an email was provided, name sure its valid
-      req.assert('inputEmail','invalid email').isEmail()
-    else delete req.body.inputEmail // make sure it's not set and not just an empty string
-    //req.assert('inputUsername','username is at least 3 characters long').notEmpty() //.min(3).max(64).isAlphanumeric().regex(/^[a-zA-Z]+/)
-    var errors = req.validationErrors(true)
+    var errors = {}
+    req.sanitize('inputUsername').trim()
+    req.validate('inputUsername','numbers or letters and at least 3 characters long').len(3,64).regex(config.usernameRegexp)
+    req.validate('inputPassword','must be at least 6 characters').len(6,64)
+    req.validate('inputPasswordAgain','passwords must match').is(req.body.inputPassword)
+    if(req.body.inputEmail){
+      req.sanitize('inputEmail').trim()
+      req.validate('inputEmail','invalid email').isEmail().notEmpty()
+    }else{
+      errors.inputEmail = {
+        msg : 'the email field is required'
+      }
+    }
+    //req.validate('inputUsername','username is at least 3 characters long').notEmpty() //.min(3).max(64).isAlphanumeric().regex(/^[a-zA-Z]+/)
+    _.extend(errors,req.validationErrors(true))
     
     if(_.any(config.reservedUsernames,function(name){
       return req.body.inputUsername.toLowerCase() === name

@@ -10,7 +10,7 @@ module.exports = function(url,parts,$){
   if(parts[0]==='plus'){
     var page = {}
     // try to get the best title from the page
-    var fullname = $('span[guidedhelpid="profile_name"]')
+    var fullname = $('span[guidedhelpid="profile_name"] span')
     if(fullname.length) page.title = fullname.first().text()
     else{
       _.any(['title','h1','h2','h3','h4','h5','h6'],function(tag){

@@ -19,7 +19,7 @@ block body
                 .input-append
                   div(style="width:160px").pull-right
                     button.btn-orangered.input-block-level.btn.btn-large(type="submit")
-                      strong Place in a bin 
+                      strong put in a bin 
                   div(style="margin-right:160px")
                     input#linkinput(type="text", name="uri", placeholder="ie., reddit.com")
               .clearfix
@@ -27,7 +27,7 @@ block body
                 
                   h2.orangered 
                     span.subtitle step 2:  
-                    | place it in a clickbin  
+                    | put it in a clickbin  
                     i.icon-circle-arrow-up.arrow  
           //- .span1
           //-   .or or 
@@ -49,24 +49,41 @@ block body
   #info
     .container 
       //- span.subtitle &nbsp;
-      h2 What does clickb.in do?
       .row
         .span4
-          p With clickbin you no longer have to email yourself links. Easily organize all your bookmarks by placing them in clickbins:
+          h2 what does clickb.in do?
+          p use bins to collect the things you find online without ever having to login. Think of it like a desktop for the internet.
           .well
-            #pokemon
+            .bins
+              .btn-group(style="overflow:hidden")
+                a.btn.brand(href="http://vicapow.clickb.in") vicapow.clickb.in
+                a.btn(href="http://vicapow.clickb.in/entertainment") entertainment
+                a.btn(href="http://vicapow.clickb.in/entertainment/funny") funny
+                a.btn(href="http://vicapow.clickb.in/entertainment/funny/videos") videos
         .span4
-          p Easily bookmark pages you enjoy by placing <strong>clickb.in/</strong> in front of the address:
+          h2 example bins
           .well
-            #address-bar
+            .example-bins
+              a.btn(href="http://clickb.in/2u") hipsters
+              a.btn(href="http://clickb.in/2m") cats
+              a.btn(href="http://clickb.in/2q") steve
+              a.btn(href="http://clickb.in/2v") cafes
+              a.btn(href="http://nodejs.clickb.in/core-community") nerds
+              a.btn(href="http://vicapow.clickb.in/jobs") jobs
+              a.btn(href="http://nodejs.clickb.in") node.js
+        //- .span4
+        //-   p easily bookmark pages you enjoy by placing <strong>clickb.in/</strong> in front of the address:
+        //-   .well
+        //-     #address-bar
         .span4
+          h2 more features coming soon!
           .newsletter-wrapper
             .inner
               iframe.hidden(src="about:blank", id="newsletter-target", name="newsletter-target")
               p 
-                i.icon-envelope  
-                span.headline More features are coming soon! 
-                | Sign up for our newsletter to stay tuned:
+                | sign up for our newsletter to stay tuned or send us a 
+                a(href="http://clickb.in/2p",style="text-decoration:underline") tweet 
+                | to request a feature
               form.form-inline#newsletter(action='https://docs.google.com/spreadsheet/formResponse?formkey=dHpHWkpHNWEwYjhRUmVlX2Z3bFZsc2c6MQ&ifq', 
                 method='POST', target="newsletter-target")
                 input(type="hidden", value="Submit", name="submit")

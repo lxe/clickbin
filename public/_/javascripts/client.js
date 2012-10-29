@@ -1,5 +1,5 @@
 $(function() {
-  $(".ellipsis").ellipsis()
+  //$(".ellipsis").ellipsis()
 
   window.onresize = function() {
     $(".ellipsis").ellipsis()
@@ -39,5 +39,9 @@ $(function() {
     return true
   })
 
-  $('[rel=tooltip]').tooltip() 
+  $('[rel=tooltip]').tooltip()
+  
+  $('a.btn.public').tooltip({
+    title : 'others can view this bin at ' + window.location.href
+  })
 })

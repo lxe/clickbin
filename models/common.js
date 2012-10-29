@@ -3,6 +3,8 @@
  */
 
 var crypto = require('crypto')
+  , _ = require('underscore')
+  , config = require('../config')
 
 var common = module.exports = {
   
@@ -80,8 +82,9 @@ var common = module.exports = {
     if(_.any(config.reservedUsernames,function(name){
       return username === name
     })) return false
-    return common.validateRegex(username,
-      /^[a-zA-z]{1,}[a-zA-Z0-9]{2,}$/)
+    var valid = common.validateRegex(username,config.usernameRegexp)
+    console.log('validateUsername: ' + valid)
+    return valid
   }
 
   /**

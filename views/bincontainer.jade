@@ -51,6 +51,13 @@ mixin bin(bin)
 
 
 .bin.main.container
+  if publicBin
+    //- .alert(style="margin-bottom:20px;border-radius: 4px 4px 4px 4px")
+    //-   i.icon-exclamation-sign 
+    //-   | Your bin has now become private! only you can access it.
+    div.moon
+  else
+    div.sun
   .row
     .span9.controls
       .clearfix
@@ -61,16 +68,18 @@ mixin bin(bin)
                 .input-append
                   button.btn(href="#")
                     //- i.icon-plus-sign 
-                    | Put it here
+                    | put it here
                   .item-title-container
                     input.span4.new-item-title#new-item-title(type="text", placeholder="add link or bin")
         if isOwner
           .privacy-controls
             .btn-group
-              a.btn(href="/_/bin/#{bin.id}/public",class=bin.public?'active':'')
+              a.btn.public(href="/_/bin/#{bin.id}/public",class=bin.public?'active':''
+                , data-placement="top")
                 i.icon-unlock
                 |  public
-              a.btn(href="/_/bin/#{bin.id}/private",class=bin.public?'':'active')
+              a.btn.private(href="/_/bin/#{bin.id}/private",class=bin.public?'':'active'
+                , rel="tooltip", data-placement="top", data-original-title="prevent others from seeing this bin")
                 i.icon-lock
                 |  private
     .span3.bins
@@ -82,15 +91,20 @@ mixin bin(bin)
               mixin bin(bin)
         else
           if authosizedUser
-            h4 Bins
+            h4 bins
             ul.items
               li.nobins
-                | Add a bin over there  
+                | add a bin over there  
                 i.icon-arrow-right
           else
-            ul.items
-              li.nobins
-                | This bin is empty
+            if bin.links.length === 0
+              ul.items
+                li.nobins
+                  | this bin is empty
+            else
+              ul.items
+                li.nobins 
+                  | (no sub bins)
           //- li
           //-   form(action="#{bin.path}")#new-bin-form
           //-     .input-append
@@ -102,9 +116,9 @@ mixin bin(bin)
       .links
         ul.items.clearfix.row-fluid
           
-          if authosizedUser && bin.links.length == 0
+          if authosizedUser && bin.links.length === 0
             li.emptybin
-              | Nothing here yet. Add something:
+              | nothing here yet. add something:
           else  
             each link in bin.links
               mixin link(link)

@@ -31,7 +31,10 @@ body {
   font-size: 14px;
   background: lighten(#E5DED8, 10%);
   &.private{
-    background-color: #222;
+    // purple and blue
+    //#gradient > .vertical(#2d1d44,#913b44);
+    //#gradient > .vertical(#290e00,#6f2500);
+    #gradient > .vertical(#290e00,#000432);
   }
   .moon, .sun{
     background-repeat: no-repeat;
@@ -41,12 +44,17 @@ body {
     right: 30px;
     bottom: 0px;
     -webkit-animation: planets @planetSpeed infinite linear;
+    z-index: -1;
   }
   .moon{
     background-image: url('/_/images/moon.png');
   }
   .sun{
     background-image: url('/_/images/sun.png');
+  }
+  
+  .breadcrumbs{
+    white-space: normal;
   }
 }
 
@@ -168,7 +176,7 @@ body {
 }
 
 #info h2 {
-  padding-bottom: 15px;
+  padding-top: 15px;
 }
 
 
@@ -357,8 +365,11 @@ body#landing {
     min-height: 32px;
     margin: 0;
   }
-  // padding-left: 60px;
-  // border-left: #dedede 1px solid;
+  .example-bins{
+    .btn{
+      margin: 5px;
+    }
+  }
 }
 
 #landing-form {

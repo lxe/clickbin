@@ -22,6 +22,11 @@ var app = module.exports = express()
 
 app.configure(function() {
   
+  app.use(function (req, res, next) {
+      res.setHeader("X-Powered-By",'Awesomeness. (that. and Express)');
+      next();
+  });
+  
   if(config.logging){
     app.use(function(req, res, next){
       if(req.url.length < 2 || req.url.length > 2 && req.url[1] !== '_')

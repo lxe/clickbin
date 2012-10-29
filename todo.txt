@@ -1,10 +1,10 @@
 -- before release --
-make mobile friendly!!
-allow anonymous bin users to save their bins to an account, if they choose.
-implement password reset. maybe use this module? https://github.com/substack/node-password-reset
+// done?
 -- eventually --
+implement password reset. maybe use this module? https://github.com/substack/node-password-reset
+allow anonymous bin users to save their bins to an account, if they choose.
 bookmarklet
 better icons
-make bins/links nameable/movable/sortable
+make bins/links renameable / movable / sortable
 allow the titles of links to be changeable
 add scraper for github profiles. ie., https://github.com/paulmillr
