@@ -11,6 +11,8 @@ var _          = require('underscore')
   , mongo      = require('mongoose')
   , less       = require('less')
   , config     = require('./config')
+  , sm         = require('sitemap')
+
 
 /*
  * ============================================================================
@@ -137,6 +139,23 @@ app.configure('development', function() {
 app.configure('production', function() {
   app.use(express.errorHandler())
 })
+
+// SEO
+var sitemap = sm.createSitemap({
+      hostname: 'http://clickb.in'
+    , cachetime: 600000
+    , urls: [
+        { url: '/_/signup', changefreq: 'monthly', priority: 0.5 }
+      , { url: '/_/login', changefreq: 'monthly', priority: 0.5 }
+    ]
+})
+
+app.get('/sitemap.xml', function(req, res) {
+  return sitemap.toXML( function (xml) {
+      res.header('Content-Type', 'application/xml');
+      return res.send( xml );
+  });
+});
 
 // Routes
 require('./routes')(app)
