@@ -70,7 +70,6 @@ module.exports = function(app){
         if (err) return next(err)
         else if (children.length > 0){
           req.session.flash.error = "You can only remove bins that are empty."
-          console.log('redirecting to parent: '+parent)
           if(parent) return res.redirect(parent)
           else if(username) return res.redirect(User.getURI(req,username))
         }
@@ -95,7 +94,6 @@ module.exports = function(app){
   
   function setBinAccess(access,req,res,next){
     Bin.findById(req.params.binID,function(err, bin){
-      console.log(bin)
       if(err) return next(err)
       if(
         // the bin exists
@@ -116,7 +114,6 @@ module.exports = function(app){
         )
       ){
         // TODO: make the bin public/private
-        console.log('access: '+access)
         bin.public = access
         bin.save(function(err){
           if(err) return next(err)

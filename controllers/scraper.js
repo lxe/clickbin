@@ -40,9 +40,7 @@ module.exports = {
       // is the result an image?
       var ext = imageType(mime)
       if(ext){
-        console.log('type image')
         var name = uuid.v4() + '.' + ext
-        console.log('name: '+name)
         return saveThumbnails(body, name, function(err,icon){
           if(err) return fail(err, mime)
           else return cb(null,{
