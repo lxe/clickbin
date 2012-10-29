@@ -1,10 +1,13 @@
 -- before release --
 // done?
 -- eventually --
+drag and drop of links
 implement password reset. maybe use this module? https://github.com/substack/node-password-reset
+spaces in bins
+renaming of bins / renaming of links
 allow anonymous bin users to save their bins to an account, if they choose.
 bookmarklet
 better icons
 make bins/links renameable / movable / sortable
-allow the titles of links to be changeable
 add scraper for github profiles. ie., https://github.com/paulmillr
+example bins: furniture
