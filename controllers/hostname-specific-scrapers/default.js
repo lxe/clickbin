@@ -16,7 +16,29 @@ module.exports = function(url,parts,$){
     return page.title // stop if we found a title
   })
   
-  page.icon = $('link[rel="icon"]')
+  page.icon = $('link[rel="apple-touch-icon-precomposed"]')
+  if(page.icon.length && page.icon.length > 1){
+    var max_size = -1
+    var largest_icon = null
+    _.each(page.icon,function(icon){
+      var $icon = $(icon)
+      var size = $icon.attr('sizes')
+      console.log('size: '+size)
+      if(size){
+        size = size.split('x')[0]
+        if(size) size = Number(size)
+        else size = 0
+      }else size = 0
+      if(size > max_size){
+        max_size = size
+        largest_icon = $icon
+        console.log('largest icon: ' + largest_icon.first().attr('href'))
+      }
+    })
+    page.icon = largest_icon
+  }
+  if(!page.icon.length) page.icon = $('link[rel="apple-touch-icon"]')
+  if(!page.icon.length) page.icon = $('link[rel="icon"]')
   if(page.icon.length){
     page.icon = page.icon.first().attr('href') // could still be empty...
     var icon_url = node_url.parse(page.icon)
