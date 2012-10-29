@@ -47,11 +47,11 @@ $(function() {
 
   $('#new-item-title').tooltip({ 
     placement: 'bottom'
-    , title: 'Name your bin'
+    , title: 'Name your bin or paste a web address'
     , trigger: 'manual'
   })
 
-  $('#add-bin').on('click', function(event) {
+  $('.add-something').on('click', function(event) {
     event.preventDefault();
     $('#new-item-title').focus();
     $('#new-item-title').tooltip('show');

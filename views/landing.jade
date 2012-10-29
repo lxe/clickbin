@@ -72,33 +72,39 @@ block body
         .span4
           h2 some examples:
           .well
-            .example-bins
-              a.btn(href="http://clickb.in/33") furniture
-              a.btn(href="http://clickb.in/34") interiors
-              a.btn(href="http://clickb.in/2u") hipsters
-              a.btn(href="http://clickb.in/2m") cats
-              a.btn(href="http://clickb.in/2q") steve
-              a.btn(href="http://clickb.in/2v") cafes
-              a.btn(href="http://nodejs.clickb.in/core-community") nerds
-              a.btn(href="http://vicapow.clickb.in/jobs") jobs
-              a.btn(href="http://nodejs.clickb.in") node.js
-            //- I'm more of a fan of the buttons then the long urls. seems friendlier
-            //- ul.example-bins
-            //-   //- li
-            //-   //-   a(href="http://clickb.in/2u") clickb.in/<strong>hipsters</strong>
-            //-   //- li
-            //-   //-   a(href="http://clickb.in/2m") cats
-            //-   //- li
-            //-   //-   a(href="http://clickb.in/2q") steve
-            //-   //- li
-            //-   //-   a(href="http://clickb.in/2v") cafes
-            //- 
-            //-   li
-            //-     a(href="http://vicapow.clickb.in/jobs") vicapow.clickb.in/<strong>jobs</strong>
-            //-   li
-            //-     a(href="http://nodejs.clickb.in") <strong>nodejs</strong>.clickb.in
-            //-   li
-            //-     a(href="http://nodejs.clickb.in/core-community") <strong>nodejs</strong>.clickb.in/<strong>core-community</strong>
+            //- .example-bins
+            //-   a.btn(href="http://clickb.in/33") furniture
+            //-   a.btn(href="http://clickb.in/34") interiors
+            //-   a.btn(href="http://clickb.in/2u") hipsters
+            //-   a.btn(href="http://clickb.in/2m") cats
+            //-   a.btn(href="http://clickb.in/2q") steve
+            //-   a.btn(href="http://clickb.in/2v") cafes
+            //-   a.btn(href="http://nodejs.clickb.in/core-community") nerds
+            //-   a.btn(href="http://vicapow.clickb.in/jobs") jobs
+            //-   a.btn(href="http://nodejs.clickb.in") node.js
+
+            //- I'm more of a fan of the buttons then the long urls. seems friendlier.
+
+
+
+            //- We need to show users how our URLs operate. They are designed to be friendly. Also buttons signify "action"
+            //- Links signify navigation and are suited better here.
+            ul.example-bins
+              //- li
+              //-   a(href="http://clickb.in/2u") clickb.in/<strong>hipsters</strong>
+              //- li
+              //-   a(href="http://clickb.in/2m") cats
+              //- li
+              //-   a(href="http://clickb.in/2q") steve
+              //- li
+              //-   a(href="http://clickb.in/2v") cafes
+            
+              li
+                a(href="http://vicapow.clickb.in/jobs") vicapow.clickb.in/<strong>jobs</strong>
+              li
+                a(href="http://nodejs.clickb.in") <strong>nodejs</strong>.clickb.in
+              li
+                a(href="http://nodejs.clickb.in/core-community") <strong>nodejs</strong>.clickb.in/<strong>core-community</strong>
         //- .span4
         //-   p easily bookmark pages you enjoy by placing <strong>clickb.in/</strong> in front of the address:
         //-   .well
