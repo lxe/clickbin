@@ -105,15 +105,14 @@ module.exports = function(app){
           req.session.user 
             && req.session.user.loggedIn 
             && req.session.user.username === bin.username
-          // or
-          ||
+          // if we wanted to enable anounymous bins the option to be private...
           // the user is loggedout but owns the bin, and the bin is an anounymous 
           // bin
-          !bin.username
-            && req.sessionID === bin.sessionID
+          // || !bin.username
+          //   && req.sessionID === bin.sessionID
         )
       ){
-        // TODO: make the bin public/private
+        // make the bin public or private
         bin.public = access
         bin.save(function(err){
           if(err) return next(err)
