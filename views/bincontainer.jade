@@ -58,67 +58,69 @@ mixin bin(bin)
     div.moon
   else
     div.sun
-  .row
-    .span9.controls
-      .clearfix
-        if authosizedUser
-          .row.span5
-            .add-link-controls
-              form.new-item-form#new-item-form(action="#{bin.path}", style="margin-bottom: 0")
-                .input-append
-                  button.btn(href="#")
-                    //- i.icon-plus-sign 
-                    | put it here
-                  .item-title-container
-                    input.span4.new-item-title#new-item-title(type="text", placeholder="add link or bin")
-        if isOwner
-          .privacy-controls
-            .btn-group
-              a.btn.public(href="/_/bin/#{bin.id}/public",class=bin.public?'active':''
-                , data-placement="top")
-                i.icon-unlock
-                |  public
-              a.btn.private(href="/_/bin/#{bin.id}/private",class=bin.public?'':'active'
-                , rel="tooltip", data-placement="top", data-original-title="prevent others from seeing this bin")
-                i.icon-lock
-                |  private
-    .span3.bins
-      .well
-        if children.length > 0
-          h4 Bins
-          ul.items
-            each bin in children
-              mixin bin(bin)
-        else
-          if authosizedUser
-            h4 bins
+    .row
+      .span3.bins
+        .well
+          if children.length > 0
+            h4 Bins
             ul.items
-              li.nobins
-                | add a bin over there  
-                i.icon-arrow-right
+              each bin in children
+                mixin bin(bin)
           else
-            if bin.links.length === 0
+            if authosizedUser
+              h4 bins
               ul.items
                 li.nobins
-                  | this bin is empty
+                  a#add-bin(href='#add') Add a bin
+                  //- i.icon-arrow-right
             else
-              ul.items
-                li.nobins 
-                  | (no sub bins)
-          //- li
-          //-   form(action="#{bin.path}")#new-bin-form
-          //-     .input-append
-          //-       input.span2(type="text", placeholder="add bin")#new-bin-title
-          //-       button.btn(href="#")
-          //-         i.icon-plus-sign
-    .span9.links
-      .clearfix 
-      .links
-        ul.items.clearfix.row-fluid
-          
-          if authosizedUser && bin.links.length === 0
-            li.emptybin
-              | nothing here yet. add something:
-          else  
-            each link in bin.links
-              mixin link(link)
+              if bin.links.length === 0
+                ul.items
+                  li.nobins
+                    | this bin is empty
+              else
+                ul.items
+                  li.nobins 
+                    | (no sub bins)
+            //- li
+            //-   form(action="#{bin.path}")#new-bin-form
+            //-     .input-append
+            //-       input.span2(type="text", placeholder="add bin")#new-bin-title
+            //-       button.btn(href="#")
+            //-         i.icon-plus-sign
+      .span9
+        if authosizedUser
+          .row-fluid
+            .span8(style="margin-bottom: 15px")
+              .add-link-controls
+                form.new-item-form.form-inline#new-item-form(action="#{bin.path}", style="margin-bottom: 0")
+                  .item-title-container.input-append
+                    input.span12.new-item-title#new-item-title(type="text", placeholder="add link or bin")
+                    button.btn put it here
+            if isOwner && typeof(profile) !== 'undefined'
+              .span4(style="margin-bottom: 15px")
+                .privacy-controls.pull-right
+                  .btn-group
+                    a.btn.public(href="/_/bin/#{bin.id}/public",class=bin.public?'active':''
+                      , data-placement="top")
+                      i.icon-eye-open
+                      |  public
+                    a.btn.private(href="/_/bin/#{bin.id}/private",class=bin.public?'':'active'
+                      , rel="tooltip", data-placement="top", data-original-title="prevent others from seeing this bin")
+                      i.icon-eye-close
+                      |  private
+            else 
+              .span4
+                .privacy-controls.pull-right
+                  .btn.disabled.active
+                    i.icon-eye-open
+                    |  public bin
+        .links
+          ul.items.clearfix.row-fluid
+            
+            if authosizedUser && bin.links.length === 0
+              li.emptybin
+                | nothing here yet. add something:
+            else  
+              each link in bin.links
+                mixin link(link)

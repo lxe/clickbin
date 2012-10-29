@@ -7765,42 +7765,6 @@ a.badge:hover {
     -webkit-transform: translateY(-300px);
   }
 }
-.bin .controls {
-  /*    .add-link-controls{
-      .new-item-form{
-        .item-title-container{
-          float: left;
-        }
-        button{
-          width: 100px;
-        }
-      }
-    }*/
-
-}
-.bin .controls .add-link-controls .new-item-form {
-  width: 100%;
-}
-.bin .controls .add-link-controls .new-item-form button {
-  width: 100px;
-  float: right;
-  margin-left: 0px;
-}
-.bin .controls .add-link-controls .new-item-form .item-title-container {
-  margin-right: 113px;
-  float: none;
-}
-.bin .controls .add-link-controls .new-item-form .item-title-container .new-item-title {
-  width: 100%;
-  display: block;
-}
-.bin .controls .privacy-controls {
-  float: right;
-  margin-bottom: 15px;
-}
-.bin .controls {
-  float: right;
-}
 .btn-superlight {
   background-color: #cae0e8 !important;
   background-repeat: repeat-x;

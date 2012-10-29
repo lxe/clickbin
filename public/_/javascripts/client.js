@@ -44,4 +44,20 @@ $(function() {
   $('a.btn.public').tooltip({
     title : 'others can view this bin at ' + window.location.href
   })
+
+  $('#new-item-title').tooltip({ 
+    placement: 'bottom'
+    , title: 'Name your bin'
+    , trigger: 'manual'
+  })
+
+  $('#add-bin').on('click', function(event) {
+    event.preventDefault();
+    $('#new-item-title').focus();
+    $('#new-item-title').tooltip('show');
+  })
+
+  $('#new-item-title').on('blur', function(event) {
+    $('#new-item-title').tooltip('hide');
+  })
 })
