@@ -23,7 +23,7 @@ module.exports = function(url,subdomains){
     if (uri === undefined) 
       // no path and no uri? we should never get here.
       // the earlier '/' route should take precidence but just incase...
-      return new Error("Cannot create bin. At this point bins can only contain letters, numbers, and dashes.")
+      return new Error("Cannot create bin. bins can only contain letters, numbers, and dashes.")
   
   }else if (path[path.length - 1] === '/') 
     // remove the trailling '/'
