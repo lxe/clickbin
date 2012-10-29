@@ -1,6 +1,15 @@
 extends layout
 
 block body
+  div#fb-root
+  script 
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=174190695993894";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
   #landing-promo
     .container.alerts
       include alerts
@@ -52,7 +61,7 @@ block body
       .row
         .span4
           h2 what does clickb.in do?
-          p use bins to collect the things you find online without ever having to login. Think of it like a desktop for the internet.
+          p With clickbin you no longer have to email yourself links. Use bins to easily collect and organize the things you find online. Think of it like a desktop for the web.
           .well
             .bins
               .btn-group(style="overflow:hidden")
@@ -61,7 +70,7 @@ block body
                 a.btn(href="http://vicapow.clickb.in/entertainment/funny") funny
                 a.btn(href="http://vicapow.clickb.in/entertainment/funny/videos") videos
         .span4
-          h2 example bins
+          h2 some examples:
           .well
             .example-bins
               a.btn(href="http://clickb.in/33") furniture
@@ -73,21 +82,36 @@ block body
               a.btn(href="http://nodejs.clickb.in/core-community") nerds
               a.btn(href="http://vicapow.clickb.in/jobs") jobs
               a.btn(href="http://nodejs.clickb.in") node.js
+            //- I'm more of a fan of the buttons then the long urls. seems friendlier
+            //- ul.example-bins
+            //-   //- li
+            //-   //-   a(href="http://clickb.in/2u") clickb.in/<strong>hipsters</strong>
+            //-   //- li
+            //-   //-   a(href="http://clickb.in/2m") cats
+            //-   //- li
+            //-   //-   a(href="http://clickb.in/2q") steve
+            //-   //- li
+            //-   //-   a(href="http://clickb.in/2v") cafes
+            //- 
+            //-   li
+            //-     a(href="http://vicapow.clickb.in/jobs") vicapow.clickb.in/<strong>jobs</strong>
+            //-   li
+            //-     a(href="http://nodejs.clickb.in") <strong>nodejs</strong>.clickb.in
+            //-   li
+            //-     a(href="http://nodejs.clickb.in/core-community") <strong>nodejs</strong>.clickb.in/<strong>core-community</strong>
         //- .span4
         //-   p easily bookmark pages you enjoy by placing <strong>clickb.in/</strong> in front of the address:
         //-   .well
         //-     #address-bar
         .span4
-          h2 more features coming soon!
+          h2 stay tuned for more features!
           .newsletter-wrapper
             .inner
               iframe.hidden(src="about:blank", id="newsletter-target", name="newsletter-target")
-              p 
-                | sign up for our newsletter to stay tuned or send us a 
-                a(href="http://clickb.in/2p",style="text-decoration:underline") tweet 
-                | to request a feature
+              p(style="min-height: auto;") 
+                | Sign up for our newsletter:
               form.form-inline#newsletter(action='https://docs.google.com/spreadsheet/formResponse?formkey=dHpHWkpHNWEwYjhRUmVlX2Z3bFZsc2c6MQ&ifq', 
-                method='POST', target="newsletter-target")
+                method='POST', target="newsletter-target", style="margin-bottom: 20px;")
                 input(type="hidden", value="Submit", name="submit")
                 input(type="hidden", value="0", name="pageNumber")
                 input(type="hidden", value="", name="backupCache")
@@ -100,6 +124,14 @@ block body
                       type="text", 
                       name="entry.0.single", 
                       placeholder="email")
+
+              .clearfix
+                a.twitter-follow-button(href="https://twitter.com/clickbin", data-show-count="false", data-size="large") Follow @clickbin
+                script 
+                  !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+              .clearfix
+                div.fb-like(data-href="http://clickb.in", data-send="true", 
+                  data-layout="button_count", data-width="300", data-show-faces="false")
                 
 
   #newsletter-thanks.modal.hide

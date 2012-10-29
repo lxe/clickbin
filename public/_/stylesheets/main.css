@@ -10066,6 +10066,10 @@ body#landing {
   min-height: 32px;
   margin: 0;
 }
+#info .example-bins {
+  list-style: none;
+  margin: 0px;
+}
 #info .example-bins .btn {
   margin: 5px;
 }
