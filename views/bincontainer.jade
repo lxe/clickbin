@@ -101,11 +101,11 @@ mixin bin(bin)
             .span4(style="margin-bottom: 15px")
               .privacy-controls.pull-right
                 .btn-group
-                  a.btn.public(href="/_/bin/#{bin.id}/public",class=bin.public?'active':''
+                  a.btn.public(href="/_/bin/#{bin.id}/public", class="#{bin.public ? 'active' : ''}"
                     , data-placement="top")
                     i.icon-eye-open
                     |  public
-                  a.btn.private(href="/_/bin/#{bin.id}/private",class=bin.public?'':'active'
+                  a.btn.private(href="/_/bin/#{bin.id}/private", class="#{bin.public ? '' : 'active'}"
                     , rel="tooltip", data-placement="top", data-original-title="prevent others from seeing this bin")
                     i.icon-eye-close
                     |  private
