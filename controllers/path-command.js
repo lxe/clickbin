@@ -23,7 +23,7 @@ module.exports = function(url,subdomains){
     if (uri === undefined) 
       // no path and no uri? we should never get here.
       // the earlier '/' route should take precidence but just incase...
-      return new Error("Invalid clickbin path.")
+      return new Error("Cannot create bin. At this point bins can only contain letters, numbers, and dashes.")
   
   }else if (path[path.length - 1] === '/') 
     // remove the trailling '/'
@@ -31,7 +31,7 @@ module.exports = function(url,subdomains){
   
   // check to make sure the protocol is valid
   if (!/ftp|http|https|mailto|file/.test(protocol.split(':')[0])) 
-    return new Error('Invalid protocol')
+    return new Error('Invalid internet address.')
   
   if(uri) command.uri = protocol + uri
   else command.uri = undefined
