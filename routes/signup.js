@@ -9,6 +9,7 @@ module.exports = function(app) {
       errors:{}
       , inputUsername : ''
       , inputEmail : ''
+      , title : 'Join clickbin!'
     })
   })
   app.post('/_/signup',function(req, res, next) {
@@ -37,13 +38,16 @@ module.exports = function(app) {
     }
     
     if(!_.isEmpty(errors)){
+
       // show the proper error message
       return res.render('signup',{
         inputUsername : req.body.inputUsername
         , inputEmail : req.body.inputEmail
         , errors : errors
+        , title : 'Join clickbin!'
       })
-    }else{
+
+    } else {
       // try and create the new user
       var user = new User({
         username : req.body.inputUsername.toLowerCase() // all usernames are lowercased to avoid collision

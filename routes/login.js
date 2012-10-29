@@ -2,9 +2,14 @@ var _ = require("underscore")
   , User = require('../models/user')
 
 module.exports = function(app) {
+
   app.get('/_/login', function(req, res, next) {
-    return res.render('login',{errors:{}})
+    return res.render('login', {
+      errors : {}
+      , title : 'Sign in - clickbin'
+    })
   })
+
   app.post('/_/login',function(req, res, next) {
     var errors = {}
     if(!req.body.inputUsername) errors.inputUsername = { msg : "username is missing" }
@@ -16,6 +21,7 @@ module.exports = function(app) {
         req.session.user = { 
           loggedIn : true 
           , username : user.username
+          , title : 'Sign in - clickbin'
         }
         console.log('user logged in!')
         return res.redirect('/')
