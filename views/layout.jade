@@ -32,7 +32,7 @@ html(lang='en')
                         strong #{profile.username}
                         | .clickb.in
                     else
-                      a(href="#{'http://' + domain}").brand clickb.in
+                      a(href="http://#{domain}").brand clickb.in
                     block breadcrumb
                
 
@@ -43,10 +43,12 @@ html(lang='en')
                 //-       input.input-small(type="text", placeholder="new bin")
 
               ul.nav.pull-right
-                if user && user.loggedIn && typeof(profile)!=='undefined' && profile.username !== user.username
+                if user && user.loggedIn && typeof(profile) !=='undefined' && profile.username !== user.username
                   li
-                    a(href=getUserURI(user.username)) home
-             
+                    a(href="#{getUserURI(user.username))}")
+                      i.icon-home
+                      |  Home
+
                 if !user || !user.loggedIn
                   li 
                     a(href=getRootURI() + "_/login") 

@@ -102,16 +102,16 @@ mixin bin(bin)
                 a.btn.public(href="/_/bin/#{bin.id}/public", class="#{bin.public ? 'active' : ''}"
                   , data-placement="top")
                   i.icon-eye-open
-                    span.handset-hide  public
+                  span.handset-hide  public
                 a.btn.private(href="/_/bin/#{bin.id}/private", class="#{bin.public ? '' : 'active'}"
                   , rel="tooltip", data-placement="top", data-original-title="prevent others from seeing this bin")
                   i.icon-eye-close
-                    span.handset-hide  private
+                  span.handset-hide  private
           else 
             .privacy-controls.pull-right
               .btn.disabled.active
                 i.icon-eye-open
-                  span.handset-hide  public bin
+                span.handset-hide  public bin
       .links
         ul.items.clearfix.row-fluid
           
