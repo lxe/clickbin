@@ -58,9 +58,9 @@ module.exports = function (app) {
         req.session.bookmarkletPath = null;
       }
     }
-  
 
     if (path) {
+      req.session.bookmarkletPath = path;
       // bin paths should start with a '/' but not end with one
       // requesting a just a bin
       Bin.findOne({ path : path}, function (err, bin) {
