@@ -48,8 +48,10 @@ var Bin = require('../models/bin')
           console.log(' user root bin doesn not exist for user: ' + username)
           return res.redirectToLanding()
         } else if(!isOwner && !bin.public) {
-          req.session.flash.error = "That user's root bin is private"
-          return res.redirectToLanding()
+          // req.session.flash.error = "That user's root bin is private"
+          // return res.redirectToLanding()
+          // return res.redirect('/_/signin')
+          return res.retirectToSignIn();
         }
         bin.getChildren(function(err, children) {
           if(err) return next(err)

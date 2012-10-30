@@ -114,6 +114,10 @@ app.configure(function() {
       var uri = this.locals.getRootURI()
       this.redirect(uri)
     }
+    res.retirectToSignIn = function(){
+      var uri = this.locals.getRootURI()
+      this.redirect(uri + '_/signin')
+    }
     res.redirectToProfile = function(username){
       this.redirect(this.locals.getUserURI(username))
     }
