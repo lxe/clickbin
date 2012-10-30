@@ -59,36 +59,37 @@ mixin bin(bin)
   else
     div.sun
   .row
-    .span3.bins
-      .well
-        if children.length > 0
-          h4 Bins
-          ul.items
-            each bin in children
-              mixin bin(bin)
-        else
-          if authosizedUser
-            h4 bins
+    if authosizedUser || children.length > 0
+      .span3.bins
+        .well
+          if children.length > 0
+            h4 Bins
             ul.items
-              li.nobins
-                a#add-bin(href='#add').add-something add a bin
-                //- i.icon-arrow-right
+              each bin in children
+                mixin bin(bin)
           else
-            if bin.links.length === 0
+            if authosizedUser
+              h4 bins
               ul.items
                 li.nobins
-                  | this bin is empty
-            else
-              ul.items
-                li.nobins 
-                  | (no sub bins)
+                  a#add-bin(href='#add').add-something add a bin
+                  //- i.icon-arrow-right
+            //- else
+            //-   if bin.links.length === 0
+            //-     ul.items
+            //-       li.nobins
+            //-         | this bin is empty
+            //-   else
+            //-     ul.items
+            //-       li.nobins 
+            //-         | (no sub bins)
           //- li
           //-   form(action="#{bin.path}")#new-bin-form
           //-     .input-append
           //-       input.span2(type="text", placeholder="add bin")#new-bin-title
           //-       button.btn(href="#")
           //-         i.icon-plus-sign
-    .span9
+    div(class="#{authosizedUser || children.length > 0 ? 'span9' : 'span12'}")
       if authosizedUser
         .clearfix(style="margin-bottom: 15px")        
           .add-link-controls.pull-left
@@ -114,11 +115,14 @@ mixin bin(bin)
                 span.handset-hide  public bin
       .links
         ul.items.clearfix.row-fluid
-          
-          if authosizedUser && bin.links.length === 0
+          if bin.links.length === 0
             li.emptybin
-              | nothing here yet. 
-              a#add-something(href="#add").add-something add something!
+              if authosizedUser
+                | Nothing here yet. 
+                a#add-something(href="#add").add-something add something!
+              else
+                | Here be dragons and dust bunnies. 
+               
           else  
             each link in bin.links
               mixin link(link)

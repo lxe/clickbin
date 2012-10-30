@@ -8077,14 +8077,7 @@ body.private {
 }
 body .moon,
 body .sun {
-  background-repeat: no-repeat;
-  width: 100px;
-  height: 100px;
-  position: absolute;
-  right: 30px;
-  bottom: 0px;
-  -webkit-animation: planets 160s infinite linear;
-  z-index: -1;
+  display: none;
 }
 body .moon {
   background-image: url('/_/images/moon.png');
