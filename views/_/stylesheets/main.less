@@ -239,6 +239,18 @@ h2 {
   }
 }
 
+.handset-hide {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.handset-show {
+  @media (min-width: 769px) {
+    display: none;
+  }
+}
+
 #landing-promo h2 {
   // font-size: 22px;
 }
@@ -376,6 +388,12 @@ body#landing {
 
 #landing-form {
   // padding-right: 40px;
+  .input-wrapper {
+    margin-right: 160px;
+  }
+  .button-wrapper {
+    width: 160px;
+  }
 }
 
 
@@ -395,7 +413,9 @@ body#landing {
   }
   #linkinput {
     // border-color: hsl(13, 18%, 65%);
-    border-right: none;
+    @media(min-width: 768px) {
+      border-right: none;
+    }
     padding: 8px 14px 8px 14px;
     font-size: @baseFontSize + 2px;
     line-height: normal;

@@ -90,31 +90,28 @@ mixin bin(bin)
           //-         i.icon-plus-sign
     .span9
       if authosizedUser
-        .row-fluid
-          .span8(style="margin-bottom: 15px")
-            .add-link-controls
-              form.new-item-form.form-inline#new-item-form(action="#{bin.path}", style="margin-bottom: 0")
-                .item-title-container.input-append
-                  input.span12.new-item-title#new-item-title(type="text", placeholder="add link or bin")
-                  button.btn put it here
+        .clearfix(style="margin-bottom: 15px")        
+          .add-link-controls.pull-left
+            form.new-item-form.form-inline#new-item-form(action="#{bin.path}", style="margin-bottom: 0")
+              .item-title-container.input-append
+                input.span3.new-item-title#new-item-title(type="text", placeholder="add link or bin")
+                button.btn put it here
           if isOwner && typeof(profile) !== 'undefined'
-            .span4(style="margin-bottom: 15px")
-              .privacy-controls.pull-right
-                .btn-group
-                  a.btn.public(href="/_/bin/#{bin.id}/public", class="#{bin.public ? 'active' : ''}"
-                    , data-placement="top")
-                    i.icon-eye-open
-                    |  public
-                  a.btn.private(href="/_/bin/#{bin.id}/private", class="#{bin.public ? '' : 'active'}"
-                    , rel="tooltip", data-placement="top", data-original-title="prevent others from seeing this bin")
-                    i.icon-eye-close
-                    |  private
-          else 
-            .span4
-              .privacy-controls.pull-right
-                .btn.disabled.active
+            .privacy-controls.pull-right
+              .btn-group
+                a.btn.public(href="/_/bin/#{bin.id}/public", class="#{bin.public ? 'active' : ''}"
+                  , data-placement="top")
                   i.icon-eye-open
-                  |  public bin
+                    span.handset-hide  public
+                a.btn.private(href="/_/bin/#{bin.id}/private", class="#{bin.public ? '' : 'active'}"
+                  , rel="tooltip", data-placement="top", data-original-title="prevent others from seeing this bin")
+                  i.icon-eye-close
+                    span.handset-hide  private
+          else 
+            .privacy-controls.pull-right
+              .btn.disabled.active
+                i.icon-eye-open
+                |  public bin
       .links
         ul.items.clearfix.row-fluid
           

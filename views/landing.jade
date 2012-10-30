@@ -26,12 +26,18 @@ block body
                     i.icon-circle-arrow-down.arrow   
               form#linkform(action="/_/link/add", method="post")
                 .input-append
-                  div(style="width:160px").pull-right
+                  div.button-wrapper.pull-right.handset-hide
                     button.btn-orangered.input-block-level.btn.btn-large(type="submit")
-                      strong put in a bin 
-                  div(style="margin-right:160px")
+                      strong 
+                        span.handset-hide put in a bin 
+                  div.input-wrapper
                     input#linkinput(type="text", name="uri", placeholder="ie., reddit.com")
-              .clearfix
+                  .clearfix.handset-show(style="margin-top: 15px")
+                    button.btn-orangered.input-block-level.btn.btn-large(type="submit") 
+                      strong 
+                        i.icon-circle-arrow-right
+                        |  place in a clickbin
+              .clearfix.handset-hide
                 .pull-right
                 
                   h2.orangered 
