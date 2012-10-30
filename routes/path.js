@@ -48,10 +48,19 @@ module.exports = function (app) {
     // TODO: move this code its own file called `anonymous`
     // 
     
-    var path = command.path || req.session.bookmarkletPath
+    var path = command.path 
       , uri = command.uri
-    
+
+    if(req.session.bookmarkletPath) {
+      if(command.jsonp) {
+        path = req.session.bookmarkletPath;
+      } else {
+        req.session.bookmarkletPath = null;
+      }
+    }
+
     if (path) {
+      req.session.bookmarkletPath = path;
       // bin paths should start with a '/' but not end with one
       // requesting a just a bin
       Bin.findOne({ path : path}, function (err, bin) {
