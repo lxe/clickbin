@@ -48,8 +48,12 @@ module.exports = function (app) {
     // TODO: move this code its own file called `anonymous`
     // 
     
-    var path = command.path || req.session.bookmarkletPath
+    var path = command.path 
       , uri = command.uri
+
+    if (command.jsonp && req.session.bookmarkletPath) {
+      path = req.session.bookmarkletPath;
+    }
     
     if (path) {
       // bin paths should start with a '/' but not end with one
