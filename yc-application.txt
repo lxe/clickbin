@@ -44,7 +44,7 @@ For each founder, please list: YC username; name; age; year of graduation, schoo
 
 vicapow, Victor Powell, 23, 2011, University of Pittsburgh, Computer Engineering, vicapow@gmail.com, victorp.me, github.com/vicapow, facebook.com/vicapow, @vicapow, YinzCam, Inc., Director of Web Applications & Analytics
 
-lxe, Aleksey Smolenchuk, 23, 2011, University of Pittsburgh, Computer Science, lxe@lxe.co, lxe.co, github.com/lxe, facebook.com/alekseys, @lxe, Ansaldo Switch & Signal, Software Engineer
+lxe, Aleksey Smolenchuk, 23, 2011, University of Pittsburgh, Computer Science, lxe@lxe.co, lxe.co, github.com/lxe, facebook.com/alekseys, @lxe, Ansaldo STS USA, Software Engineer
 
 
 
@@ -52,7 +52,7 @@ Please tell us in one or two sentences about the most impressive thing other tha
 
 vicapow: built a 3D bone and joint visualize software for the Univ. of Pitt Medical Center to help in research efforts in determining the potential benefits of surgery over therapy.
 
-lxe: ???????????????????????????????????????????????????
+lxe: built a configuration interface and a c-based backend for a small-scale embedded train signaling device. 
 
 
 
@@ -70,7 +70,7 @@ we both worked for our student newspapers website, The Pitt News, but unfortunat
 
 How long have the founders known one another and how did you meet? Have any of the founders not met in person?
 
-5+ years. We met college freshman year.
+5+ years. We met in college during our freshman year.
 
 
 
