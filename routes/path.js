@@ -11,6 +11,20 @@ var url      = require('url')
   , pathCommand = require('../middleware/path-command')
 
 /**
+ * [sendJSONP description]
+ * @param  {[type]} res [description]
+ * @param  {[type]} obj [description]
+ * @return {[type]}     [description]
+ */
+function sendJSONP(res, obj) {
+   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+   res.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+   res.setHeader("Expires", 0); // Proxies.
+   res.setHeader("Content-type", "application/x-javascript");
+   return res.send('jsonp(' + JSON.stringify(obj) + ')');
+}
+
+/**
  * [exports description]
  * @param  {[type]} app [description]
  * @return {[type]}     [description]
@@ -32,8 +46,9 @@ module.exports = function (app) {
     
     // else, the user is anonymous...
     // TODO: move this code its own file called `anonymous`
+    // 
     
-    var path = command.path
+    var path = command.path || req.session.bookmarkletPath
       , uri = command.uri
     
     if (path) {
@@ -45,6 +60,7 @@ module.exports = function (app) {
         // if the user accessing the bin isn't the owner and the bin isn't 
         // public
         if(bin && !isOwner && !bin.public) return errorTopLevelBin(req,res)
+
         // show the bin
         if(bin && uri === undefined){
           return bin.getChildren(function(err,children){
@@ -57,8 +73,9 @@ module.exports = function (app) {
             })
           })
         }
+
         // add a link to an existing bin
-        else if(bin) return addLinkToBin(path, uri, bin)
+        else if(bin) return addLinkToBin(path, uri, bin, command.jsonp, res)
         
         // dont allow anonymous users to create their own top level bins
         var bins = path.substring(1).split('/')
@@ -77,13 +94,13 @@ module.exports = function (app) {
              // and the bin is not a public bin
             if(!bin.public) return errorTopLevelBin(req,res)
             else return errorNotRootBinOwner(req,res)
-          }else{
+          } else {
             if(uri){
               Link.scrape(uri, function(err,link){
                 if(err) return next(err)
                 saveNewBin(bins,[link])
               })
-            }else saveNewBin(bins,[])
+            } else saveNewBin(bins,[])
             
             function saveNewBin(bins,links){
               var bin = new Bin({
@@ -95,6 +112,7 @@ module.exports = function (app) {
                 if (err) return next(err)
                 // create sub bins
                 ensureBinsExistAlongPath(bins)
+                if (command.jsonp) return sendJSONP(res, { path: bin.path })
                 return res.redirect(bin.path + '/')
               })
             }
@@ -116,8 +134,10 @@ module.exports = function (app) {
             , sessionID : req.sessionID
             , links : [link]
           })
-          bin.save(function (err) {
+          bin.save(function (err, data) {
             if (err) return next(err)
+            if (command.jsonp) return sendJSONP(res, { path: bin.path })
+
             req.session.flash.success = "You have just created a new clickbin! "
               + "You can now add or remove links and create new bins here."
             return res.redirect(bin.path)
@@ -133,13 +153,17 @@ module.exports = function (app) {
      * @param {[type]} uri      [description]
      * @param {[type]} bin      [description]
      */
-    function addLinkToBin(path, uri, bin) {
+    function addLinkToBin(path, uri, bin, jsonp, res) {
 
       if (bin.sessionID !== req.sessionID) {
-        req.session.flash.error = 'You can\'t add links to this bin. '
-          // TODO: ask permission feature should only be available for 
-          // non-anounymous bins (which dont exist. (yet))
-          // + '<a href="ask">Ask for permission</a>'
+        var errorString = 'You can\'t add links to this bin.'
+
+       if (jsonp) return sendJSONP(res, { error: errorString })
+    
+        req.session.flash.error = errorString
+        // TODO: ask permission feature should only be available for 
+        // non-anounymous bins (which dont exist. (yet))
+        // + '<a href="ask">Ask for permission</a>'
         return res.redirect(path)
       }
 
@@ -147,11 +171,13 @@ module.exports = function (app) {
         if (err) return next(err)
         
         if (bin.addLink(link)) return bin.save(function(err) {
-          if(err) return next(err)
+          if (err) return next(err)
+          if (jsonp) return sendJSONP(res, { path: path })
           return res.redirect(path)
         })
         
-        req.session.flash.error = 'This bin already has that link'
+        if (jsonp) return sendJSONP(res, { path: path, alreadyPresent: true })
+        req.session.flash.error = 'Bin already has this link'
         return res.redirect(path)
       })
     }

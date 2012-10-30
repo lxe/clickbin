@@ -3,8 +3,18 @@ var node_path = require('path')
 
 module.exports = function(url,subdomains){
   var command = {}
+
   // a users bin 
-  if(subdomains && subdomains.length) command.username = subdomains.pop()
+  if(subdomains && subdomains.length) 
+    command.primarySubdomain = subdomains.pop()
+
+  console.log(command.primarySubdomain)
+
+  if (command.primarySubdomain === 'jsonp') {
+    command.jsonp = true;
+  } else {
+    command.username = command.primarySubdomain;
+  }
   
   // parse the url command
   var matches = uri_regexp.exec(url)

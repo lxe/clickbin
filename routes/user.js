@@ -44,7 +44,7 @@ var Bin = require('../models/bin')
         var isOwner = isBinOwner(bin)
         if(err) return next(err)
         else if(!bin) {
-          req.session.flash.error = "That user root bin does not exist"
+          req.session.flash.error = "Could not locate bin."
           console.log(' user root bin doesn not exist for user: ' + username)
           return res.redirectToLanding()
         } else if(!isOwner && !bin.public) {

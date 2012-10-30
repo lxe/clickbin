@@ -19,7 +19,8 @@
     "mkdirp": "~0.3.4",
     "canvas": "~0.13.1",
     "cheerio": "~0.10.1",
-    "sitemap": "~0.6.0"
+    "sitemap": "~0.6.0",
+    "png": "~2.1.1"
   },
   "devDependencies": {
     "mocha": "*",
