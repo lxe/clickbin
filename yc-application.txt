@@ -13,7 +13,7 @@ Phone Number(s)?
 
 
 Video "introducing the founders"
-??????????????????????????????????????????????
+????????????????????????????????????????????????????????????????????????????????
 
 
 
@@ -28,10 +28,12 @@ vicapow, lxe
 
 
 What is your company going to make?
-what we've made in the last month is a bookmarking service. think of it like kippt meets pastebin in that you can quickly, and anonymously share collections of links or login to save them for later. 
 
-what we'd like to eventually create is a sort of "desktop of the internet" which would be built off of the existing hypermedia infrastructure. We think dropbox is only a temporary solution, bridging the gap between the cloud and the desktop but the desktop isn't going to be around much longer as thin clients begin taking over. think, google chrome book.
+what we've made in the last month is a bookmarking service. think of it like bit.ly meets pastebin in that you can quickly and anonymously share collections of links or login to save them for later. sort of like "sets as a service."
 
+what we'd like to eventually create is a sort of "desktop of the internet" which would be built off of the existing hypermedia infrastructure. We think dropbox is only a temporary solution, bridging the gap between the cloud and the desktop but the desktop isn't going to be around much longer as thin clients begin taking over. think, chrome OS, without the OS.
+
+Or at least that's what we think we're making. We're hungry and foolish. We'll make anything if you give us the chance.
 
 
 If this application is a response to a YC RFS, which one? 
@@ -50,13 +52,15 @@ lxe, Aleksey Smolenchuk, 23, 2011, University of Pittsburgh, Computer Science, l
 
 Please tell us in one or two sentences about the most impressive thing other than this startup that each founder has built or achieved.
 
-vicapow: built a 3D bone and joint visualize for the Univ. of Pgh Medical Center to help in research efforts in determining the potential benefits of surgery over therapy.
+vicapow: built an internal single sign on and permissions api for our company to manage dashboards for our clients that communicate over a REST API. this separates concerns and allows dashboards to be written in any language.
 
 lxe: built a configuration interface and a c-based backend for a small-scale embedded train signaling device. 
 
 
 
 Please tell us about the time you, vicapow, most successfully hacked some (non-computer) system to your advantage.
+
+??????????????????----PICK-OUT-----??????????????????????????????
 
 store 1.) When I was in preschool, I hated being forced to take naps. One day, during nap time, I snuck my way out, jumping up to unlock a padlock, and proceeded to make my way home. I was picked up my a policeman by the side of the road, who offered to give me a ride. The preschool employees where already there and blamed my mom, a single parent at the time. My name was blacklisted at every nearby preschool after that.
 
@@ -66,7 +70,7 @@ store 2.) I was able to attend a CMU job/internship fair my freshman year as a P
 
 Please tell us about an interesting project, preferably outside of class or work, that two or more of you created together. Include urls if possible.
 
-we both worked for our student newspapers website, The Pitt News, but unfortunately, since then, the site has been mutilated into the embarrassment that it is today.
+we both worked for our student newspapers website, The Pitt News, but, since then, the site has been mutilated into the embarrassment that it is today.
 
 
 
@@ -78,7 +82,7 @@ How long have the founders known one another and how did you meet? Have any of t
 
 Why did you pick this idea to work on? Do you have domain expertise in this area? How do you know people need what you're making?
 
-It's something we've needed ourselves. Other ideas seemed to come and come but this was the one stuck the most.
+It's something we've needed ourselves. Other ideas seemed to come and come but for whatever reason, this one stuck in our heads.
 
 
 
@@ -86,13 +90,13 @@ What's new about what you're making? What substitutes do people resort to becaus
 
 it's simple and broadly applicable. of my friends, everyone seems to find a new use case I never even thought of.
 
-the closest substitues, depending on use cases, are kippt, browser bookmarks, , bit.ly, pastebin, gist, amazon wish lists, photo gallery software
+the closest substitutes, depending on use cases, are bit.ly, native browser bookmarks, pastebin, kippt, amazon wish lists, and readability.
 
 
 
 Who are your competitors, and who might become competitors? Who do you fear most?
 
-bit.ly, and kippt but it's not a very large fear
+bit.ly. they seem like they'd be the quickest to adapt if they realized they needed to.
 
 
 
@@ -104,19 +108,19 @@ bookmarking shouldn't be a time suck. it should be about getting everything else
 
 How do or will you make money? How much could you make? (We realize you can't know precisely, but give your best estimate.)
 
-we'll start just by using affiliate link injection. since bins are nestable, users provide sudo "keywords" for the links they post. ie., clickb.in/entermainment/funny/videos/ which could possibly be used to create search engine results.
+we'll start simply by using affiliate link injection. since bins are nestable, users provide sudo "keywords" for the links they post. ie., clickb.in/entermainment/funny/videos/ which could possibly be used to create search engine results. We'd like to be cash flow positive before the end of the YC semester.
 
 
 
 If you've already started working on it, how long have you been working and how many lines of code (if applicable) have you written?
 
-almost exactly one month. 3500 LOC
+1 month, ~3500 LOC
 
 
 
 How far along are you? Do you have a beta yet? If not, when will you? Are you launched? If so, how many users do you have? Do you have revenue? If so, how much? If you're launched, what is your monthly growth rate (in users or revenue or both)?
 
-we're going to release/announce Oct 30th but the site is currently live and feature frozen until launch.
+we're going to announce/release Oct 31th but the site is currently live and feature frozen until launch.
 
 
 
@@ -128,7 +132,7 @@ http://clickb.in
 
 How will you get users? If your idea is the type that faces a chicken-and-egg problem in the sense that it won't be attractive to users till it has a lot of users (e.g. a marketplace, a dating site, an ad network), how will you overcome that?
 
-we don't suffer from a network effect. as long as we can attract users with a free and useful service, we'll be in a position to offer them premium services. 
+we don't suffer from a network effect. as long as we can attract users with a free and useful service, we'll be in a position to offer them premium services.
 
 
 
@@ -171,7 +175,7 @@ Nope
 
 Where do you live now, and where would the company be based after YC?
 
-I moved to Berkeley about two month ago. Aleksey is still in Pittsburgh but he'd move in with me if we got accepted.
+I moved to Berkeley about two months ago. Aleksey is still in Pittsburgh but he'd move in with me if we got accepted.
 
 
 
@@ -200,12 +204,9 @@ Monetizing user attention using stated preference surveys instead of ads. SP sur
 
 
 
-
 Please tell us something surprising or amusing that one of you has discovered. (The answer need not be related to your project.)
 
-1. iPads are able to provide GPS like position information because of crowdsourced data collected from wifi routers and from the iPhones that have previously connected to the same network.
-
-2. you can circumvent most wifi time limits by just changing your mac address.
+1.) on cruse ships that have arcades, the machines are bolted to the floor to prevent them from moving. because of this, tokens often collect in large quantities underneath them. 
 
 
 
