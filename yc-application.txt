@@ -1,0 +1,203 @@
+Company Name: ClickBin
+
+
+
+Company url?
+clickb.in
+
+
+
+Phone Number(s)?
+412-225-0015, 412-680-8233
+
+
+
+Video "introducing the founders"
+??????????????????????????????????????????????
+
+
+
+yc user names? 
+vicapow, lxe
+
+
+
+yc founders willing to move to the bay area if we get funded: 
+vicapow, lxe
+
+
+
+What is your company going to make?
+what we've made in the last month is a bookmarking service. think of it like kippt meets pastebin in that you can quickly, and anonymously share collections of links or login to save them for later. 
+
+what we'd like to eventually create is a sort of "desktop of the internet" which would be built off of the existing hypermedia infrastructure. We think dropbox is only a temporary solution, bridging the gap between the cloud and the desktop but the desktop isn't going to be around much longer as thin clients begin taking over. think, google chrome book.
+
+
+
+If this application is a response to a YC RFS, which one? 
+
+No
+
+
+
+For each founder, please list: YC username; name; age; year of graduation, school, degree and subject for each degree; email address; personal url, github url, facebook id, twitter id; employer and title (if any) at last job before this startup. Put unfinished degrees in parens. List the main contact first. Separate founders with blank lines. Put an asterisk before the name of anyone not able to move to the Bay Area.
+
+vicapow, Victor Powell, 23, 2011, University of Pittsburgh, Computer Engineering, vicapow@gmail.com, victorp.me, github.com/vicapow, facebook.com/vicapow, @vicapow, YinzCam, Inc., Director of Web Applications & Analytics
+
+lxe, Aleksey Smolenchuk, 23, 2011, University of Pittsburgh, Computer Science, lxe@lxe.co, lxe.co, github.com/lxe, facebook.com/alekseys, @lxe, Ansaldo Switch & Signal, Software Engineer
+
+
+
+Please tell us in one or two sentences about the most impressive thing other than this startup that each founder has built or achieved.
+
+vicapow: built a 3D bone and joint visualize software for the Univ. of Pitt Medical Center to help in research efforts in determining the potential benefits of surgery over therapy.
+
+lxe: ???????????????????????????????????????????????????
+
+
+
+Please tell us about the time you, vicapow, most successfully hacked some (non-computer) system to your advantage.
+
+I was able to attend a CMU job/internship fair my freshman year as a Pitt student by negotiating a name badge from an another existing participent.
+
+
+
+Please tell us about an interesting project, preferably outside of class or work, that two or more of you created together. Include urls if possible.
+
+we both worked for our student newspapers website, The Pitt News, but unfortunately, since then, the site has been mutilated into what it is now.
+
+
+
+How long have the founders known one another and how did you meet? Have any of the founders not met in person?
+
+5+ years. We met college freshman year.
+
+
+
+Why did you pick this idea to work on? Do you have domain expertise in this area? How do you know people need what you're making?
+
+It's something we've needed ourselves. Other ideas seemed to come and come but this was the one stuck the most.
+
+
+
+What's new about what you're making? What substitutes do people resort to because it doesn't exist yet (or they don't know about it)?
+
+it's simple and broadly applicable. of my friends, everyone seems to find a new use case I never even thought of.
+
+the closest substitues, depending on use cases, are kippt, browser bookmarks, , bit.ly, pastebin, gist, amazon wish lists, photo gallery software
+
+
+
+Who are your competitors, and who might become competitors? Who do you fear most?
+
+bit.ly, and kippt but it's not a very large fear
+
+
+
+What do you understand about your business that other companies in it just don't get?
+
+bookmarking shouldn't be a time suck. it should be about getting everything else, the f* out of the way. I care about as much about what my friends are bookmarking as I do how they name their files on their desktop.
+
+
+
+How do or will you make money? How much could you make? (We realize you can't know precisely, but give your best estimate.)
+
+we'll start just by using affiliate link injection. since bins are nestable, users provide sudo "keywords" for the links they post. ie., clickb.in/entermainment/funny/videos/ which could possibly be used to create search engine results.
+
+
+
+If you've already started working on it, how long have you been working and how many lines of code (if applicable) have you written?
+
+almost exactly one month. 3500 LOC
+
+
+
+How far along are you? Do you have a beta yet? If not, when will you? Are you launched? If so, how many users do you have? Do you have revenue? If so, how much? If you're launched, what is your monthly growth rate (in users or revenue or both)?
+
+we're going to release/announce Oct 30th but the site is currently live but feature frozen until launch.
+
+
+
+If you have an online demo, what's the url? (Please don't password protect it; just use an obscure url.)
+
+http://clickb.in
+
+
+
+How will you get users? If your idea is the type that faces a chicken-and-egg problem in the sense that it won't be attractive to users till it has a lot of users (e.g. a marketplace, a dating site, an ad network), how will you overcome that?
+
+we don't have an n=1 problem
+
+
+
+If you're already incorporated, when were you? Who are the shareholders and what percent does each own? If you've had funding, how much, at what valuation(s)?
+
+NA
+
+
+
+If you're not incorporated yet, please list the percent of the company you plan to give each founder, and anyone else you plan to give stock to. (This question is as much for you as us.)
+
+50/50
+
+
+
+If we fund you, which of the founders will commit to working exclusively (no school, no other jobs) on this project for the next year?
+
+both of us
+
+
+
+For founders who can't, why not? What level of commitment are they willing to make?
+
+NA
+
+
+
+
+Do any founders have other commitments between January and March 2013 inclusive?
+
+Nope
+
+
+
+Do any founders have commitments in the future (e.g. finishing college, going to grad school), and if so what?
+
+Nope
+
+
+
+Where do you live now, and where would the company be based after YC?
+
+I moved to Berkeley about a month ago. Aleksey is still in Pittsburgh but he'd move in with me if we got accepted.
+
+
+
+Are any of the founders covered by noncompetes or intellectual property agreements that overlap with your project? Will any be working as employees or consultants for anyone else?
+
+No
+
+
+
+Was any of your code written by someone who is not one of your founders? If so, how can you safely use it? (Open source is ok of course.)
+
+NA
+
+
+
+Are any of the following true? (a) You are the only founder. (b) You are a student who may return to school when the next term starts. (c) Half or more of your group can't move to the Bay Area. (d) One or more founders will keep their current jobs. (e) None of the founders are programmers.
+(Answering yes doesn't disqualify you. It's just to remind us to check.)
+
+No
+
+
+
+If you had any other ideas you considered applying with, please list them. One may be something we've been waiting for. Often when we fund people it's to do something they list here and not in the main application.
+
+????????????????????????????????????????????????????????????
+
+
+
+Please tell us something surprising or amusing that one of you has discovered. (The answer need not be related to your project.)
+
+????????????????????????????????????????????????????????????
