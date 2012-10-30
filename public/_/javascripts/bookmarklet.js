@@ -6,11 +6,7 @@ function appendStyle(href) {
 }
 
 function jsonp(data) {
-  appendStyle('//clickb.in/_/stylesheets/bootstrap-bookmarklet.css')
-  if (!window.jQuery) {
-    appendScript('//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js');
-  }
-
+  appendStyle('//clickb.in/_/stylesheets/bootstrap-bookmarklet.css');
   appendScript('//netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/js/bootstrap.min.js');
 
   var popup = document.createElement('div');

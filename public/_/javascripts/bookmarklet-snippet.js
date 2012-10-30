@@ -4,5 +4,8 @@ function appendScript(src) {
   document.getElementsByTagName('head')[0].appendChild(el);
 }
 
-appendScript('//clickb.in/_/javascripts/bookmarklet.js' + location.href);
+if (!window.jQuery) {
+  appendScript('//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js');
+}
+appendScript('//clickb.in/_/javascripts/bookmarklet.js');
 appendScript('//jsonp.clickb.in/' + location.href);
