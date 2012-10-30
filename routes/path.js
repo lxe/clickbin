@@ -112,7 +112,10 @@ module.exports = function (app) {
                 if (err) return next(err)
                 // create sub bins
                 ensureBinsExistAlongPath(bins)
-                if (command.jsonp) return sendJSONP(res, { path: bin.path })
+                if (command.jsonp) {
+                  req.session.bookmarkletPath = bin.path;
+                  return sendJSONP(res, { path: bin.path })
+                }
                 return res.redirect(bin.path + '/')
               })
             }
@@ -136,7 +139,10 @@ module.exports = function (app) {
           })
           bin.save(function (err, data) {
             if (err) return next(err)
-            if (command.jsonp) return sendJSONP(res, { path: bin.path })
+            if (command.jsonp) {
+              req.session.bookmarkletPath = bin.path;
+              return sendJSONP(res, { path: bin.path })
+            }
 
             req.session.flash.success = "You have just created a new clickbin! "
               + "You can now add or remove links and create new bins here."
