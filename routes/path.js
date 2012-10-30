@@ -51,10 +51,15 @@ module.exports = function (app) {
     var path = command.path 
       , uri = command.uri
 
-    if (command.jsonp && req.session.bookmarkletPath) {
-      path = req.session.bookmarkletPath;
+    if(req.session.bookmarkletPath) {
+      if(command.jsonp) {
+        path = req.session.bookmarkletPath;
+      } else {
+        req.session.bookmarkletPath = null;
+      }
     }
-    
+  
+
     if (path) {
       // bin paths should start with a '/' but not end with one
       // requesting a just a bin
