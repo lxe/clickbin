@@ -1,6 +1,7 @@
 -- before release --
 // done?
 -- eventually --
+the waves dont `wiggle` on firefox
 drag and drop of links
 implement password reset. maybe use this module? https://github.com/substack/node-password-reset
 spaces in bins
