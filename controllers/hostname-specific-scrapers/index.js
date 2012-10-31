@@ -34,5 +34,12 @@ module.exports = function(url,body){
   // (ie., do something special for `plus.google.com` but not `google.com` )
   if(scraper) page = scraper(url,parts,$)
   if(page) return page
-  else return defaultScraper(url,parts,$)
+  // HACK!!!
+  var generator = $('meta[name=generator]').attr('content')
+  console.log('generator: '+generator)
+  if(generator && generator.toLowerCase() === 'posterous'){
+    page = scrapers['posterous.com'](url,parts,$)
+    if(page) return page
+  }
+  return defaultScraper(url,parts,$)
 }
