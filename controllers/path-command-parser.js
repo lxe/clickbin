@@ -17,7 +17,7 @@ module.exports = function(url,subdomains){
     , uri  = matches[matches.length - 1]
     , path = matches[1]
   
-  if(path) path = node_path.normalize(path)
+  if(path) path = node_path.normalize(path.toLowerCase())
   
   // prevent bins from being added to the root path '/'
   if (path === '/') {
