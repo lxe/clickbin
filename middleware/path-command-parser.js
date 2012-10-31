@@ -1,4 +1,4 @@
-var pathCommand = require('../controllers/path-command')
+var pathCommand = require('../controllers/path-command-parser')
 
 /**
   * this middleware is responsible for parsing the `clickbin` style command 

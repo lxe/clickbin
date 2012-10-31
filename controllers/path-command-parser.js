@@ -6,15 +6,7 @@ module.exports = function(url,subdomains){
 
   // a users bin 
   if(subdomains && subdomains.length) 
-    command.primarySubdomain = subdomains.pop()
-
-  console.log(command.primarySubdomain)
-
-  if (command.primarySubdomain === 'jsonp') {
-    command.jsonp = true;
-  } else {
-    command.username = command.primarySubdomain;
-  }
+    command.username = subdomains.pop()
   
   // parse the url command
   var matches = uri_regexp.exec(url)
@@ -25,7 +17,7 @@ module.exports = function(url,subdomains){
     , uri  = matches[matches.length - 1]
     , path = matches[1]
   
-  if(path) path = node_path.normalize(path)
+  if(path) path = node_path.normalize(path.toLowerCase())
   
   // prevent bins from being added to the root path '/'
   if (path === '/') {
