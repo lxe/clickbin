@@ -207,7 +207,9 @@ function htmlType(type) {
 }
 
 function getMime(res) {
-  return res.headers['content-type'].split(';')[0]
+  if(res.headers['content-type'])
+    return res.headers['content-type'].split(';')[0]
+  else reutrn ''
 }
 
 function getSize(res) {

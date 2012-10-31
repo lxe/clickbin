@@ -1,5 +1,4 @@
 -- before release --
-bins should not be case sensitive!!!!!!!!
 -- eventually --
 add input field for bins. people dont realize right away the can group them
 the waves dont `wiggle` on firefox
