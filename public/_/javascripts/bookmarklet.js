@@ -218,26 +218,26 @@
     })
     
     var url = '//' + domain + '/_/link/add.jsonp' + "?callback=?"
-    $.getJSON( url, null, function(data){
+    $.getJSON( url, {foo:'bar'}, function(data){
       console.log('data: ')
       console.log(data)
-      
+      return
       var popup = document.createElement('div');
       popup.className = 'clickbin-namespace';
 
-      html = '';
-      html += '<div class="modal" data-show="true" data-backdrop="true" id="bookmark-status">';
-      html += '  <div class="modal-header">';
-      html += '    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
-      html += '    <h3>Placed in a bin!</h3>';
-      html += '  </div>';
-      html += '  <div class="modal-body">';
-      html += '    <p>This page has been added to <a href="http://' + domain + data.path + '" target="_blank"><strong>' + domain + data.path + '</strong></a>. All further bookmarks will be added here. Change your default bin path at <a href="http://' + domain + '/">' + domain + '</a></p>';
-      html += '  </div>';
-      html += '  <div class="modal-footer">';
-      html += '    <a href="#" class="btn" data-dismiss="modal">OK</a>';
-      html += '  </div>';
-      html += '</div>';
+      html = ''
+        += '<div class="modal" data-show="true" data-backdrop="true" id="bookmark-status">'
+        += '  <div class="modal-header">'
+        += '    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>'
+        += '    <h3>Placed in a bin!</h3>'
+        += '  </div>'
+        += '  <div class="modal-body">'
+        += '    <p>This page has been added to <a href="http://' + domain + data.path + '" target="_blank"><strong>' + domain + data.path + '</strong></a>. All further bookmarks will be added here. Change your default bin path at <a href="http://' + domain + '/">' + domain + '</a></p>'
+        += '  </div>'
+        += '  <div class="modal-footer">'
+        += '    <a href="#" class="btn" data-dismiss="modal">OK</a>'
+        += '  </div>'
+        += '</div>'
 
       popup.innerHTML = html;
       document.getElementsByTagName('body')[0].appendChild(popup);

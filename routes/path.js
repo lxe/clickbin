@@ -8,7 +8,7 @@ var url      = require('url')
   , Link     = require('../models/link')
   , Counter  = require('../models/counter')
   , user = require('./user')
-  , pathCommand = require('../middleware/path-command')
+  , pathCommandParser = require('../middleware/path-command-parser')
 
 /**
  * [exports description]
@@ -17,7 +17,7 @@ var url      = require('url')
  */
 module.exports = function (app) {
   
-  app.get('/*', pathCommand, function (req, res, next) {
+  app.get('/*', pathCommandParser, function (req, res, next) {
     var command = req.parsedPathCommand
     // TODO: put this inside an error handler middleware
     // if(opts instanceof Error){
@@ -31,13 +31,13 @@ module.exports = function (app) {
     if(command.username) return user(req,res,next,command)
     
     // else, the user is anonymous...
-    // TODO: move this code its own file called `anonymous`
-    // 
+    // TODO: all of this code needs to be put in a controller
     
     var path = command.path 
       , uri = command.uri
 
     if (path) {
+      // the command contains a `path` component
       req.session.bookmarkletPath = path;
       // bin paths should start with a '/' but not end with one
       // requesting a just a bin

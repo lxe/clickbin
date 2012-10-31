@@ -3,9 +3,12 @@ module.exports = function(app) {
     return res.redirect('/' + req.body.uri)
   })
   app.get('/_/link/add.jsonp', function(req, res, next) {
-    if(req.accepts('text/javascript'))
+    console.log('link/add.jsonp')
+    if(req.accepts('text/javascript')){
+      // TODO... req.query
       return res.jsonp({
         path : req.session.bookmarkletPath
       })
+    }
   })
 }
