@@ -9723,6 +9723,10 @@ body .sun {
 body .breadcrumbs {
   white-space: normal;
 }
+body .mascot {
+  width: 200px;
+  margin-right: 20%;
+}
 .btn-lightblue {
   background-color: #bacbd8 !important;
   background-repeat: repeat-x;
@@ -9859,7 +9863,7 @@ body .breadcrumbs {
 }
 /* Landing */
 #landing-promo {
-  background: #f9f8f7 url('/_/images/anchor.png') 90% bottom no-repeat;
+  background: #f9f8f7 url('/_/images/anchor.png') 10% bottom no-repeat;
 }
 #landing-promo .anchor-wrap {
   padding: 60px 0 150px 0;
@@ -10342,5 +10346,8 @@ a {
   }
   .alert {
     border-radius: 0px 0px 0px 0px;
+  }
+  .mascot {
+    display: none;
   }
 }
