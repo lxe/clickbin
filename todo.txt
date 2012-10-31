@@ -1,6 +1,7 @@
 -- before release --
 bins should not be case sensitive!!!!!!!!
 -- eventually --
+add input field for bins. people dont realize right away the can group them
 the waves dont `wiggle` on firefox
 drag and drop of links
 implement password reset. maybe use this module? https://github.com/substack/node-password-reset
