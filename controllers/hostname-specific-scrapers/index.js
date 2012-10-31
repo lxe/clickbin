@@ -33,13 +33,13 @@ module.exports = function(url,body){
   // we pass along the parts incase subdomain specific actions are required. 
   // (ie., do something special for `plus.google.com` but not `google.com` )
   if(scraper) page = scraper(url,parts,$)
-  if(page) return page
-  // HACK!!!
-  var generator = $('meta[name=generator]').attr('content')
-  console.log('generator: '+generator)
-  if(generator && generator.toLowerCase() === 'posterous'){
-    page = scrapers['posterous.com'](url,parts,$)
-    if(page) return page
+  else{
+    // check fo rhte posterous style `generator` meta tag
+    var generator = $('meta[name=generator]').attr('content')
+    console.log('generator: '+generator)
+    if(generator && generator.toLowerCase() === 'posterous'){
+      page = scrapers['posterous.com'](url,parts,$)
+    }
   }
-  return defaultScraper(url,parts,$)
+  return defaultScraper(page,url,parts,$)
 }
