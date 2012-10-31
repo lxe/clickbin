@@ -49,8 +49,11 @@ block body
               .or or 
             .span4 
               h2.navy drag to your bookmarks bar:
-              a.btn.btn-large.btn-navy(href='javascript:(function(){function b(d){var a=document.createElement("script");a.src=d;document.getElementsByTagName("head")[0].appendChild(a);a.onload=function(){c.push(a);2===c.length&&b("//jsonp.clickb.in/"+location.href)}}var c=[];b("//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js");b("//clickb.in/_/javascripts/bookmarklet.js");})()').input-block-level#bookmarklet-button 
-                strong Bookmark with clickbin
+              //- all this does it load this file: /_/javascripts/bookmarklet.js
+              //- so you should never need to change this snipet itself. just
+              //- edit that file
+              a.btn.btn-large.btn-navy(href='javascript:(function(){  function loadScript(url, callback){ var script = document.createElement("script"); script.type = "text/javascript"; if( script.readyState ){ script.onreadystatechange = function(){ if( script.readyState == "loaded" || script.readyState == "complete"){ script.onreadystatechange = null; callback(); } }; }else script.onload = callback; script.src = url; document.getElementsByTagName("head")[0].appendChild(script); } loadScript("//#{domain}/_/javascripts/bookmarklet.js?q=" + new Date().getTime() )})()').input-block-level#bookmarklet-button 
+                strong clickbin it!
               .clearfix
                 p#bookmarklet-help 
                   | Bookmark as you browse.  
