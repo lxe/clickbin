@@ -1,5 +1,5 @@
 -- before release --
-// done?
+bins should not be case sensitive!!!!!!!!
 -- eventually --
 the waves dont `wiggle` on firefox
 drag and drop of links
