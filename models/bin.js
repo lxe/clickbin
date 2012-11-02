@@ -19,6 +19,7 @@ var BinSchema = new Schema({
     , index : true
   }
   , links : [LinkSchema]
+  // the user that owns this bin. this also indicates the bin is not anounymous
   , owner : {
     type : Schema.Types.ObjectId
     , required : false
@@ -41,29 +42,44 @@ var BinSchema = new Schema({
 }, { strict: true })
 
 BinSchema.statics.findUserBin = function(username,path,cb){
-  if(!cb){
-    cb = path
-    path = '/'
+  if(typeof username === 'string'){
+    User.findOne({
+      username : username
+    }, function(err,user){
+      if(err) return cb(err)
+      if(!user) return cb(null,null)
+      findBin(user)
+    })
   }
-  if(path==='') path = '/'
-  return Bin.findOne({path:username + ':' + path },cb)
+  function findBin(user){
+    return Bin.findOne({
+      owner : user 
+    }, cb)
+  }
 }
 
 BinSchema.methods.getParent = function(cb){
   if(!this.parent) return cb(null,null)
   Bin.findOne({_id:this.parent},cb)
 }
-
-BinSchema.statics.getByPath = function(path,cb){
+/**
+  * can optionally be called like: getByPath(path,cb)
+  */
+BinSchema.statics.getByPath = function(user,path,cb){
+  if(!cb){
+    // apply optional params
+    cb = path
+    path = user
+    user = null
+  }
   if(path==='/') return cb(null,null)
   path = path.split('/')
   if(path[0]==='') path.shift()
   // find the root bin
   Bin.findOne({
     name : path[0] 
-    , parent : { 
-      $exists : false
-    }
+    , parent : { $exists : false }
+    , user : user
   }, function(err, bin) {
     if(err) return cb(err)
     if(path.length === 1 || !bin) return cb(null,bin)
