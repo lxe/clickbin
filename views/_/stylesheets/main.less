@@ -1,5 +1,7 @@
 @import "bootstrap/bootstrap";
 @import "bootstrap/responsive";
+@import "animations";
+@import "mixins";
 @import "variables";
 @import "animations";
 @import "bin";
@@ -201,7 +203,7 @@ body {
   .anchor-wrap {
     padding: 60px 0 150px 0;
     background: transparent url('/_/images/waves.png') center 280px repeat-x;
-    -webkit-animation: waves-landing @waveSpeed infinite linear;
+    .animation(waves-landing @waveSpeed infinite linear);
   }
   
   .arrow {

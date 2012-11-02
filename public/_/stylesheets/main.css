@@ -9254,6 +9254,54 @@ a.badge:hover {
   to {
     background-position: 169px 280px;
   }
+  from {
+    background-position: 0px 280px;
+  }
+  to {
+    background-position: 169px 280px;
+  }
+}
+@-moz-keyframes waves-landing {
+  from {
+    background-position: 0px 280px;
+  }
+  to {
+    background-position: 169px 280px;
+  }
+  from {
+    background-position: 0px 280px;
+  }
+  to {
+    background-position: 169px 280px;
+  }
+}
+@-o-keyframes waves-landing {
+  from {
+    background-position: 0px 280px;
+  }
+  to {
+    background-position: 169px 280px;
+  }
+  from {
+    background-position: 0px 280px;
+  }
+  to {
+    background-position: 169px 280px;
+  }
+}
+@keyframes waves-landing {
+  from {
+    background-position: 0px 280px;
+  }
+  to {
+    background-position: 169px 280px;
+  }
+  from {
+    background-position: 0px 280px;
+  }
+  to {
+    background-position: 169px 280px;
+  }
 }
 @-webkit-keyframes waves-footer {
   from {
@@ -9262,8 +9310,317 @@ a.badge:hover {
   to {
     background-position: 169px top;
   }
+  from {
+    background-position: 0px top;
+  }
+  to {
+    background-position: 169px top;
+  }
+}
+@-moz-keyframes waves-footer {
+  from {
+    background-position: 0px top;
+  }
+  to {
+    background-position: 169px top;
+  }
+  from {
+    background-position: 0px top;
+  }
+  to {
+    background-position: 169px top;
+  }
+}
+@-o-keyframes waves-footer {
+  from {
+    background-position: 0px top;
+  }
+  to {
+    background-position: 169px top;
+  }
+  from {
+    background-position: 0px top;
+  }
+  to {
+    background-position: 169px top;
+  }
+}
+@keyframes waves-footer {
+  from {
+    background-position: 0px top;
+  }
+  to {
+    background-position: 169px top;
+  }
+  from {
+    background-position: 0px top;
+  }
+  to {
+    background-position: 169px top;
+  }
 }
 @-webkit-keyframes planets {
+  25% {
+    -webkit-transform: translatey(-300px);
+  }
+  50% {
+    -webkit-transform: translatey(0px);
+  }
+  75% {
+    -webkit-transform: translatey(-300px);
+  }
+  25% {
+    -webkit-transform: translatey(-300px);
+  }
+  50% {
+    -webkit-transform: translatey(0px);
+  }
+  75% {
+    -webkit-transform: translatey(-300px);
+  }
+}
+@-moz-keyframes planets {
+  25% {
+    -webkit-transform: translatey(-300px);
+  }
+  50% {
+    -webkit-transform: translatey(0px);
+  }
+  75% {
+    -webkit-transform: translatey(-300px);
+  }
+  25% {
+    -webkit-transform: translatey(-300px);
+  }
+  50% {
+    -webkit-transform: translatey(0px);
+  }
+  75% {
+    -webkit-transform: translatey(-300px);
+  }
+}
+@-o-keyframes planets {
+  25% {
+    -webkit-transform: translatey(-300px);
+  }
+  50% {
+    -webkit-transform: translatey(0px);
+  }
+  75% {
+    -webkit-transform: translatey(-300px);
+  }
+  25% {
+    -webkit-transform: translatey(-300px);
+  }
+  50% {
+    -webkit-transform: translatey(0px);
+  }
+  75% {
+    -webkit-transform: translatey(-300px);
+  }
+}
+@keyframes planets {
+  25% {
+    -webkit-transform: translatey(-300px);
+  }
+  50% {
+    -webkit-transform: translatey(0px);
+  }
+  75% {
+    -webkit-transform: translatey(-300px);
+  }
+  25% {
+    -webkit-transform: translatey(-300px);
+  }
+  50% {
+    -webkit-transform: translatey(0px);
+  }
+  75% {
+    -webkit-transform: translatey(-300px);
+  }
+}
+@-webkit-keyframes waves-landing {
+  from {
+    background-position: 0px 280px;
+  }
+  to {
+    background-position: 169px 280px;
+  }
+  from {
+    background-position: 0px 280px;
+  }
+  to {
+    background-position: 169px 280px;
+  }
+}
+@-moz-keyframes waves-landing {
+  from {
+    background-position: 0px 280px;
+  }
+  to {
+    background-position: 169px 280px;
+  }
+  from {
+    background-position: 0px 280px;
+  }
+  to {
+    background-position: 169px 280px;
+  }
+}
+@-o-keyframes waves-landing {
+  from {
+    background-position: 0px 280px;
+  }
+  to {
+    background-position: 169px 280px;
+  }
+  from {
+    background-position: 0px 280px;
+  }
+  to {
+    background-position: 169px 280px;
+  }
+}
+@keyframes waves-landing {
+  from {
+    background-position: 0px 280px;
+  }
+  to {
+    background-position: 169px 280px;
+  }
+  from {
+    background-position: 0px 280px;
+  }
+  to {
+    background-position: 169px 280px;
+  }
+}
+@-webkit-keyframes waves-footer {
+  from {
+    background-position: 0px top;
+  }
+  to {
+    background-position: 169px top;
+  }
+  from {
+    background-position: 0px top;
+  }
+  to {
+    background-position: 169px top;
+  }
+}
+@-moz-keyframes waves-footer {
+  from {
+    background-position: 0px top;
+  }
+  to {
+    background-position: 169px top;
+  }
+  from {
+    background-position: 0px top;
+  }
+  to {
+    background-position: 169px top;
+  }
+}
+@-o-keyframes waves-footer {
+  from {
+    background-position: 0px top;
+  }
+  to {
+    background-position: 169px top;
+  }
+  from {
+    background-position: 0px top;
+  }
+  to {
+    background-position: 169px top;
+  }
+}
+@keyframes waves-footer {
+  from {
+    background-position: 0px top;
+  }
+  to {
+    background-position: 169px top;
+  }
+  from {
+    background-position: 0px top;
+  }
+  to {
+    background-position: 169px top;
+  }
+}
+@-webkit-keyframes planets {
+  25% {
+    -webkit-transform: translatey(-300px);
+  }
+  50% {
+    -webkit-transform: translatey(0px);
+  }
+  75% {
+    -webkit-transform: translatey(-300px);
+  }
+  25% {
+    -webkit-transform: translatey(-300px);
+  }
+  50% {
+    -webkit-transform: translatey(0px);
+  }
+  75% {
+    -webkit-transform: translatey(-300px);
+  }
+}
+@-moz-keyframes planets {
+  25% {
+    -webkit-transform: translatey(-300px);
+  }
+  50% {
+    -webkit-transform: translatey(0px);
+  }
+  75% {
+    -webkit-transform: translatey(-300px);
+  }
+  25% {
+    -webkit-transform: translatey(-300px);
+  }
+  50% {
+    -webkit-transform: translatey(0px);
+  }
+  75% {
+    -webkit-transform: translatey(-300px);
+  }
+}
+@-o-keyframes planets {
+  25% {
+    -webkit-transform: translatey(-300px);
+  }
+  50% {
+    -webkit-transform: translatey(0px);
+  }
+  75% {
+    -webkit-transform: translatey(-300px);
+  }
+  25% {
+    -webkit-transform: translatey(-300px);
+  }
+  50% {
+    -webkit-transform: translatey(0px);
+  }
+  75% {
+    -webkit-transform: translatey(-300px);
+  }
+}
+@keyframes planets {
+  25% {
+    -webkit-transform: translatey(-300px);
+  }
+  50% {
+    -webkit-transform: translatey(0px);
+  }
+  75% {
+    -webkit-transform: translatey(-300px);
+  }
   25% {
     -webkit-transform: translatey(-300px);
   }
@@ -9869,6 +10226,9 @@ body .mascot {
   padding: 60px 0 150px 0;
   background: transparent url('/_/images/waves.png') center 280px repeat-x;
   -webkit-animation: waves-landing 15s infinite linear;
+  -moz-animation: waves-landing 15s infinite linear;
+  -o-animation: waves-landing 15s infinite linear;
+  animation: waves-landing 15s infinite linear;
 }
 #landing-promo .arrow {
   font-size: 20px;

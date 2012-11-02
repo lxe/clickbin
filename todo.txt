@@ -1,6 +1,4 @@
--- before release --
--- eventually --
-add input field for bins. people dont realize right away the can group them
+add input field for bins. people dont realize right away that can group them
 the waves dont `wiggle` on firefox
 drag and drop of links
 implement password reset. maybe use this module? https://github.com/substack/node-password-reset
