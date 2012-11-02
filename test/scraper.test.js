@@ -1,10 +1,10 @@
 var should = require('should')
-  , scrapper = require('../controllers/scrapper')
+  , scraper = require('../controllers/scraper')
 
-describe('scrapper', function(){
+describe('scraper', function(){
   describe('get', function(){
     it('should get page data', function(done){
-      scrapper.get('https://launchpad.37signals.com/basecamp', function(err,res){
+      scraper.get('https://launchpad.37signals.com/basecamp', function(err,res){
         should.not.exist(err)
         done()
       })

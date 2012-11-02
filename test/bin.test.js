@@ -19,6 +19,40 @@ describe('Bin', function(){
       })
     })
   })
+  describe('parent',function(){
+    it('should allow the bin to set its parent', function( done ) {
+      var parent = new Bin({name : 'parent'})
+      parent.save( function(err) {
+        should.not.exist(err)
+        var child = new Bin({name : 'child'})
+        child.parent = parent
+        child.save(function(err){
+          should.not.exist(err)
+          should.exist(child.parent)
+          done()
+        })
+      })
+    })
+  })
+  describe('getByPath', function() {
+    it('should get a bin path a path', function(done){
+      Bin.getByPath('/parent', function(err,bin){
+        should.not.exist(err)
+        should.exist(bin)
+        should.equal(bin.name,'parent')
+        Bin.getByPath('/parent/child', function(err,bin){
+          should.not.exist(err)
+          should.exist(bin)
+          should.equal(bin.name,'child')
+          Bin.getByPath('/parent/child/poop', function(err,bin){
+            should.not.exist(err)
+            should.not.exist(bin)
+            done()
+          })
+        })
+      })
+    })
+  })
   after(function(done){
     mongoose.disconnect()
     done()

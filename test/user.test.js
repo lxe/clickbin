@@ -17,6 +17,7 @@ describe('User', function(){
       var user = new User({
         username : 'vicapow'
         , password : '123456'
+        , email : 'vicapow@gmail.com'
       })
       user.save(function(err){
         should.not.exist(err)

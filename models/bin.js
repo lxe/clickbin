@@ -3,24 +3,15 @@ var _       = require('underscore')
   , Schema = mongoose.Schema
   , LinkSchema = require('./schemas/link')
 
+// design cools. simplicity and easiness should be priority #1 even over performance
+// a bin should be able to be removed simply by removing the document from the db
+
 var BinSchema = new Schema({
-  path : {
-    type : String
-    , unique : true
-    , required : true
-    , index : true
-  }
   // is this bin publicically accessible by anyone?
-  , public : {
+   public : {
     type : Boolean
     , required : true
     , default : true
-  }
-  , sessionID : {
-      type : String
-      , unique : false
-      , required : false
-      , default : null
   }
   , created : {
     type : Date
@@ -28,6 +19,25 @@ var BinSchema = new Schema({
     , index : true
   }
   , links : [LinkSchema]
+  , owner : {
+    type : Schema.Types.ObjectId
+    , required : false
+    , default : null
+    , index : true
+  }
+  // if a bin doesnt have a parent, its a detached bin
+  // the only bin that should not have a parent, is the root bin?
+  , parent : {
+    type: Schema.Types.ObjectId
+    , index : true
+  }
+  // used for anounymous bins
+  // `sessionID` should not be set if `owner` is set
+  , sessionID : String
+  , name : {
+    type : String
+    , required : true
+  }
 }, { strict: true })
 
 BinSchema.statics.findUserBin = function(username,path,cb){
@@ -39,28 +49,41 @@ BinSchema.statics.findUserBin = function(username,path,cb){
   return Bin.findOne({path:username + ':' + path },cb)
 }
 
+BinSchema.methods.getParent = function(cb){
+  if(!this.parent) return cb(null,null)
+  Bin.findOne({_id:this.parent},cb)
+}
 
-BinSchema.virtual('title').get(function(){
-  var path = this.path.split('/')
-    , name = path[path.length - 1]
-  //return name[0].toUpperCase() + name.substring(1) // camle case?
-  return name
-})
-BinSchema.virtual('parent').get(function(){
-  console.log('this.path: '+this.path)
-  var path = this.pathWithoutUsername().substr(1).split('/')
-  console.log('path: '+path)
-  var username = this.username
-  console.log('username: '+this.username)
-  console.log('path[path.length-2]: '+path[path.length - 2])
-  if( !username && path.length > 1 || path.length > 2){
-    path.pop()
-    return '/' + path.join('/')
-  }else if(username && path.length === 1){
-    if(path.length === 1) return '/'
+BinSchema.statics.getByPath = function(path,cb){
+  if(path==='/') return cb(null,null)
+  path = path.split('/')
+  if(path[0]==='') path.shift()
+  // find the root bin
+  Bin.findOne({
+    name : path[0] 
+    , parent : { 
+      $exists : false
+    }
+  }, function(err, bin) {
+    if(err) return cb(err)
+    if(path.length === 1 || !bin) return cb(null,bin)
+    path.shift()
+    return next(path,bin,cb)
+  })
+  
+  function next(path, bin, cb){
+    Bin.findOne({
+      name : path[0]
+      , parent : bin
+    }, function(err, bin){
+      if(err) return cb(err)
+      if(path.length === 1 || !bin) return cb(null, bin)
+      path.shift()
+      // recurse!
+      return next(path,bin,cb)
+    })
   }
-  else return null
-})
+}
 
 /**
   * Just get the actual path, without the user prefix
@@ -84,7 +107,6 @@ BinSchema.methods.addLink = function(link){
 }
 
 BinSchema.methods.removeLinkById = function(linkID){
-  console.log('remove link by id: '+linkID)
   this.links = _.filter(this.links,function(link){
     return link.id !== linkID
   })
