@@ -18,7 +18,12 @@ module.exports = function(page,url,parts,$){
     })
   }
   // try to get the thumbnail, if there isn't one alrady
-  if(!page.icon || !page.icon.length) page.icon = getBestIcon($)
+  if(!page.icon || !page.icon.length){
+    page.icon = getBestIcon($)
+    if(!page.icon){
+      page.icon = url.protocol + '//' + url.hostname + '/apple-touch-icon.png'
+    }
+  }
   
   if(!page.url){
     page.url = $('meta[property="og:url"]')
