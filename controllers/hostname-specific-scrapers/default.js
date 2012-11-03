@@ -56,7 +56,6 @@ function getBestIcon($,url){
         _.each(icon,function(icon){
           var $icon = $(icon)
           var size = $icon.attr('sizes')
-          console.log('size: '+size)
           if(size){
             size = size.split('x')[0]
             if(size) size = Number(size)
@@ -79,10 +78,14 @@ function getBestIcon($,url){
     
     if(icon){
       var icon_url = node_url.parse(icon)
+      // for relative image references
       if(icon_url.pathname[0]!=='/') 
         icon_url.pathname = '/' + icon_url.pathname
-      if(!icon_url.hostname) 
-        icon = url.protocol + '//' + url.hostname + icon_url.pathname
+      
+      if(!icon_url.hostname) icon_url.hostname = url.hostname
+      if(!icon_url.protocol) icon_url.protocol = url.protocol
+      
+      icon = icon_url.protocol + '//' + icon_url.hostname + icon_url.pathname
     }
     
     return icon
