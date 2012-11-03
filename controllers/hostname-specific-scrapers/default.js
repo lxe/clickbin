@@ -19,7 +19,7 @@ module.exports = function(page,url,parts,$){
   }
   // try to get the thumbnail, if there isn't one alrady
   if(!page.icon || !page.icon.length){
-    page.icon = getBestIcon($)
+    page.icon = getBestIcon($,url)
     if(!page.icon){
       page.icon = url.protocol + '//' + url.hostname + '/apple-touch-icon.png'
     }
@@ -35,51 +35,55 @@ module.exports = function(page,url,parts,$){
   return page
 }
 
-function getBestIcon($){
+function getBestIcon($,url){
     var icon = null
     
     // try to get the open graph icon
     icon = $('meta[property="og:image"]')
+    // google uses this: <meta itemprop="image" content="/images/google_favicon_128.png">
+    if(!icon.length) icon = $('meta[itemprop="image"]')
     if(icon.length){
       icon = icon.first().attr('content')
-      if(icon) return icon
+    }else icon = null
+    
+    // apple style icon
+    if(!icon){
+      // try finding the largest apple touch icon
+      icon = $('link[rel="apple-touch-icon-precomposed"]')
+      if(icon.length && icon.length > 1){
+        var max_size = -1
+        var largest_icon = null
+        _.each(icon,function(icon){
+          var $icon = $(icon)
+          var size = $icon.attr('sizes')
+          console.log('size: '+size)
+          if(size){
+            size = size.split('x')[0]
+            if(size) size = Number(size)
+            else size = 0
+          }else size = 0
+          if(size > max_size){
+            max_size = size
+            largest_icon = $icon
+          }
+        })
+      }
+      if(!icon.length) icon = $('link[rel="apple-touch-icon"]')
+      // we have to do all these extra checks because the previous check could 
+      // return a string instead of jquery instance object
+      if(!icon.length) icon = $('link[rel="icon"]')
+      
+      if(icon.length) icon = icon.first().attr('href')
+      else icon = null
     }
     
-    // try finding the largest apple touch icon
-    icon = $('link[rel="apple-touch-icon-precomposed"]')
-    if(icon.length && icon.length > 1){
-      var max_size = -1
-      var largest_icon = null
-      _.each(icon,function(icon){
-        var $icon = $(icon)
-        var size = $icon.attr('sizes')
-        console.log('size: '+size)
-        if(size){
-          size = size.split('x')[0]
-          if(size) size = Number(size)
-          else size = 0
-        }else size = 0
-        if(size > max_size){
-          max_size = size
-          largest_icon = $icon
-        }
-      })
-    }
-    
-    if(!icon.length) icon = $('link[rel="apple-touch-icon"]')
-    
-    // we have to do all these extra checks because the previous check could 
-    // return a string instead of jquery instance object
-    if(!icon.length) icon = $('link[rel="icon"]')
-    
-    if(icon.length){
-      icon = icon.first().attr('href') // could still be empty...
+    if(icon){
       var icon_url = node_url.parse(icon)
       if(icon_url.pathname[0]!=='/') 
         icon_url.pathname = '/' + icon_url.pathname
       if(!icon_url.hostname) 
         icon = url.protocol + '//' + url.hostname + icon_url.pathname
-    }else icon = null
+    }
     
     return icon
 }
