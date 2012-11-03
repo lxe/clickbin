@@ -18,12 +18,33 @@ module.exports = function(page,url,parts,$){
     })
   }
   // try to get the thumbnail, if there isn't one alrady
-  if(!page.icon){
-    page.icon = $('link[rel="apple-touch-icon-precomposed"]')
-    if(page.icon.length && page.icon.length > 1){
+  if(!page.icon) page.icon = getBestIcon($)
+  
+  if(!page.url){
+    page.url = $('meta[property="og:url"]')
+    if(page.url.length) page.url = page.url.first().attr('content')
+  }
+  if(!page.url) page.url = url
+  
+  return page
+}
+
+function getBestIcon($){
+    var icon = null
+    
+    // try to get the open graph icon
+    icon = $('meta[property="og:image"]')
+    if(icon.length){
+      icon = icon.first().attr('content')
+      if(icon) return icon
+    }
+    
+    // try finding the largest apple touch icon
+    icon = $('link[rel="apple-touch-icon-precomposed"]')
+    if(icon.length && icon.length > 1){
       var max_size = -1
       var largest_icon = null
-      _.each(page.icon,function(icon){
+      _.each(icon,function(icon){
         var $icon = $(icon)
         var size = $icon.attr('sizes')
         console.log('size: '+size)
@@ -35,20 +56,21 @@ module.exports = function(page,url,parts,$){
         if(size > max_size){
           max_size = size
           largest_icon = $icon
-          console.log('largest icon: ' + largest_icon.first().attr('href'))
         }
       })
-      page.icon = largest_icon
+      icon = largest_icon
     }
-    if(!page.icon.length) page.icon = $('link[rel="apple-touch-icon"]')
-    if(!page.icon.length) page.icon = $('link[rel="icon"]')
-    if(page.icon.length){
-      page.icon = page.icon.first().attr('href') // could still be empty...
-      var icon_url = node_url.parse(page.icon)
+    
+    if(!icon.length) icon = $('link[rel="apple-touch-icon"]')
+    
+    // we have to do all these extra checks because the previous check could 
+    // return a string instead of jquery instance object
+    if(!icon.length) icon = $('link[rel="icon"]')
+    
+    if(icon.length){
+      icon = icon.first().attr('href') // could still be empty...
+      var icon_url = node_url.parse(icon)
       if(icon_url.pathname[0]!=='/') icon_url.pathname = '/' + icon_url.pathname
-      if(!icon_url.hostname) page.icon = url.protocol + '//' + url.hostname + icon_url.pathname
-    }else page.icon = null
-  }
-  
-  return page
+      if(!icon_url.hostname) icon = url.protocol + '//' + url.hostname + icon_url.pathname
+    }else icon = null
 }

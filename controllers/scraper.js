@@ -57,7 +57,7 @@ module.exports = {
           console.log('the page didnt seem to have a useable icon')
           return cb(null, {
             title : page.title
-            , url   : url
+            , url   : page.url
             , desc : page.desc
             , icon : page.icon
             //incase there's no icon, we can also use the mime type to display an icon
@@ -88,7 +88,7 @@ module.exports = {
             }
             function done(icon){
               return cb(null,{
-                url : url
+                url : page.url
                 , title : page.title
                 , desc : page.desc
                 , mime : mime
