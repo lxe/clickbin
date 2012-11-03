@@ -18,13 +18,14 @@ module.exports = function(page,url,parts,$){
     })
   }
   // try to get the thumbnail, if there isn't one alrady
-  if(!page.icon) page.icon = getBestIcon($)
+  if(!page.icon || !page.icon.length) page.icon = getBestIcon($)
   
   if(!page.url){
     page.url = $('meta[property="og:url"]')
     if(page.url.length) page.url = page.url.first().attr('content')
+    else page.url = null
   }
-  if(!page.url) page.url = url
+  if(!page.url) page.url = url.href
   
   return page
 }
@@ -58,7 +59,6 @@ function getBestIcon($){
           largest_icon = $icon
         }
       })
-      icon = largest_icon
     }
     
     if(!icon.length) icon = $('link[rel="apple-touch-icon"]')
@@ -70,7 +70,11 @@ function getBestIcon($){
     if(icon.length){
       icon = icon.first().attr('href') // could still be empty...
       var icon_url = node_url.parse(icon)
-      if(icon_url.pathname[0]!=='/') icon_url.pathname = '/' + icon_url.pathname
-      if(!icon_url.hostname) icon = url.protocol + '//' + url.hostname + icon_url.pathname
+      if(icon_url.pathname[0]!=='/') 
+        icon_url.pathname = '/' + icon_url.pathname
+      if(!icon_url.hostname) 
+        icon = url.protocol + '//' + url.hostname + icon_url.pathname
     }else icon = null
+    
+    return icon
 }
