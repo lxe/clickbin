@@ -60,4 +60,27 @@ $(function() {
   $('#new-item-title').on('blur', function(event) {
     $('#new-item-title').tooltip('hide');
   })
+  
+  $('.bin-link.active.editable').on('click',onBinEdit)
+  function onBinEdit(){
+    $this = $(this)
+    var binname = $this.text().trim()
+    //$(this).empty()
+    // '<input type="text" value="' + bintitle + '">')
+    var $edit = $(
+      '<input class="edit-bin-name" type="text" value="' + binname + '">'
+      + '</input>'
+      + '<a class="btn edit-done"> done </a>'
+    )
+    var $breadcrumbs = $this.parent()
+    $breadcrumbs.append($edit)
+    $('.edit-done', $breadcrumbs).on('click', function(){
+      var binname = $('.edit-bin-name', $breadcrumbs).val().trim()
+      $edit.remove()
+      $this.text(binname)
+      $breadcrumbs.append($this)
+      $this.on('click',onBinEdit)
+    })
+    $this.remove()
+  }
 })

@@ -26,14 +26,7 @@ html(lang='en')
             .container
               ul.nav
                 li
-                  .btn-group.bins.breadcrumbs
-                    if typeof(profile) !== 'undefined' && profile.username
-                      a(href='/').brand 
-                        strong #{profile.username}
-                        | .clickb.in
-                    else
-                      a(href="http://#{domain}").brand clickb.in
-                    block breadcrumb
+                  block breadcrumb
                
 
                 //- li

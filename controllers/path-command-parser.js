@@ -1,5 +1,5 @@
 var node_path = require('path')
-  , uri_regexp = /^((\/(?:[a-zA-Z0-9\-^\/]+(?:\/|$)))|\/)(\w+?:\/\/)?([^\/]+\..+)?/
+  , uri_regexp = /^((\/(?:[a-z\%A-Z0-9\-^\/]+(?:\/|$)))|\/)(\w+?:\/\/)?([^\/]+\..+)?/
 
 module.exports = function(url,subdomains){
   var command = {}
@@ -15,7 +15,7 @@ module.exports = function(url,subdomains){
   // use http if no protocol was specified
   var protocol = matches[matches.length - 2] || 'http://'
     , uri  = matches[matches.length - 1]
-    , path = matches[1]
+    , path = decodeURIComponent(matches[1])
   
   if(path) path = node_path.normalize(path.toLowerCase())
   
@@ -38,6 +38,7 @@ module.exports = function(url,subdomains){
   if(uri) command.uri = protocol + uri
   else command.uri = undefined
   command.path = path
-  
+  console.log('command: ' )
+  console.log(command)
   return command
 }

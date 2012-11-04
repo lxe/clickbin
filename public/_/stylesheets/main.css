@@ -10080,6 +10080,13 @@ body .sun {
 body .breadcrumbs {
   white-space: normal;
 }
+body .breadcrumbs .edit-done {
+  margin-left: -1px;
+}
+body .input-prepend .active {
+  background-color: none;
+  border-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.25);
+}
 body .mascot {
   width: 200px;
   margin-right: 20%;

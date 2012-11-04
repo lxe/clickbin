@@ -1,6 +1,25 @@
-bins = path.split('/').slice(1)
-path = ''
-if bins[0] !== ''
-  each bin, i in bins
-    - path = path + '/' + bin
-    a(href="#{path}", class="#{ i === bins.length - 1 ? 'active' : '' }").btn.bin-link #{bin}
+.input-prepend
+  .btn-group.bins.breadcrumbs
+    if typeof(profile) !== 'undefined' && profile.username
+      a(href='/').brand 
+        strong #{profile.username}
+        | .clickb.in
+    else
+      a(href="http://#{domain}").brand clickb.in
+    if(!path) 
+      - path = '/'
+    bins = path.split('/').slice(1)
+    path = ''
+    if bins[0] !== ''
+      each name, i in bins
+        - path = path + '/' + name
+        if(bins.length - 1 === i)
+          if(isOwner && bin.parent) 
+            //- show edit options
+            a.btn.bin-link.active.editable !{name} 
+              i.icon-edit
+          else
+            //- just show the title
+            a.btn.bin-link.active !{name} 
+        else
+          a(href="#{path}").btn.bin-link !{name} 
