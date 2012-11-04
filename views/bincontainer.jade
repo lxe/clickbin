@@ -51,6 +51,8 @@ mixin bin(bin)
 
 
 .bin.main.container
+  script(type="text/javascript")
+    var bin_id = '!{bin.id}'
   if publicBin
     //- .alert(style="margin-bottom:20px;border-radius: 4px 4px 4px 4px")
     //-   i.icon-exclamation-sign 

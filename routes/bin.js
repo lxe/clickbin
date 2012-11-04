@@ -6,6 +6,7 @@
 
 var Bin = require('../models/bin')
   , User = require('../models/user')
+  , config = require('../config')
 
 module.exports = function(app){
   
@@ -82,18 +83,55 @@ module.exports = function(app){
     })
   })
   
+  app.get('/_/bin/:binID/rename', function(req, res, next){
+    Bin.findById(req.params.binID, function(err,bin){
+      if(err) return next(err)
+      if(
+        bin
+        && req.session
+        && (
+          // if this user is logged in and owns this bin
+          req.session.user
+          && req.session.user.loggedIn
+          && req.session.user._id === bin.owner.toString()
+          // or this is an anounymous bin and the current user owns it
+          || !bin.owner
+          && req.sessionID === bin.sessionID
+        )
+      ) {
+        if(!bin.name) {
+          req.session.flash.error = "This bin is not renameable"
+          return res.redirect('back')
+        }
+        var name = decodeURIComponent(req.query.name)
+        if(!name || !name.match(config.binNameRegexp)){
+          req.session.flash.error = "Invalid bin name"
+          return res.redirect('back')
+        }
+        bin.name = name
+        bin.save(function(err){
+          if(err) return next(err)
+          return res.redirect(decodeURIComponent(req.query.redirect))
+        })
+      } else {
+        req.session.flash.error = "you don't have permission to rename that bin"
+        return res.redirect('back')
+      }
+    })
+  })
+  
   /**
     * make a bin public or private
     */
-  app.get('/_/bin/:binID/public',function(req,res,next){
-    setBinAccess(true,req,res,next);
+  app.get('/_/bin/:binID/public',function(req, res, next) {
+    setBinAccess(true,req,res,next)
   });
-  app.get('/_/bin/:binID/private',function(req,res,next){
-    setBinAccess(false,req,res,next);
+  app.get('/_/bin/:binID/private',function(req, res, next) {
+    setBinAccess(false,req,res,next)
   });
   
-  function setBinAccess(access,req,res,next){
-    Bin.findById(req.params.binID,function(err, bin){
+  function setBinAccess(access,req,res,next) {
+    Bin.findById(req.params.binID, function(err, bin){
       if(err) return next(err)
       if(
         // the bin exists
@@ -119,7 +157,8 @@ module.exports = function(app){
           return res.redirect('back')
         })
       }else{
-        req.session.flash.error = "That bin doesn't exist or is a private bin that you don't own."
+        req.session.flash.error = "you dont have permission to change the "
+          + "privacy of this bin"
         return res.redirect('back')
       }
     })

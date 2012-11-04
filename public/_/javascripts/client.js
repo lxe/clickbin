@@ -74,12 +74,24 @@ $(function() {
     )
     var $breadcrumbs = $this.parent()
     $breadcrumbs.append($edit)
+    $('.edit-bin-name').keyup(function(e){
+      if(e.keyCode === 13) $('.edit-done').click()
+    })
     $('.edit-done', $breadcrumbs).on('click', function(){
       var binname = $('.edit-bin-name', $breadcrumbs).val().trim()
       $edit.remove()
-      $this.text(binname)
-      $breadcrumbs.append($this)
-      $this.on('click',onBinEdit)
+      if(binname){
+        $this[0].firstChild.data = binname + ' '
+        // $breadcrumbs.append($this)
+        // $this.on('click',onBinEdit)
+        var path = window.location.pathname
+        binname = encodeURIComponent(binname)
+        path = path.split('/')
+        path.pop()
+        path.push(binname)
+        path = path.join('/')
+        window.location.href = '/_/bin/' + bin_id + '/rename?name=' + binname + '&redirect=' + path
+      }
     })
     $this.remove()
   }

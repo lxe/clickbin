@@ -17,6 +17,7 @@ var config = {
   , usernameRegexp : /^[a-zA-z]{1,}[a-zA-Z0-9]{2,}$/
   , maxChildBins : 50
   , maxBinPathDepth : 10
+  , binNameRegexp : /[a-z\%A-Z0-9\-^\/]+/
 }
 
 // "In an extreme view, the world can be seen as only connections, nothing 
