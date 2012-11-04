@@ -55,6 +55,14 @@ var BinSchema = new Schema({
   }
 }, { strict: true })
 
+BinSchema.index(
+  { 
+    parent : 1
+    , name: 1
+  }
+  , { unique : true }
+);
+
 // request for path /32/bin1/bin2
 // query is made for first bin
 
@@ -92,6 +100,7 @@ BinSchema.statics.getByPath = function(owner, path, cb) {
   
   // now that we have the user id, do the real work of getting the bin by its 
   // path
+  var bins = []
   function getBin(owner, path, cb) {
     if(path==='/') path = null
     if(path){ 
@@ -108,7 +117,8 @@ BinSchema.statics.getByPath = function(owner, path, cb) {
     }
     Bin.findOne(query, function(err, bin) {
       if(err) return cb(err)
-      if(!path || path.length === 1 || !bin) return cb(null, bin)
+      if(bin) bins.push(bin)
+      if(!path || path.length === 1 || !bin) return cb(null, bin, bins)
       path.shift()
       return next(path, bin, cb)
     })
@@ -119,7 +129,8 @@ BinSchema.statics.getByPath = function(owner, path, cb) {
         , parent : bin
       }, function(err, bin){
         if(err) return cb(err)
-        if(path.length === 1 || !bin) return cb(null, bin)
+        if(bin) bins.push(bin)
+        if(path.length === 1 || !bin) return cb(null, bin, bins)
         path.shift()
         // recurse!
         return next(path, bin, cb)
@@ -138,7 +149,7 @@ BinSchema.statics.ensureExists = function(opts, path, cb) {
   }
   // shallow copy options
   opts = _.extend({},opts)
-  
+  var bins = []
   
   if(path==='/') return cb(null,null)
   path = path.split('/')
@@ -146,7 +157,9 @@ BinSchema.statics.ensureExists = function(opts, path, cb) {
   if(path.length === 1 && !opts.owner) return cb(new Error('Cannot create root bin using '
     + 'ensureExists'))
   
-  // make sure the root bin exists
+  // make sure the root bin exists without also trying to create it. this 
+  // `ensureExists` is not responsibe for creating root bins (like root user 
+  // or anounymous bins)
   Bin.findOne({
     name : !!opts.owner ? null : path[0]
     , sessionID : opts.sessionID
@@ -155,39 +168,85 @@ BinSchema.statics.ensureExists = function(opts, path, cb) {
   }, function(err, bin) {
     if(err) return cb(err)
     if(!bin) return cb(new Error('The root bin needs to exists first'))
-    if(!opts.owner) path.shift()
+    // a root user bin doesnt have a name
+    if(!opts.owner){
+      path.shift()
+      bins.push(bin)
+    }
     return next(path, bin, cb)
   })
   
   function next(path, bin, cb){
     opts.name = path[0]
     opts.parent = bin._id
-    ensureBinExists(opts, bin, function(err, bin){
+    opts.public = bin.public
+    ensureBinExists(opts, function(err, bin){
       if(err) return cb(err)
       if(!bin) return cb(new Error("Unable to create bin with `ensureBinExists`"
         + " in Bin model"))
-      if(path.length === 1) return cb(null,bin)
+      bins.push(bin)
+      if(path.length === 1) return cb(null, bin, bins)
       path.shift()
       // recurse!
       return next(path, bin, cb)
     })
   }
   
-  function ensureBinExists(opts, bin, cb){
+  function ensureBinExists(opts, cb){
+    
+    var query = {}, set = _.extend({},opts)
+    
     if(opts.name){
-      opts.prettyName = opts.name
-      opts.name = opts.name.toLowerCase()
+      query.name = opts.name.toLowerCase()
+    }else{
+      // it is possible to ensure a bin without a name exists if the owner
+      // attribute is present which indicates a root bin
     }
-    Bin.findOneAndUpdate(
-      // query
-      opts
-      // update
-      , {
-        $set : opts
-      }
-      // options. create it if it doesn't already exist
-      , { upsert : true }
-      , cb)
+    
+    if(opts.parent){
+      query.parent = opts.parent
+    }else{
+      // a root bin won't have a parent
+    }
+    
+    if(!query.parent && !query.name) return cb(new Error('cant query bin '
+      + 'without a parent or name'))
+    
+    Bin.findOne(query,function(err,bin){
+      if(err) return cb(err)
+      if(bin) return cb(null,bin)
+      bin = new Bin(opts)
+      bin.save(function(err){
+        if(err) return cb(err)
+        else return cb(null,bin)
+      })
+    })
+    // 
+    // Bin.findOneAndUpdate(
+    //   // query
+    //   query
+    //   // update
+    //   , {
+    //     $set : query
+    //   }
+    //   // options. create it if it doesn't already exist
+    //   , { upsert : true }
+    //   , function(err,bin){
+    //     if(err) return cb(err)
+    //     if(!bin) return cb(new Error('findOneAndUpate did not return a bin when upsert was provided'))
+    //     console.log(bin)
+    //     if(typeof bin.__v === 'undefined' ){
+    //       // this bin was just created. make sure we set any new fields
+    //       console.log('this bin didnt exist before')
+    //       console.log(set)
+    //       _.extend(bin,set)
+    //       bin.increment()
+    //       bin.save(function(err){
+    //         if(err) return cb(err)
+    //         return cb(null,bin)
+    //       })
+    //     }else return cb(null,bin)
+    //   })
   }
 }
 
@@ -208,16 +267,32 @@ BinSchema.methods.addLink = function(link){
   else return !!this.links.push(link)
 }
 
-BinSchema.methods.removeLinkById = function(linkID){
+BinSchema.methods.removeLinkById = function(id){
   this.links = _.filter(this.links,function(link){
-    return link.id !== linkID
+    return link.id !== id
+  })
+  return this
+}
+
+BinSchema.methods.renameLinkById = function(id, name){
+  _.any(this.links, function(link){
+    if(link.id === id){
+      link.title = name
+      return true // sort circuit
+    }
   })
   return this
 }
 
 BinSchema.methods.getChildren = function(cb){
   // escape regex characters
-  Bin.find({ parent : this }).limit(config.maxChildBins).exec(cb)
+  Bin.find({ parent : this })
+    .limit(config.maxChildBins)
+    .sort({ 
+      name : 'asc'
+      , test : -1 
+    })
+    .exec(cb)
 }
 
 var Bin = module.exports = mongoose.model('Bin', BinSchema)

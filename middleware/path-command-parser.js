@@ -1,5 +1,19 @@
 var node_path = require('path')
-  , uri_regexp = /^((\/(?:[a-z\%A-Z0-9\-^\/]+(?:\/|$)))|\/)(\w+?:\/\/)?([^\/]+\..+)?/
+  , _ = require('underscore')
+  , config = require('../config')
+  /**
+    * this breaks the requested url into its commands parts. namely: 
+    * the bin `path`, the `uri` and the `protocol`
+    * there's some overlap here with config.binNameRegexp. notice how the
+    * part in this regexp also contains an extra `/` because we're matching
+    * the entire bin `path` not just a single bin `name`
+    */
+  , uri_regexp = /^((\/(?:[a-zA-Z0-9]{1,}[a-z \%A-Z0-9\-\_\/]*(?:\/|$)))|\/)(\w+?:\/\/)?([^\/]+\..+)?/
+
+function trim(str){
+  if(!str) return str
+  return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '')
+}
 
 /**
   * this middleware is responsible for parsing the `clickbin` style command 
@@ -10,6 +24,8 @@ module.exports = function(req,res,next){
   var command = {}
     , url = req.url
     , subdomains = req.subdomains
+    , newPath = null
+    , bins = []
 
   // a users bin 
   if(subdomains && subdomains.length) 
@@ -22,15 +38,54 @@ module.exports = function(req,res,next){
   // use http if no protocol was specified
   var protocol = matches[matches.length - 2] || 'http://'
     , uri  = matches[matches.length - 1]
-    , path = decodeURIComponent(matches[1])
+  
+  
+  console.log('matches[1]: ' + matches[1])
+  
+  var path = decodeURIComponent(matches[1])
+  
+  console.log('path: ' + path)
   
   if(path){
-    var newPath = node_path.normalize(path)
-    if(newPath !== path){
+    newPath = node_path.normalize(path)
+    newPath = _.map(newPath.split('/'),function(name){
+      return trim(name)
+    })
+    // filter out empty bins
+    newPath = _.filter(newPath,function(name){ return name !== '' })
+    console.log('newPath: ')
+    console.log(newPath)
+    // check for invalid bin path name
+    var invalidBinName = _.find(newPath,function(name){
+      console.log('name: ' + name)
+      return !name.match(config.binNameRegexp)
+    })
+    console.log('invalidBinName: ' + invalidBinName)
+    if(invalidBinName) return next(new Error("Invalid bin name for bin: " + invalidBinName))
+    
+    // save the list to `bins`
+    _.each(newPath,function(name){ bins.push(name) })
+    if(bins.length > config.maxBinPathDepth) return next(new Error("now... don't "
+      + "get crazy. 10 is the max number of bins inside of bins. any more then "
+      + "that, and our head starts to hurt"))
+    
+    // url encode each bin
+    newPath = _.map(newPath,function(name){
+      return encodeURIComponent(name) 
+    })
+    
+    newPath = '/' + newPath.join('/')
+    console.log('newPath: ' + newPath)
+    if(!!uri) newPath += ((newPath!=='/') ? '/' : '') + protocol + uri
+    console.log('uri: ' + uri )
+    console.log('!!uri: ' + (!!uri) )
+    console.log('newPath: ' + newPath)
+    console.log('req.url: ' + req.url)
+    if( newPath !== req.url) {
       // we should redirect to the proper path
-      if(!uri) return res.redirect(newPath)
-      else return res.redirect(newPath + '/' + protocol + uri )
+      return res.redirect(newPath)
     }
+    newPath = decodeURIComponent(newPath)
   }
   
   // prevent bins from being added to the root path '/'
@@ -54,8 +109,9 @@ module.exports = function(req,res,next){
   else command.uri = undefined
   command.path = path
   
+  command.bins = bins
+  
   req.parsedPathCommand = command
-  console.log('path command: ')
-  console.log(command)
+  console.log('path command: %j', command)
   return next()
 }

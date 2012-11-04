@@ -114,7 +114,7 @@ app.configure(function() {
       var uri = this.locals.getRootURI()
       this.redirect(uri)
     }
-    res.retirectToSignIn = function(){
+    res.redirectToSignIn = function(){
       var uri = this.locals.getRootURI()
       this.redirect(uri + '_/signin')
     }

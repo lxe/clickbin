@@ -10050,22 +10050,22 @@ body {
   background: #f9f8f7;
 }
 body.private {
-  background-color: #190a14;
-  background-image: -moz-linear-gradient(top, #290e00, #000432);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#290e00), to(#000432));
-  background-image: -webkit-linear-gradient(top, #290e00, #000432);
-  background-image: -o-linear-gradient(top, #290e00, #000432);
-  background-image: linear-gradient(to bottom, #290e00, #000432);
+  background-color: #1a081e;
+  background-image: -moz-linear-gradient(top, #000432, #410e00);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#000432), to(#410e00));
+  background-image: -webkit-linear-gradient(top, #000432, #410e00);
+  background-image: -o-linear-gradient(top, #000432, #410e00);
+  background-image: linear-gradient(to bottom, #000432, #410e00);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff290e00', endColorstr='#ff000432', GradientType=0);
-  background-color: #190a14;
-  background-image: -moz-linear-gradient(top, #290e00, #000432);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#290e00), to(#000432));
-  background-image: -webkit-linear-gradient(top, #290e00, #000432);
-  background-image: -o-linear-gradient(top, #290e00, #000432);
-  background-image: linear-gradient(to bottom, #290e00, #000432);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff000432', endColorstr='#ff410e00', GradientType=0);
+  background-color: #1a081e;
+  background-image: -moz-linear-gradient(top, #000432, #410e00);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#000432), to(#410e00));
+  background-image: -webkit-linear-gradient(top, #000432, #410e00);
+  background-image: -o-linear-gradient(top, #000432, #410e00);
+  background-image: linear-gradient(to bottom, #000432, #410e00);
   background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff290e00', endColorstr='#ff000432', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff000432', endColorstr='#ff410e00', GradientType=0);
 }
 body .moon,
 body .sun {
@@ -10629,8 +10629,8 @@ a {
 .bins .items li .input-append {
   margin-bottom: 4px;
 }
-.bins .items li .close {
-  width: 24px;
+.bins .items li .link .controls {
+  width: 48px;
   text-align: right;
 }
 .bins .items li .binlink {

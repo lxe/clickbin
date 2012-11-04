@@ -14,10 +14,12 @@ var config = {
   // just incase, reserve these usernames (aka, subdomains)
   , reservedUsernames : fs.readFileSync( __dirname + '/reserved.txt').toString().split('\n')
   , mongoPath : 'mongodb://localhost/clickbin'
-  , usernameRegexp : /^[a-zA-z]{1,}[a-zA-Z0-9]{2,}$/
+  , usernameRegexp : /^[a-zA-Z]{1,}[a-zA-Z0-9]{2,}$/
   , maxChildBins : 50
   , maxBinPathDepth : 10
-  , binNameRegexp : /[a-z\%A-Z0-9\-^\/]+/
+  // bins can have lowercase or uppercase letters, numbers or `-` or `_` or 
+  // spaces but must start with a letter or number
+  , binNameRegexp : /^[a-zA-Z0-9]{1,}[a-z\%A-Z0-9\-\_ ]*$/
 }
 
 // "In an extreme view, the world can be seen as only connections, nothing 

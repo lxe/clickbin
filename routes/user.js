@@ -15,7 +15,7 @@ module.exports = function(req, res, next, opts) {
   var username = opts.username
     , path = opts.path || '/'
     , uri  = opts.uri
-    , bins = (path) ? path.substr(1).split('/') : null
+    , bins = opts.bins
   
   function isBinOwner(bin){
     return req.session 
@@ -39,9 +39,8 @@ module.exports = function(req, res, next, opts) {
     return res.redirectToProfile(username)
   }
   
+  // show the user `root` bin. aka, their profile page
   if(path === '/' && !uri) {
-    
-    // show the user `root` bin. aka, their profile page
     Bin.getByPath(username, '/', function(err, bin) {
       var isOwner = isBinOwner(bin)
       if(err) return next(err)
@@ -49,10 +48,7 @@ module.exports = function(req, res, next, opts) {
         req.session.flash.error = "Could not locate bin."
         return res.redirectToLanding()
       } else if(!isOwner && !bin.public) {
-        // req.session.flash.error = "That user's root bin is private"
-        // return res.redirectToLanding()
-        // return res.redirect('/_/signin')
-        return res.retirectToSignIn();
+        return res.redirectToSignIn();
       }
       bin.getChildren(function(err, children) {
         if(err) return next(err)
@@ -72,35 +68,39 @@ module.exports = function(req, res, next, opts) {
     })
   } else if(!uri) {
     // create/show a bin
-    Bin.getByPath(username, path, function(err, bin) {
+    Bin.getByPath(username, path, function(err, bin, bins) {
       if(err) return next(err)
       var isOwner = isBinOwner(bin)
       if(!bin) {
-        console.log('bin doesnt exist for user ' + username)
-        console.log('and path: ' + path)
-        // the bin doesnt exist but we own the root
+        // the bin doesnt exist
         if(isBinRootOwner()) {
+          // but we own the root bin
+          console.log(' adding new bin: ')
+          if(bins.length > config.maxBinPathDepth) 
+            return errorMaxBinPath(req,res)
+          console.log( 'bins: length: ' + bins.length )
           Bin.ensureExists({
             owner : req.session.user._id
-          }, path, function(err, bin){
+          }, path, function(err, bin, bins){
             if(err) return next(err)
-            return render(bin)
+            return render(bin, realPath(bins) )
           })
         } else {
           // we're not the owner of this bin and the bin doesnt exist yet
-          req.session.flash.error = "You can't add links to bins you don't "
-            + "own."
+          req.session.flash.error = "You can't add bins inside of bins you don't own."
           return res.redirect('back')
         }
       } else {
         // show the bin
         if(!isOwner && !bin.public) return errorUserNoBin(req,res)
-        else return render(bin)
+        var rPath = realPath(bins)
+        if(path !== rPath) return res.redirect(rPath)
+        else return render(bin, realPath(bins) )
       }
     })
   } else if(uri) {
     // add a link to a users bin
-    Bin.getByPath(username, path, function(err, bin) {
+    Bin.getByPath(username, path, function(err, bin, bins) {
       if(err) return next(err)
       // check permissions
       if(!req.session.user || req.session.user.username !== username) {
@@ -116,14 +116,15 @@ module.exports = function(req, res, next, opts) {
             Bin.ensureExists({
               owner : req.session.user._id
               , links : [link]
-            }, path, function(err, bin){
+            }, path, function(err, bin, bins){
+              
               if(err) return next(err)
               else return render(bin)
             })
           })
         } else {
           // the bin already exists, so add the link to it
-          return addLinkToUserBin(path, uri, bin)
+          return addLinkToUserBin( realPath(bins), uri, bin)
         }
       }
     })
@@ -131,18 +132,17 @@ module.exports = function(req, res, next, opts) {
 
   // show the user bin page
 
-
-  function render(bin) {
+  function render(bin, realPath) {
     // meanhile, in russia
     bin.getChildren(function(err, children) {
       if(err) return next(err)
       var isOwner = isBinRootOwner()
       return res.render('user', {
         isOwner : isOwner
-        , path : path
+        , path : (realPath) ? realPath : path
         , title : username + '.' + config.domain + path
         , bin : bin
-        , children: _.filter(children, function(child){
+        , children : _.filter(children, function(child){
           return isOwner || child.public
         })
         , profile : {
@@ -168,4 +168,17 @@ module.exports = function(req, res, next, opts) {
       }
     })
   }
+}
+
+function realPath(bins){
+  var path = ''
+  _.each(bins, function(bin){ path += '/' + bin.prettyName })
+  return path
+}
+
+function errorMaxBinPath(req, res){
+  // make sure bins dont get crazy...
+  req.session.flash.error = "Too many levels of bins!"
+    + "paths."
+  return res.redirect('back')
 }

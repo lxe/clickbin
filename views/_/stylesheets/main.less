@@ -35,8 +35,8 @@ body {
   &.private{
     // purple and blue
     //#gradient > .vertical(#2d1d44,#913b44);
-    //#gradient > .vertical(#290e00,#6f2500);
-    #gradient > .vertical(#290e00,#000432);
+    #gradient > .vertical(#000432,#410e00);
+    //#gradient > .vertical(#290e00,#000432);
   }
   .moon, .sun{
     display: none;
@@ -623,9 +623,11 @@ a {
       .input-append {
         margin-bottom: 4px;
       }
-      .close {
-        width: 24px;
-        text-align: right;
+      .link{
+        .controls {
+          width: 48px;
+          text-align: right;
+        }
       }
       .binlink {
         font-weight: bold;

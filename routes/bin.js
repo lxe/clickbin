@@ -8,13 +8,29 @@ var Bin = require('../models/bin')
   , User = require('../models/user')
   , config = require('../config')
 
+
+function userDoesntOwnBin(bin,req){
+  return (
+    // does the user own the this anounymous bin?
+    !bin.owner && req.sessionID !== bin.sessionID
+    // or does the loggedin user own this user bin?
+    || (
+      bin.owner 
+      && (
+        !req.session.user 
+        || req.session.user._id !== bin.owner.toString() 
+      )
+    )
+  )
+}
+
 module.exports = function(app){
   
   /**
     * remove a link from a bin
     */
-  app.get('/_/bin/:binID/link/:linkID/remove',function(req,res,next){
-    Bin.findById(req.params.binID, function(err,bin){
+  app.get('/_/bin/:binID/link/:linkID/remove', function(req, res, next) {
+    Bin.findById(req.params.binID, function(err, bin) {
       if (err) return next(err)
       // bin doesn't exist
       if(!bin){
@@ -23,21 +39,39 @@ module.exports = function(app){
         return res.redirect('back')
       }
       // check permissions
-      if (!bin.owner && req.sessionID !== bin.sessionID) 
-        return deny()
-      else if(bin.owner && (!req.session.user || req.session.user._id === bin.owner.toString() ) ) 
-        return deny()
-      // actually remove the link
-      bin.removeLinkById(req.params.linkID).save(function(err){
-        if(err) return next(err)
-        else res.redirect('back')
-      })
-      // helper for reporting denial error
-      function deny(){
+      if( userDoesntOwnBin(bin,req) ){
         req.session.flash.error = "You dont have permission to remove links "
           + "from bins you don't own."
         return res.redirect('back')
       }
+      
+      // actually remove the link
+      bin.removeLinkById(req.params.linkID).save(function(err) {
+        if(err) return next(err)
+        else res.redirect('back')
+      })
+    })
+  })
+  
+  app.get('/_/bin/:binID/link/:linkID/rename', function(req, res, next){
+    if(!req.query.name) return next(new Error('missing query param `name`'))
+    Bin.findById(req.params.binID, function(err, bin){
+      if(err) return next(err)
+      if(!bin){
+        req.session.flash.error = "looks like you tried to rename a link on a "
+          + "bin that no longer exists."
+        return res.redirect('back')
+      }
+      // check permissions
+      if( userDoesntOwnBin(bin,req) ){
+        req.session.flash.error = "You don't have permission to rename links "
+          + "you don't own."
+        return res.redirect('back')
+      }
+      bin.renameLinkById(req.params.linkID,req.query.name).save(function(err){
+        if(err) return next(err)
+        else res.redirect('back')
+      })
     })
   })
   
@@ -104,12 +138,18 @@ module.exports = function(app){
           return res.redirect('back')
         }
         var name = decodeURIComponent(req.query.name)
+        console.log('name: ' + name)
         if(!name || !name.match(config.binNameRegexp)){
           req.session.flash.error = "Invalid bin name"
           return res.redirect('back')
         }
+        console.log('bin name is valid: ' + name)
         bin.name = name
         bin.save(function(err){
+          if(err && err.code === 11001){
+            req.session.flash.error = "there's already a bin with that name here"
+            return res.redirect('back')
+          }
           if(err) return next(err)
           return res.redirect(decodeURIComponent(req.query.redirect))
         })

@@ -42,15 +42,19 @@ module.exports = function (app) {
       req.session.bookmarkletPath = path;
       // bin paths should start with a '/' but not end with one
       // requesting a just a bin
-      Bin.getByPath(path, function(err , bin) {
+      Bin.getByPath(path, function(err , bin, bins ) {
         if (err) return next(err)
         var isOwner = bin && bin.sessionID === req.sessionID
         // if the user accessing the bin isn't the owner and the bin isn't 
         // public
         if(bin && !isOwner && !bin.public) return errorTopLevelBin(req,res)
-
+        
+        var realPath = ''
+        _.each(bins, function(bin){ realPath += '/' + bin.prettyName })
+        
         // show the bin
         if(bin && uri === undefined){
+          if(path !== realPath) return res.redirect(realPath)
           return bin.getChildren(function(err,children){
             if(err) return next(err)
             return res.render('bin', {
@@ -61,9 +65,9 @@ module.exports = function (app) {
             })
           })
         }
-
+        
         // add a link to an existing bin
-        else if(bin) return addLinkToBin(path, uri, bin, res)
+        if(bin) return addLinkToBin(realPath, uri, bin, res)
         
         // dont allow anonymous users to create their own top level bins
         var bins = path.substring(1).split('/')
@@ -96,9 +100,11 @@ module.exports = function (app) {
               Bin.ensureExists({
                 sessionID : req.sessionID
                 , links : links
-              }, path, function(err){
+              }, path, function(err, bin, bins){
                 if(err) return next(err)
-                return res.redirect(path)
+                var realPath = ''
+                _.each(bins, function(bin){ realPath += '/' + bin.prettyName })
+                return res.redirect(realPath)
               })
             }
           }
