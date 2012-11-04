@@ -40,6 +40,18 @@ var BinSchema = new Schema({
   , name : {
     type : String
     , required : false
+    , set : function(name){
+      if(!name) return name
+      this.prettyName = name
+      return name.toLowerCase()
+    }
+    , get : function(){
+      return this.prettyName
+    }
+  }
+  , prettyName : {
+    type : String
+    , required : false
   }
 }, { strict: true })
 
@@ -90,7 +102,7 @@ BinSchema.statics.getByPath = function(owner, path, cb) {
     if(owner instanceof mongoose.Document) owner = owner._id
     // find the root bin and make sure the user owns it.
     var query = {
-      name : path ? path[0] : null
+      name : path ? path[0].toLowerCase() : null
       , parent : { $exists : !!owner && !!path }
       , owner : owner
     }
@@ -103,7 +115,7 @@ BinSchema.statics.getByPath = function(owner, path, cb) {
 
     function next(path, bin, cb){
       Bin.findOne({
-        name : path[0]
+        name : path[0].toLowerCase()
         , parent : bin
       }, function(err, bin){
         if(err) return cb(err)
@@ -162,6 +174,10 @@ BinSchema.statics.ensureExists = function(opts, path, cb) {
   }
   
   function ensureBinExists(opts, bin, cb){
+    if(opts.name){
+      opts.prettyName = opts.name
+      opts.name = opts.name.toLowerCase()
+    }
     Bin.findOneAndUpdate(
       // query
       opts
@@ -175,6 +191,11 @@ BinSchema.statics.ensureExists = function(opts, path, cb) {
   }
 }
 
+BinSchema.virtual('name').set(function (name) {
+  var parts = v.split(' ');
+  this.name.first = parts[0];
+  this.name.last = parts[1];
+});
 
 BinSchema.virtual('username').get(function(){
   throw new Error('Dont use the username property. use `owner` instead ')
