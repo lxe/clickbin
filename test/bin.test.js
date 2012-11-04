@@ -44,12 +44,26 @@ describe('Bin', function(){
           should.not.exist(err)
           should.exist(bin)
           should.equal(bin.name,'child')
-          Bin.getByPath('/parent/child/poop', function(err,bin){
+          Bin.getByPath('/parent/child/', function(err,bin){
             should.not.exist(err)
-            should.not.exist(bin)
-            done()
+            should.exist(bin)
+            should.equal(bin.name,'child')
+            Bin.getByPath('/parent/child/poop', function(err,bin){
+              should.not.exist(err)
+              should.not.exist(bin)
+              done()
+            })
           })
         })
+      })
+    })
+  })
+  describe('ensureExists', function(){
+    it('should create a bin need in the `/parent` bin', function(done){
+      Bin.ensureExists('/parent/child/teacher/conference', function(err,bin){
+        if(err) throw err
+        should.exist(bin)
+        done()
       })
     })
   })

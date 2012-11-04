@@ -77,10 +77,11 @@ module.exports = function(app) {
           req.session.user = { 
             loggedIn : true 
             , username : user.username
+            , _id : user._id
           }
           req.session.flash.succuess = "You're logged in!"
           // create a new top level bin for this user
-          var bin = new Bin({ path : user.username + ':/' })
+          var bin = new Bin({ owner : user })
           bin.save(function(err){
             if(err) return next(err)
             return res.redirectToProfile(user.username)

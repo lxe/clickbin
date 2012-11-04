@@ -22,8 +22,8 @@ module.exports = function(app) {
           loggedIn : true 
           , username : user.username
           , title : 'Sign in - clickbin'
+          , _id : user._id
         }
-        console.log('user logged in!')
         return res.redirect('/')
       }else{
         errors.inputPassword = { msg : "Username and password combo is not correct" }

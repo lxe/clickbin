@@ -22,20 +22,20 @@ module.exports = function(app){
         return res.redirect('back')
       }
       // check permissions
-      if (!bin.username && req.sessionID !== bin.sessionID) 
+      if (!bin.owner && req.sessionID !== bin.sessionID) 
         return deny()
-      else if(bin.username && (!req.session.user || req.session.user.username !== bin.username) ) 
+      else if(bin.owner && (!req.session.user || req.session.user._id === bin.owner.toString() ) ) 
         return deny()
       // actually remove the link
       bin.removeLinkById(req.params.linkID).save(function(err){
         if(err) return next(err)
-        else res.redirect(bin.pathWithoutUsername())
+        else res.redirect('back')
       })
       // helper for reporting denial error
       function deny(){
         req.session.flash.error = "You dont have permission to remove links "
           + "from bins you don't own."
-        return res.redirect(bin.pathWithoutUsername())
+        return res.redirect('back')
       }
     })
   })
@@ -57,7 +57,7 @@ module.exports = function(app){
       // check permissions
       else if (
         req.sessionID !== bin.sessionID 
-        && (!req.session.user || req.session.user.username!==bin.username) 
+        && (!req.session.user || req.session.user._id !== bin.owner.toString() ) 
       ){
         req.session.flash.error = "You dont have permission to remove bins you "
           + "don't own"
@@ -66,16 +66,16 @@ module.exports = function(app){
       // check to see if this bin has children before removing it
       bin.getChildren(function(err, children){
         var parent = bin.parent
-        var username = bin.username
+        var username = bin.owner
         if (err) return next(err)
         else if (children.length > 0){
           req.session.flash.error = "You can only remove bins that are empty."
-          if(parent) return res.redirect(parent)
+          if(parent) return res.redirect('back')
           else if(username) return res.redirect(User.getURI(req,username))
         }
         bin.remove(function(err){
           if(err) return next(err)
-          else if(parent) return res.redirect(parent)
+          else if(parent) return res.redirect('back')
           else res.redirect(User.getURI(req,username))
         })
       })
@@ -104,11 +104,11 @@ module.exports = function(app){
           // the user is logged in and owns this bin
           req.session.user 
             && req.session.user.loggedIn 
-            && req.session.user.username === bin.username
+            && req.session.user._id === bin.owner.toString()
           // if we wanted to enable anounymous bins the option to be private...
           // the user is loggedout but owns the bin, and the bin is an anounymous 
           // bin
-          // || !bin.username
+          // || !bin.owner
           //   && req.sessionID === bin.sessionID
         )
       ){

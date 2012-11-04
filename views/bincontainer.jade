@@ -31,10 +31,10 @@ mixin bin(bin)
   li.clearfix.bin
     if authosizedUser
       a(href="/_/bin/#{bin.id}/remove").close.pull-right &times;
-    a.binlink.clearfix(href="#{bin.path.substr(bin.path.indexOf(':') + 1)}", title="#{bin.title}")
+    a.binlink.clearfix(href="#{path}/#{bin.name}", title="#{bin.title}")
       .inner 
         i.icon-folder-close   
-        |   #{bin.title}
+        |   #{bin.name}
    
 
 //- .row

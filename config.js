@@ -15,6 +15,8 @@ var config = {
   , reservedUsernames : fs.readFileSync( __dirname + '/reserved.txt').toString().split('\n')
   , mongoPath : 'mongodb://localhost/clickbin'
   , usernameRegexp : /^[a-zA-z]{1,}[a-zA-Z0-9]{2,}$/
+  , maxChildBins : 50
+  , maxBinPathDepth : 10
 }
 
 // "In an extreme view, the world can be seen as only connections, nothing 

@@ -9,6 +9,7 @@ var url      = require('url')
   , Counter  = require('../models/counter')
   , user = require('./user')
   , pathCommandParser = require('../middleware/path-command-parser')
+  , config = require('../config')
 
 /**
  * [exports description]
@@ -41,7 +42,7 @@ module.exports = function (app) {
       req.session.bookmarkletPath = path;
       // bin paths should start with a '/' but not end with one
       // requesting a just a bin
-      Bin.findOne({ path : path}, function (err, bin) {
+      Bin.getByPath(path, function(err , bin) {
         if (err) return next(err)
         var isOwner = bin && bin.sessionID === req.sessionID
         // if the user accessing the bin isn't the owner and the bin isn't 
@@ -67,14 +68,13 @@ module.exports = function (app) {
         // dont allow anonymous users to create their own top level bins
         var bins = path.substring(1).split('/')
         if(bins.length === 1) return errorNameBin(req,res)
-        else if(bins.length > 10) return errorMaxBinPath(req,res)
+        else if(bins.length > config.maxBinPathDepth) return errorMaxBinPath(req,res)
         
-        // before we create the bin, make sure it has a root bin.
-        Bin.findOne({
-          path : '/' + bins[0]
-        }, function(err, bin) {
+        // get the root bin
+        Bin.getByPath( '/' + bins[0], function(err, bin) {
           if(err) return next(err)
           else if(!bin) return errorTopLevelBin(req,res)
+          // check that we're the owner
           var isOwner = bin.sessionID === req.sessionID
           // there is a bin there, but the use is not the owner
           if(!isOwner){
@@ -82,24 +82,23 @@ module.exports = function (app) {
             if(!bin.public) return errorTopLevelBin(req,res)
             else return errorNotRootBinOwner(req,res)
           } else {
+            // adding a link to a new bin
             if(uri){
               Link.scrape(uri, function(err,link){
                 if(err) return next(err)
-                saveNewBin(bins,[link])
+                saveNewBin(path, [link])
               })
-            } else saveNewBin(bins,[])
+            // creating a new bin
+            } else saveNewBin(path)
             
-            function saveNewBin(bins,links){
-              var bin = new Bin({
-                path : '/' + bins.join('/')
-                , sessionID : req.sessionID
+            function saveNewBin(path,links){
+              if(!links) links = []
+              Bin.ensureExists({
+                sessionID : req.sessionID
                 , links : links
-              })
-              bin.save(function (err) {
-                if (err) return next(err)
-                // create sub bins
-                ensureBinsExistAlongPath(bins)
-                return res.redirect(bin.path + '/')
+              }, path, function(err){
+                if(err) return next(err)
+                return res.redirect(path)
               })
             }
           }
@@ -113,8 +112,9 @@ module.exports = function (app) {
         Link.scrape(uri, function (err, link) {
           if (err) return next(err)
           // base 36 encode the counter's value
+          var name =  val.toString(36)
           bin = new Bin({
-            path: '/' + val.toString(36)
+            name : name 
             // when creating an anounymous bin, give it the sessionID of its
             // creator
             , sessionID : req.sessionID
@@ -124,7 +124,8 @@ module.exports = function (app) {
             if (err) return next(err)
             req.session.flash.success = "You have just created a new clickbin! "
               + "You can now add or remove links and create new bins here."
-            return res.redirect(bin.path)
+            console.log('path: /' + name)
+            return res.redirect('/' + name)
           }) // end save bin
         })
       })
