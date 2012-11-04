@@ -32,10 +32,10 @@ module.exports = {
     
     var req = urlRequest(url)
     console.log('scrapping url: ' + url)
-    makeLimitedRequest(req,{
+    makeLimitedRequest(req, {
       size : config.maxRequestSize
       , mime : [imageType,htmlType]
-    }, function(err, mime, body){
+    }, function(err, mime, body, res){
       if(err) return fail(err, mime)
       // is the result an image?
       var ext = imageType(mime)
@@ -51,13 +51,16 @@ module.exports = {
         })
       // is the result html?
       }else if(htmlType(mime)){
+        // if there were redirects during the request, the url might have 
+        // changed
+        if(res.headers.location) url = res.headers.location
         var page = hostnameSpecificScrapers(url,body)
         // see if there's an icon we can use.
         if(!page.icon || page.__dont_scrape_icon){
           console.log('the page didnt seem to have a useable icon')
           return cb(null, {
             title : page.title
-            , url   : url
+            , url   : page.url
             , desc : page.desc
             , icon : page.icon
             //incase there's no icon, we can also use the mime type to display an icon
@@ -66,10 +69,10 @@ module.exports = {
         }else{
           // get the icon
           var req = urlRequest(page.icon)
-          makeLimitedRequest(req,{
+          makeLimitedRequest(req, {
             size : config.maxRequestSize
             , mime : [imageType]
-          },function(err,icon_mime,body) {
+          },function(err, icon_mime, body, res) {
             if(err){
               // unable to get the icon, for whatever reason
               console.error('unable to get icon for:' + page.icon)
@@ -88,7 +91,7 @@ module.exports = {
             }
             function done(icon){
               return cb(null,{
-                url : url
+                url : page.url
                 , title : page.title
                 , desc : page.desc
                 , mime : mime
@@ -164,7 +167,7 @@ function makeLimitedRequest(req,limits,cb) {
         data[i].copy(body, pos) 
         pos += data[i].length 
       }
-      return cb(null, mime, body)
+      return cb(null, mime, body,res)
     })
   }).on('error',cb)
   return req
