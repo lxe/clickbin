@@ -121,4 +121,40 @@ $(function() {
       })
     }).modal('show')
   })
+  
+  // $('.controls .move .dropdown').on('click',function(e){
+  //   var $this = $(this)
+  //   if(!$this.find('.dropdown-menu').length){
+  //     $this.append($dropDown)
+  //   }
+  //   $this.find('.dropdown').dropdown('toggle')
+  // })
+  // 
+  // var dropDownHTML = '<ul class="dropdown-menu pull-right" role="menu" aria-labelledby="moveToDropdown">'
+  //     + '<li>'
+  //       + '<a tabindex="1" href="#"> '
+  //         + 'move to...'
+  //       + '</a>'
+  //       + '<a tabindex="1" href="#"> '
+  //         + 'move to...'
+  //       + '</a>'
+  //       + '<li class="divider"></li>'
+  //       + '<li class="dropdown-submenu" style="float:left">'
+  //         + '<a tabindex="1" href="#">more options...</a>'
+  //         + '<ul class="dropdown-menu">'
+  //           + '<li>'
+  //             + '<a tabindex="1" href="#"> something else </a>'
+  //           + '</li>'
+  //         + '</ul>'
+  //       + '</li>'
+  //     + '</li>'
+  //   + '</ul>'
+  // 
+  // var $dropDown = $(dropDownHTML)
+  // console.log($dropDown)
+  
+  // ul.dropdown-menu(role="menu",aria-labelledby="moveToDropdown",style="z-index:1000")
+  //   li(style="opacity:1")
+  //     a(tabindex="1", href="#") move too...
+  //   li.divider
 })

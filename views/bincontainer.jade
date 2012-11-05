@@ -9,12 +9,9 @@ mixin link(link)
             i.icon-trash
           .edit.close
             i.icon-edit
-          .move.close
-            .dropdown
-              i.icon-move.dropdown-toggle(data-toggle="dropdown")
-              ul.dropdown-menu(role="menu",aria-labelledby="moveToDropdown",style="z-index:1000")
-                li(style="opacity:1")
-                  a(tabindex="1", href="#") More options
+          //- .move.close
+          //-   .dropdown
+          //-     a.icon-move.dropdown-toggle(data-toggle="dropdown")
       a.clearfix(href=link.url, title=link.title,target="_blank",rel="nofollow")
         .minwidth.clearfix
           .icon
@@ -146,7 +143,7 @@ mixin bin(bin)
           img.pull-left.thumbnail
           form.pull-left(style="margin:10px")
             label title
-            a.input-xlarge.title(type="text")
+            input.input-xlarge.title(type="text")
         .modal-footer
           button.btn(data-dismiss="modal", aria-hidden="true") cancel
           button.btn.btn-success(data-dismiss="modal") update
