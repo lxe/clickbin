@@ -1,12 +1,7 @@
-add input field for bins. people dont realize right away that can group them
-the waves dont `wiggle` on firefox
-drag and drop of links
-implement password reset. maybe use this module? https://github.com/substack/node-password-reset
-spaces in bins
-renaming of bins / renaming of links
-allow anonymous bin users to save their bins to an account, if they choose.
+add "nofollow" to edit links
+make bins/links movable
 bookmarklet
+allow anonymous bin users to save their bins to an account, if they choose.
+implement password reset. maybe use this module? https://github.com/substack/node-password-reset
 better icons
-make bins/links renameable / movable / sortable
 add scraper for github profiles. ie., https://github.com/paulmillr
-example bins: furniture

@@ -24,6 +24,7 @@ module.exports = function(req, res, next, opts) {
       && req.session.user.username === username 
       && bin
       // and we own the bin
+      && bin.owner
       && bin.owner.toString() === req.session.user._id
   }
   
