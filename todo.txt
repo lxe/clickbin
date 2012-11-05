@@ -1,3 +1,5 @@
+performance. (CDN, minification, etc.)
+recommendations "lxe recommended this link for this bin"
 add "nofollow" to edit links
 make bins/links movable
 bookmarklet
