@@ -129,8 +129,7 @@ module.exports = function (app) {
           bin.save(function (err, data) {
             if (err) return next(err)
             req.session.flash.success = "You have just created a new clickbin! "
-              + "You can now add or remove links and create new bins here."
-            console.log('path: /' + name)
+              + "add more links then share the url, <b>" + config.domain + '/' + name + '</b> with your friends!'
             return res.redirect('/' + name)
           }) // end save bin
         })

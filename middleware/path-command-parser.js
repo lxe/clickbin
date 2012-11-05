@@ -40,11 +40,11 @@ module.exports = function(req,res,next){
     , uri  = matches[matches.length - 1]
   
   
-  console.log('matches[1]: ' + matches[1])
+  // console.log('matches[1]: ' + matches[1])
   
   var path = decodeURIComponent(matches[1])
   
-  console.log('path: ' + path)
+  // console.log('path: ' + path)
   
   if(path){
     newPath = node_path.normalize(path)
@@ -53,15 +53,13 @@ module.exports = function(req,res,next){
     })
     // filter out empty bins
     newPath = _.filter(newPath,function(name){ return name !== '' })
-    console.log('newPath: ')
-    console.log(newPath)
-    // check for invalid bin path name
+    // make sure each bin name is valid
     var invalidBinName = _.find(newPath,function(name){
-      console.log('name: ' + name)
+      // console.log('name: ' + name)
       return !name.match(config.binNameRegexp)
     })
-    console.log('invalidBinName: ' + invalidBinName)
-    if(invalidBinName) return next(new Error("Invalid bin name for bin: " + invalidBinName))
+    if(invalidBinName) return next(new Error("Invalid bin name for bin: " 
+      + invalidBinName))
     
     // save the list to `bins`
     _.each(newPath,function(name){ bins.push(name) })
@@ -75,14 +73,15 @@ module.exports = function(req,res,next){
     })
     
     newPath = '/' + newPath.join('/')
-    console.log('newPath: ' + newPath)
+    // console.log('newPath: ' + newPath)
     if(!!uri) newPath += ((newPath!=='/') ? '/' : '') + protocol + uri
-    console.log('uri: ' + uri )
-    console.log('!!uri: ' + (!!uri) )
-    console.log('newPath: ' + newPath)
-    console.log('req.url: ' + req.url)
+    // console.log('uri: ' + uri )
+    // console.log('!!uri: ' + (!!uri) )
+    // console.log('newPath: ' + newPath)
+    // console.log('req.url: ' + req.url)
     if( newPath !== req.url) {
-      // we should redirect to the proper path
+      // we had to make corrections to the url so redirect to the proper 
+      // version
       return res.redirect(newPath)
     }
     newPath = decodeURIComponent(newPath)
