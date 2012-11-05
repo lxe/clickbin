@@ -38,7 +38,7 @@ html(lang='en')
               ul.nav.pull-right
                 if user && user.loggedIn && typeof(profile) !=='undefined' && profile.username !== user.username
                   li
-                    a(href="#{getUserURI(user.username))}")
+                    a(href="#{getUserURI(user.username)}")
                       i.icon-home
                       |  Home
 

@@ -13,6 +13,7 @@ module.exports = function(app) {
     })
   })
   app.post('/_/signup',function(req, res, next) {
+    
     var errors = {}
     req.sanitize('inputUsername').trim()
     req.validate('inputUsername','numbers or letters and at least 3 characters long').len(3,64).regex(config.usernameRegexp)

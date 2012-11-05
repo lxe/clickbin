@@ -59,6 +59,7 @@ BinSchema.index(
   { 
     parent : 1
     , name: 1
+    , owner : 1
   }
   , { unique : true }
 );
@@ -82,6 +83,7 @@ BinSchema.statics.getByPath = function(owner, path, cb) {
     path = owner
     owner = null
   }
+  var bins = []
   // get the user's objectId
   if(!owner) getBin(owner, path, cb)
   else if( typeof owner === 'string' ) {
@@ -100,7 +102,6 @@ BinSchema.statics.getByPath = function(owner, path, cb) {
   
   // now that we have the user id, do the real work of getting the bin by its 
   // path
-  var bins = []
   function getBin(owner, path, cb) {
     if(path==='/') path = null
     if(path){ 

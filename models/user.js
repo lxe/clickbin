@@ -41,7 +41,7 @@ var UserSchema = new Schema({
     type : String
     , unique : true
     , sparse: true
-    , required : true
+    , required : false
     , validate : [ common.validateEmail, "email"]
   }
   , password : { 

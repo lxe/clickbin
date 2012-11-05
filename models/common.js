@@ -83,7 +83,6 @@ var common = module.exports = {
       return username === name
     })) return false
     var valid = common.validateRegex(username,config.usernameRegexp)
-    console.log('validateUsername: ' + valid)
     return valid
   }
 
@@ -94,6 +93,6 @@ var common = module.exports = {
    */
   , validatePassword: function(password) {
     return (password && password.length >= 6 
-      && /^[^ \t\r\n]*$/.test(password))
+      && /^[^\t\r\n]*$/.test(password))
   }
 }

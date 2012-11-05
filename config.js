@@ -13,8 +13,8 @@ var config = {
   , logging : true
   // just incase, reserve these usernames (aka, subdomains)
   , reservedUsernames : fs.readFileSync( __dirname + '/reserved.txt').toString().split('\n')
-  , mongoPath : 'mongodb://localhost/clickbin'
-  , usernameRegexp : /^[a-zA-Z]{1,}[a-zA-Z0-9]{2,}$/
+  , mongoPath : 'mongodb://localhost/clickbin-v2'
+  , usernameRegexp : /^[a-zA-Z]{1,}[a-zA-Z0-9]{1,}$/
   , maxChildBins : 50
   , maxBinPathDepth : 10
   // bins can have lowercase or uppercase letters, numbers or `-` or `_` or 

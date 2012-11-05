@@ -8,8 +8,8 @@ $(function() {
   var newItemForm = $('#new-item-form')
   if (newItemForm) {
     var newItemTitle = $('#new-item-title')
-
-    newItemForm.submit(function(event) {
+    
+    newItemForm.on('submit', function(event) {
       event.preventDefault()
       var item = newItemTitle.val()
       if (item !== '') {
@@ -19,19 +19,17 @@ $(function() {
         if(host.substr(-1) === '/') host = host.substring(0,-1)
         var path = window.location.pathname
         var parts = window.location.pathname.split('/')
-        console.log('path: ' + path)
         var location = null
-        if( path !=='/' && path !== '' ) 
+        if( path !=='/' && path !== '' ){
           location = host + parts.join('/') + '/' + item
-        else 
+        }else{
           location = host + '/' + item
-        console.log('location: ' + location)
+        }
         window.location.href = window.location.protocol + '//' + location
         return false
       }
       return false
     })
-
   }
 
   $('#newsletter').submit(function() {
@@ -99,15 +97,27 @@ $(function() {
   $('.link .controls .edit').on('click',function(){
     var $link = $(this).parent().parent().parent()
     $('#linkModal').on('show',function(){
+      $('#linkModal').find('form').on('submit',function(e){
+        e.preventDefault()
+        return false
+      })
       var $title = $(this).find('.title')
       $title.val($link.find('.title').text())
       $(this).find('img').attr('src',$link.find('img').attr('src'))
-      $(this).find('.btn-success').off('click')
-      $(this).find('.btn-success').on('click',function(){
-        var loc = '/_/bin/' + bin_id + '/link/' 
-          + $link.data('linkid') + '/rename?name=' 
-          + encodeURIComponent( $title.val())
-        window.location.href = loc
+      $title.keyup(function(e){
+        e.preventDefault()
+        if(e.keyCode === 13) $btnsuccess.click()
+        return false
+      })
+      var $btnsuccess = $(this).find('.btn-success')
+      $btnsuccess.off('click')
+      $btnsuccess.on('click', function(){
+        var name = $title.val().trim()
+        if(!!name){
+          var loc = '/_/bin/' + bin_id + '/link/' 
+            + $link.data('linkid') + '/rename?name=' + encodeURIComponent( name )
+          window.location.href = loc
+        }
       })
     }).modal('show')
   })
