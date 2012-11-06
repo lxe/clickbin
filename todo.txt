@@ -1,3 +1,4 @@
+add more content. example bins. whatever it takes
 performance. (CDN, minification, etc.)
 recommendations "lxe recommended this link for this bin"
 add "nofollow" to edit links
