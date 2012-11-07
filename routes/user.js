@@ -173,6 +173,7 @@ module.exports = function(req, res, next, opts) {
 
 function realPath(bins){
   var path = ''
+  if(bins.length === 1 && !bins[0].prettyName) return '/'
   _.each(bins, function(bin){ path += '/' + bin.prettyName })
   return path
 }
