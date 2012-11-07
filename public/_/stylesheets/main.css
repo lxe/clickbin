@@ -10713,7 +10713,8 @@ body {
 [class^="icon-"],
 [class*=" icon-"] {
   background-image: none;
-  line-height: inherit;
+  vertical-align: top;
+  margin-top: 5px;
 }
 /**
  * User Styles

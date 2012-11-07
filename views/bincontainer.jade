@@ -37,8 +37,8 @@ mixin link(link)
 mixin bin(bin)
   li.clearfix.bin
     if authosizedUser
-      a(href="/_/bin/#{bin.id}/remove").close.pull-right &times;
-    a.binlink.clearfix(href="#{path}/#{bin.name}", title="#{bin.title}")
+      a(href="/_/bin/#{bin.id}/remove").close.pull-right(style="margin-top:-3px") &times;
+    a.binlink.clearfix(href="#{path}/#{bin.name}", title="#{bin.name}")
       .inner 
         i.icon-folder-close   
         |   #{bin.name}
