@@ -1,3 +1,4 @@
+Add open graph meta tags to cb
 add more content. example bins. whatever it takes
 performance. (CDN, minification, etc.)
 recommendations "lxe recommended this link for this bin"
