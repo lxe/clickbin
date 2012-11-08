@@ -1,0 +1,4 @@
++ keep a history of anounymous bins created
++ I like everything about it, but I really can't see a use for it
++ look into pinboard. see what they do. "tags" for links
++ tags are superior to strict folders like in outlook
