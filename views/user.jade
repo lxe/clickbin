@@ -1,5 +1,6 @@
 extends layout
-include bin-items
+
+include link
 
 block breadcrumb
   include bin-breadcrumbs
@@ -7,5 +8,8 @@ block breadcrumb
 block body
   .container.alerts
     include alerts
-
-  include bincontainer
+  .bin.main.container
+    .span12
+      h3 User links
+      each link in links
+        mixin link(link)

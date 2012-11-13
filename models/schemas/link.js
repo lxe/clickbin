@@ -29,6 +29,23 @@ var LinkSchema = new Schema({
     , default : Date.now
     , index : true
   }
+  , tags : {
+    type : [String]
+    , default : []
+    , index : true
+  }
+  , owner : {
+    type : Schema.Types.ObjectId
+    , required : false
+    , index : true
+  }
 }, {strict : true})
+
+LinkSchema.index(
+  { 
+    owner : 1
+    , tags : 1
+  }
+);
 
 module.exports = LinkSchema

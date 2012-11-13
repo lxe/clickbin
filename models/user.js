@@ -6,6 +6,8 @@ var mongoose = require('mongoose')
   , Schema = mongoose.Schema
   , salt = require('../config').salt
   , common = require('./common')
+  , Link = require('./link')
+  , util = require('util')
 
 
 /**
@@ -87,5 +89,19 @@ UserSchema.methods.getURI = function(req){
 UserSchema.methods.guessPassword = function(password){
   return this.password === common.digest(common.md5(password + salt),this.salt).digest
 }
+
+UserSchema.methods.getLinks = function(tags,cb){
+  // optional parameters
+  if(!cb){
+    cb = tags
+    tags = []
+  }else if(!util.isArray(tags)) tags = [tags]
+  else if(!tags) tags = []
+  Link.find({
+    owner : this._id
+    , tags : { $in : tags }
+  }).limit(100).exec(cb)
+}
+
 
 var User = module.exports = mongoose.model('User', UserSchema)

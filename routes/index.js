@@ -36,7 +36,4 @@ var fs = require('fs'),
     require('./login')(app)
     require('./logout')(app)
     require('./signup')(app)
-    require('./link')(app)
-    require('./bin')(app)
-    require('./path')(app)
   }

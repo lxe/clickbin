@@ -1,7 +1,6 @@
 var _ = require('underscore')
   , config = require('../config')
   , User = require('../models/user')
-  , Bin = require('../models/bin')
 
 module.exports = function(app) {
   app.get('/_/signup', function(req, res, next) {
@@ -82,11 +81,7 @@ module.exports = function(app) {
           }
           req.session.flash.succuess = "You're logged in!"
           // create a new top level bin for this user
-          var bin = new Bin({ owner : user })
-          bin.save(function(err){
-            if(err) return next(err)
-            return res.redirectToProfile(user.username)
-          })
+          return res.redirectToProfile(user.username)
         }
       })
     }
