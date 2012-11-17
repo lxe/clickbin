@@ -1,4 +1,7 @@
++ more sharing functionality!
 + keep a history of anounymous bins created
++ "simple, but the best ideas are" - rudzki
 + I like everything about it, but I really can't see a use for it
 + look into pinboard. see what they do. "tags" for links
 + tags are superior to strict folders like in outlook
++ "if you think about it in terms of a way of making online bibliographies, then things like scraping/caching content, and reformatting it a la instapaper make sense. also cross-referencing, annotations, and the like" - rudzki 

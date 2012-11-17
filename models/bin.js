@@ -2,6 +2,7 @@ var _       = require('underscore')
   , mongoose = require('mongoose')
   , Schema = mongoose.Schema
   , LinkSchema = require('./schemas/link')
+  , Heat = require('./heat')
   , config = require('../config')
 
 // design cools. simplicity and easiness should be priority #1 even over performance
@@ -67,6 +68,36 @@ BinSchema.index(
 // request for path /32/bin1/bin2
 // query is made for first bin
 
+// bin.voteOnLink
+BinSchema.methods.voteOnLink = function(sessionID, linkID, cb){
+  var self = this
+  var link = _.find(self.links, function(link){
+    return link._id.equals(linkID)
+  })
+  if(link){
+    // the session isn't set. this is likely not a real user or they have
+    // js disabled
+    if(!sessionID) return(null,link)
+    // the link is on this bin
+    console.log('heat vote')
+    Heat.vote(sessionID, this._id, link.url, function(err,heat){
+      if(err) return cb(err)
+      console.log('got heat')
+      // this is the first time the user has voted on this link
+      if(heat.votes === 1) link.votes++
+      link.clicks++
+      console.log('update bin')
+      return self.save(function(err){
+        console.log('got bin')
+        if(err) return cb(err)
+        else return cb(null,link)
+      })
+    })
+  }else{
+    console.error('attempt to vote for non-existing link on bin')
+    return cb()
+  }
+}
 
 
 BinSchema.methods.getParent = function(cb){

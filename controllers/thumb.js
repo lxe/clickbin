@@ -11,11 +11,9 @@ module.exports = function(Canvas){
     * @param fill the fill color of the bb's
     * returns a canvas element as the second param of the callback
     */
-  return function(src, tw, th, bb, fill, cb){
-    if(!cb){
-      if(!fill) cb = bb
-      else cb = fill
-    }
+  return function(src, tw, th, cb, opts){
+    opts = opts || {}
+    if(typeof opts.bb === 'undefined') opts.bb = true
     var img = new Canvas.Image
     img.onload = function(){
       var iw = img.width
@@ -33,7 +31,7 @@ module.exports = function(Canvas){
       // if the original image aspect ratio is greater than the new thumbnail 
       // image ratio, scale the image using the height, if not, us the width
       // reverse this logic if bb is set to `true`
-      if( !bb && ir > tr || bb && ir < tr ){
+      if( !opts.bb && ir > tr || opts.bb && ir < tr ){
         // scale the image to be the same height as the thumbnail
         sr = th / ih
         ih = th
@@ -49,12 +47,14 @@ module.exports = function(Canvas){
         // move the image down so its middle is visible in the thumbnail
         iy = - (ih/2 - th/2)
       }
-      if(bb){
-        if(fill){
-          ctx.fillStyle = fill
+      if(opts.bb){
+        if(opts.fill){
+          ctx.fillStyle = opts.fill
           ctx.fillRect(0,0,tw,th)
         }
       }
+      ctx.antialias = opts.antialias || 'subpixel'
+      ctx.patternQuality = opts.patternQuality || 'nearest'
       ctx.drawImage(img,ix,iy,iw,ih)
       return cb(null,canvas)
     }

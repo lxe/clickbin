@@ -4,7 +4,7 @@ var should = require('should')
 
 describe('Bin', function(){
   before(function(done){
-    mongoose.connect('localhost','clickbin',function(err){
+    mongoose.connect('localhost','test',function(err){
       should.not.exist(err)
       Bin.collection.drop()
       done()

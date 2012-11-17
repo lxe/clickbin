@@ -29,6 +29,16 @@ var LinkSchema = new Schema({
     , default : Date.now
     , index : true
   }
+  , votes : {
+    type : Number
+    , required : true
+    , default : 0
+  }
+  , clicks : {
+    type : Number
+    , required : true
+    , default : 0
+  }
 }, {strict : true})
 
 module.exports = LinkSchema

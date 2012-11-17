@@ -12,7 +12,7 @@ mixin link(link)
           //- .move.close
           //-   .dropdown
           //-     a.icon-move.dropdown-toggle(data-toggle="dropdown")
-      a.clearfix(href=link.url, title=link.title,target="_blank",rel="nofollow")
+      a.clearfix(href='/_/click/bin/' + bin._id + '/link/' + link._id, title=link.title, target="_blank", rel="nofollow")
         .minwidth.clearfix
           .icon
             if (link.icon)

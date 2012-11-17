@@ -21,14 +21,17 @@ module.exports = function(page,url,parts,$){
   if(!page.icon || !page.icon.length){
     page.icon = getBestIcon($,url)
     if(!page.icon){
-      page.icon = url.protocol + '//' + url.hostname + '/apple-touch-icon.png'
+      page.icon = url.protocol + '//' + url.host + '/apple-touch-icon.png'
     }
   }
   
   if(!page.url){
     page.url = $('meta[property="og:url"]')
-    if(page.url.length) page.url = page.url.first().attr('content')
-    else page.url = null
+    if(!page.url.length) page.url = null
+    else{
+      page.url = page.url.first().attr('content')
+      if(page.url === 'null' ) page.url = null
+    }
   }
   if(!page.url) page.url = url.href
   

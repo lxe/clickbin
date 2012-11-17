@@ -3,8 +3,8 @@ var should = require('should')
   , User = require('./../models/user')
 
 describe('User', function(){
-  before(function(done){
-    mongoose.connect('localhost','clickbin',function(err){
+  before(function(done){f
+    mongoose.connect('localhost','test',function(err){
       should.not.exist(err)
       User.collection.drop(function(err){
         should.not.exist(err)

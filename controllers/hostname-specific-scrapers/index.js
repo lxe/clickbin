@@ -19,7 +19,6 @@ module.exports = function(url,body){
   var page = null
   // TODO: check for errors? try catch, maybe? or is that never gonna happen?
   // the `true` bellow forces the query parameters to be parsed
-  url = node_url.parse(url,true)
   
   // default scrapers
   var hostname = url.hostname
@@ -36,7 +35,6 @@ module.exports = function(url,body){
   else{
     // check fo rhte posterous style `generator` meta tag
     var generator = $('meta[name=generator]').attr('content')
-    console.log('generator: '+generator)
     if(generator && generator.toLowerCase() === 'posterous'){
       page = scrapers['posterous.com'](url,parts,$)
     }
