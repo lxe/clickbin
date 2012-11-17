@@ -1,4 +1,36 @@
 
+mixin link(link)
+  li.clearfix.link(data-linkid="#{link._id}")
+    .well
+      if authosizedUser
+        .controls
+          a(href="/_/bin/#{bin.id}/link/#{link.id}/remove").close
+            i.icon-trash
+          .edit.close
+            i.icon-edit
+          //- .move.close
+          //-   .dropdown
+          //-     a.icon-move.dropdown-toggle(data-toggle="dropdown")
+      a.clearfix(href='/_/click/bin/' + bin._id + '/link/' + link._id, title=link.title, target="_blank", rel="nofollow")
+        .minwidth.clearfix
+          .icon
+            if (link.icon)
+              img(src="#{link.icon}")
+            else if(link.mime)
+              img(src="/_/images/mimetypes/" + link.mime.replace('/','-') + '.png')
+            else
+              .icon(style="font-size: 64px; line-height:64px")
+                i.icon-warning-sign(style="width:64px;height:64px") 
+          .text
+            .text-container
+              if (link.title)
+                .title.ellipsis #{link.title}
+              else
+                .title.ellipsis #{link.url}
+              if(link.desc)
+                .url.ellipsis #{link.desc}
+              else
+                .url.ellipsis #{link.url}
 
 mixin bin(bin)
   li.clearfix.bin

@@ -11,8 +11,8 @@ var fs                        = require('fs')
   , thumb                     = require('../controllers/thumb')(Canvas)
   , image_rel_dir             = '/_/images/thumbs'
   , image_dir                 = __dirname + '/../public' + image_rel_dir
-  , path                      = require('path')
   , node_url                  = require('url')
+  , fav                       = require('fav')(Canvas)
   , hostnameSpecificScrapers  = require('./hostname-specific-scrapers')
 
 // make sure the image directories exists. (dirp.. dirp..)
@@ -31,10 +31,9 @@ module.exports = {
   get : function(url, cb) {
     
     var req = urlRequest(url)
-    console.log('scrapping url: ' + url)
     makeLimitedRequest(req, {
       size : config.maxRequestSize
-      , mime : [imageType,htmlType]
+      , mime : [imageType, htmlType]
     }, function(err, mime, body, res){
       if(err) return fail(err, mime)
       // is the result an image?
@@ -50,14 +49,13 @@ module.exports = {
           })
         })
       // is the result html?
-      }else if(htmlType(mime)){
+      }else if ( htmlType(mime) ) {
         // if there were redirects during the request, the url might have 
         // changed
-        if(res.headers.location) url = res.headers.location
-        var page = hostnameSpecificScrapers(url,body)
+        var uri = res.request.uri
+        var page = hostnameSpecificScrapers(uri,body)
         // see if there's an icon we can use.
         if(!page.icon || page.__dont_scrape_icon){
-          console.log('the page didnt seem to have a useable icon')
           return cb(null, {
             title : page.title
             , url   : page.url
@@ -72,23 +70,62 @@ module.exports = {
           makeLimitedRequest(req, {
             size : config.maxRequestSize
             , mime : [imageType]
-          },function(err, icon_mime, body, res) {
-            if(err){
-              // unable to get the icon, for whatever reason
-              console.error('unable to get icon for:' + page.icon)
-              console.error(err)
-              return done()
-            }else{
-              var name = uuid.v4() + '.' + imageType(icon_mime)
-              saveThumbnails(body, name, function(err, icon) {
-                if(err){
-                  console.error('save thunbnail for image ' + page.icon)
-                  console.error(err)
-                  icon = null
-                }
-                return done(icon)
+          }, function (err, icon_mime, body, res) {
+            if(err) return tryFavicon()
+            // image (jpg, png, gif) type
+            var name = uuid.v4() + '.png'
+            saveThumbnails(body, name, function(err, icon) {
+              if(err){
+                console.error('save thunbnail for image ' + page.icon)
+                console.error(err)
+                console.trace()
+                return tryFavicon()
+              }else return done(icon)
+            })
+            
+            function tryFavicon(){
+              getFavicon(uri.protocol + '//' + uri.host + '/favicon.ico', function(icon){
+                if(icon) return done(icon)
+                // try to get the favicon from the root host
+                var hosts = uri.host.split('.')
+                if(hosts.length < 3) return done(null)
+                var domain = hosts[hosts.length-2] + '.' + hosts[hosts.length-1]
+                getFavicon(uri.protocol + '//' + domain + '/favicon.ico', done)
               })
             }
+            
+            function getFavicon(favicon_url, cb){
+              var req = urlRequest(favicon_url)
+              makeLimitedRequest(req,{
+                size : config.maxRequestSize
+                , mime : [icoType]
+              }, function(err, icon_mime, body, res){
+                if(err){
+                  console.error('unable to retrivew icon : ' + favicon_url)
+                  return cb(null)
+                }
+                var name = uuid.v4() + '.png'
+                  , ico
+                
+                try{
+                  ico = fav(body).getLargest().toBuffer()
+                }catch(e){
+                  console.error('error parsing ico file: ' + favicon_url)
+                  console.error(e)
+                  console.trace()
+                  if(e) return cb(null)
+                }
+                
+                saveThumbnails(ico, name, function(err, icon){
+                  if(err) return cb(null)
+                  return cb(icon)
+                },{
+                  antialias : 'none'
+                  , patternQuality : 'fast'
+                })
+              })
+            }
+            
             function done(icon){
               return cb(null,{
                 url : page.url
@@ -148,7 +185,7 @@ function makeLimitedRequest(req,limits,cb) {
         return type = typeCheck(mime)
       })
       // these aren't the types you're looking for...
-      if(!type) return cb(new Error("Type not found"),mime)
+      if(!type) return cb(new Error("Type not found: " + mime),mime)
     }
     
     var data = []
@@ -199,6 +236,21 @@ function imageType(type) {
   return type
 }
 
+function icoType(type){
+  if(type) type = type.toLowerCase()
+  else return null
+  
+  if(
+    type === 'image/ico' 
+    || type === 'image/icon'
+    || type === 'application/ico'
+    || type === 'image/x-icon'
+  ) type = 'icon'
+  else return null
+  
+  return type
+}
+
 function htmlType(type) {
   if(type) type = type.toLowerCase()
   else return null
@@ -219,7 +271,7 @@ function getSize(res) {
   return res.headers['content-length']
 }
 
-function saveThumbnails(image,name,cb) {
+function saveThumbnails(image,name,cb,opts) {
   thumb(image, 300, 300, function(err, canvas_300) {
     if(err) console.error('unable to produce the first thumbnail for the provided '
         + 'image. this likely indicates that not all of node-canvas\'s '
@@ -229,14 +281,14 @@ function saveThumbnails(image,name,cb) {
     if(err) return cb(err)
     fs.writeFile(image_dir + '/x300/' + name, buf_300, function(err) {
       if(err) return cb(err)
-      thumb(buf_300, 100, 100, function(err, canvas_100){
+      thumb(image, 100, 100, function(err, canvas_100){
         if(err) return cb(err)
         var buf_100 = canvas_100.toBuffer()
         fs.writeFile(image_dir + '/x100/' + name, buf_100, function(err) {
           if(err) return cb(err)
           delete buf_100 // dont need it anymore
           // we want to use the 300x300 image to scale to 64
-          thumb(buf_300, 64, 64, function(err, canvas_64){
+          thumb(image, 64, 64, function(err, canvas_64){
             if(err) return cb(err)
             var buf_64 = canvas_64.toBuffer()
             fs.writeFile(image_dir + '/x64/' + name, buf_64, function(err) {
@@ -245,9 +297,9 @@ function saveThumbnails(image,name,cb) {
               delete buf_64
               return cb(null, image_rel_dir + '/x64/' + name)
             })
-          })
+          }, opts)
         })
-      })
+      }, opts)
     })
-  })
+  }, opts)
 }

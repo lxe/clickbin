@@ -38,6 +38,15 @@ var LinkSchema = new Schema({
     type : Schema.Types.ObjectId
     , required : false
     , index : true
+  , votes : {
+    type : Number
+    , required : true
+    , default : 0
+  }
+  , clicks : {
+    type : Number
+    , required : true
+    , default : 0
   }
 }, {strict : true})
 

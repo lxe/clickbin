@@ -2,7 +2,9 @@ var fs = require('fs'),
   user = require('./user')
 
   module.exports = function(app) {
-
+    
+    require('./click')(app)
+    
     app.get('/', function(req, res, next) {
       var host = req.get('Host').split('.').reverse()
 

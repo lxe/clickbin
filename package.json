@@ -21,7 +21,8 @@
     "cheerio": "~0.10.1",
     "sitemap": "~0.6.0",
     "png": "~2.1.1",
-    "mongodb": "~1.1.11"
+    "mongodb": "~1.1.11",
+    "fav": "0.0.7"
   },
   "devDependencies": {
     "mocha": "*",
