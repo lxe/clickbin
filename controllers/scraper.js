@@ -73,7 +73,7 @@ module.exports = {
           }, function (err, icon_mime, body, res) {
             if(err) return tryFavicon()
             // image (jpg, png, gif) type
-            var name = uuid.v4() + '.' + imageType(icon_mime)
+            var name = uuid.v4() + '.png'
             saveThumbnails(body, name, function(err, icon) {
               if(err){
                 console.error('save thunbnail for image ' + page.icon)
@@ -88,6 +88,7 @@ module.exports = {
                 if(icon) return done(icon)
                 // try to get the favicon from the root host
                 var hosts = uri.host.split('.')
+                if(hosts.length < 3) return done(null)
                 var domain = hosts[hosts.length-2] + '.' + hosts[hosts.length-1]
                 getFavicon(uri.protocol + '//' + domain + '/favicon.ico', done)
               })
@@ -103,7 +104,7 @@ module.exports = {
                   console.error('unable to retrivew icon : ' + favicon_url)
                   return cb(null)
                 }
-                var name = uuid.v4() + '.' + icoType(icon_mime)
+                var name = uuid.v4() + '.png'
                   , ico
                 
                 try{
@@ -280,14 +281,14 @@ function saveThumbnails(image,name,cb,opts) {
     if(err) return cb(err)
     fs.writeFile(image_dir + '/x300/' + name, buf_300, function(err) {
       if(err) return cb(err)
-      thumb(buf_300, 100, 100, function(err, canvas_100){
+      thumb(image, 100, 100, function(err, canvas_100){
         if(err) return cb(err)
         var buf_100 = canvas_100.toBuffer()
         fs.writeFile(image_dir + '/x100/' + name, buf_100, function(err) {
           if(err) return cb(err)
           delete buf_100 // dont need it anymore
           // we want to use the 300x300 image to scale to 64
-          thumb(buf_300, 64, 64, function(err, canvas_64){
+          thumb(image, 64, 64, function(err, canvas_64){
             if(err) return cb(err)
             var buf_64 = canvas_64.toBuffer()
             fs.writeFile(image_dir + '/x64/' + name, buf_64, function(err) {
