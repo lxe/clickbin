@@ -71,7 +71,7 @@ module.exports = {
             size : config.maxRequestSize
             , mime : [imageType]
           }, function (err, icon_mime, body, res) {
-            if(err) return getFavicon()
+            if(err) return tryFavicon()
             // image (jpg, png, gif) type
             var name = uuid.v4() + '.' + imageType(icon_mime)
             saveThumbnails(body, name, function(err, icon) {
@@ -79,12 +79,21 @@ module.exports = {
                 console.error('save thunbnail for image ' + page.icon)
                 console.error(err)
                 console.trace()
-                return getFavicon()
+                return tryFavicon()
               }else return done(icon)
             })
             
-            function getFavicon(){
-              var favicon_url = uri.protocol + '//' + uri.host + '/favicon.ico'
+            function tryFavicon(){
+              getFavicon(uri.protocol + '//' + uri.host + '/favicon.ico', function(icon){
+                if(icon) return done(icon)
+                // try to get the favicon from the root host
+                var hosts = uri.host.split('.')
+                var domain = hosts[hosts.length-2] + '.' + hosts[hosts.length-1]
+                getFavicon(uri.protocol + '//' + domain + '/favicon.ico', done)
+              })
+            }
+            
+            function getFavicon(favicon_url, cb){
               var req = urlRequest(favicon_url)
               makeLimitedRequest(req,{
                 size : config.maxRequestSize
@@ -92,9 +101,7 @@ module.exports = {
               }, function(err, icon_mime, body, res){
                 if(err){
                   console.error('unable to retrivew icon : ' + favicon_url)
-                  console.error(err)
-                  console.trace()
-                  return done(null)
+                  return cb(null)
                 }
                 var name = uuid.v4() + '.' + icoType(icon_mime)
                   , ico
@@ -105,12 +112,12 @@ module.exports = {
                   console.error('error parsing ico file: ' + favicon_url)
                   console.error(e)
                   console.trace()
-                  if(e) return done(null)
+                  if(e) return cb(null)
                 }
                 
                 saveThumbnails(ico, name, function(err, icon){
-                  if(err) return done(null)
-                  return done(icon)
+                  if(err) return cb(null)
+                  return cb(icon)
                 },{
                   antialias : 'none'
                   , patternQuality : 'fast'
