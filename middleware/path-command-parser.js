@@ -34,7 +34,6 @@ module.exports = function(req, res, next){
   if(command.redirect) 
     return res.redirect(command.redirect)
   
-  console.log('path command: %j', command)
   req.parsedPathCommand = command
   return next()
 }

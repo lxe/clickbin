@@ -145,9 +145,8 @@ $(function() {
       $addtag_btn.on('click', function(){
         var val = $addtag_input.val()
         if(val==='') return
-        if(addTag(val)){
-          $addtag_input.val('')
-        }
+        // successfully added the tag
+        if(addTag(val)) $addtag_input.val('')
       })
       
       var $btnsuccess = $(this).find('.btn-success')

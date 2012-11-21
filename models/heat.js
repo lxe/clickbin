@@ -12,12 +12,8 @@ var HeatSchema = new Schema({
     type : String
     , required : true
   }
-  , bin : {
+  , linkID : {
     type : Schema.Types.ObjectId
-    , requried: true
-  }
-  , url : {
-    type : String
     , required : true
   }
   , votes : {
@@ -34,23 +30,20 @@ var HeatSchema = new Schema({
 HeatSchema.index(
   { 
     sessionID : 1
-    , bin : 1
-    , url : 1
+    , linkID : 1
   }
   , { unique : true }
 )
 
 // Heat.vote()
-HeatSchema.statics.vote = function(sessionID, bin, url, cb){
+HeatSchema.statics.vote = function(sessionID, linkID, cb){
   Heat.findOneAndUpdate({
     sessionID : sessionID
-    , bin : bin
-    , url : url
+    , linkID : linkID
   }
   , {
     sessionID : sessionID
-    , bin : bin
-    , url : url
+    , linkID : linkID
     , $inc : { votes : 1 }
   }
   // options

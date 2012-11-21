@@ -7,14 +7,18 @@ mixin link(link, authosizedUser)
             i.icon-trash
           .edit.close
             i.icon-edit
-      a.clearfix(href=link.url, title=link.title,target="_blank",rel="nofollow")
+      a.clearfix(href='/_/click/link/' + link._id , title=link.title,target="_blank",rel="nofollow")
         .minwidth.clearfix
           .icon
             if (link.icon)
               img(src="#{link.icon}")
             else if(link.mime)
-              img(src="/_/images/mimetypes/" + link.mime.replace('/','-') + '.png')
+              if(link.mime==='text/html')
+                img(src="/_/apple-touch-icon-precomposed.png")
+              else
+                img(src="/_/images/mimetypes/" + link.mime.replace('/','-') + '.png')
             else
+              //- the link is probably a 404
               .icon(style="font-size: 64px; line-height:64px;height:64px")
                 i.icon-warning-sign(style="width:64px;height:64px;margin-top:16px") 
           .text
