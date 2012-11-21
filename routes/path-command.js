@@ -15,21 +15,11 @@ module.exports = function (app) {
   
   app.get('/*', pathCommandParser, function (req, res, next) {
     var command = req.parsedPathCommand
-    // TODO: put this inside an error handler middleware
-    // if(opts instanceof Error){
-    //   req.session.flash.error = opts.message
-    //   return res.redirect('/')
-    // }
-    
-    // the user 'route' but it's a little different then a regular route 
-    // because it's actually just a subdomain. that's why the code looks
-    // a little gross compared to the other routes.
+    console.log(command)
     if(command.username) return user(req,res,next,command)
     
     // else, the user is anonymous...
-    // TODO: all of this code needs to be put in a controller
-    
-    return res.send('Not Implemented')
+    return next()
     
   }) // end GET /path/[link]
   

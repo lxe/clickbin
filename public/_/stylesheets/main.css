@@ -9452,6 +9452,13 @@ a.badge:hover {
     -webkit-transform: translatey(-300px);
   }
 }
+#linkModal .tags .icon-remove {
+  font-size: 10px;
+  line-height: 15px;
+  margin-top: 0px;
+  width: 7px;
+  vertical-align: middle;
+}
 /*  Font Awesome
     the iconic font designed for use with Twitter Bootstrap
     -------------------------------------------------------

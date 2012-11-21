@@ -7,7 +7,6 @@ var mongoose = require('mongoose')
   , salt = require('../config').salt
   , common = require('./common')
   , Link = require('./link')
-  , util = require('util')
 
 
 /**
@@ -92,15 +91,7 @@ UserSchema.methods.guessPassword = function(password){
 
 UserSchema.methods.getLinks = function(tags,cb){
   // optional parameters
-  if(!cb){
-    cb = tags
-    tags = []
-  }else if(!util.isArray(tags)) tags = [tags]
-  else if(!tags) tags = []
-  Link.find({
-    owner : this._id
-    , tags : { $in : tags }
-  }).limit(100).exec(cb)
+  return Link.getUserLinks(this, tags, cb)
 }
 
 

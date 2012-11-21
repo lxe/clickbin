@@ -59,8 +59,8 @@ $(function() {
     $('#new-item-title').tooltip('hide');
   })
   
-  $('.bin-link.active.editable').on('click',onBinEdit)
-  function onBinEdit(){
+  $('.bin-link.active.editable').on('click',onLinkEdit)
+  function onLinkEdit(){
     $this = $(this)
     var prevBinName = $this.text().trim()
     //$(this).empty()
@@ -89,7 +89,7 @@ $(function() {
         window.location.href = '/_/bin/' + bin_id + '/rename?name=' + binname + '&redirect=' + path
       }else{
         $breadcrumbs.append($this)
-        $this.on('click',onBinEdit)
+        $this.on('click',onLinkEdit)
       }
     })
     $this.remove()
@@ -109,13 +109,59 @@ $(function() {
         if(e.keyCode === 13) $btnsuccess.click()
         return false
       })
+      
+      var $tags = $(this).find('.tags')
+      $tags.empty()
+      $link.find('.tags a').each(function(){
+        if( $(this).text() === '' ) return
+        addTag($(this).text())
+      })
+      
+      function addTag(val){
+        var exists = false
+        $tags.find('a').each(function(){
+          if($(this).text().trim() === val) exists = true
+        })
+        // don't add the tag if it's already there
+        if(exists) return false
+        var $tag = $(
+          '<a href="#">'
+            + '<span class="badge badge-info">'
+              + val + ' '
+              + '<i class="icon-remove"></i>'
+            + '</span> '
+          + '</a> '
+        )
+        
+        $tags.append($tag)
+        $tag.on('click', function(){
+          $(this).remove()
+        })
+        return true
+      }
+      
+      var $addtag_btn = $(this).find('.btn.add-tag')
+      var $addtag_input = $(this).find('input.add-tag')
+      $addtag_btn.on('click', function(){
+        var val = $addtag_input.val()
+        if(val==='') return
+        if(addTag(val)){
+          $addtag_input.val('')
+        }
+      })
+      
       var $btnsuccess = $(this).find('.btn-success')
       $btnsuccess.off('click')
       $btnsuccess.on('click', function(){
-        var name = $title.val().trim()
-        if(!!name){
-          var loc = '/_/bin/' + bin_id + '/link/' 
-            + $link.data('linkid') + '/rename?name=' + encodeURIComponent( name )
+        var title = $title.val().trim()
+        var tags = []
+        $tags.find('a').each(function(){
+          var tag = $(this).text().trim()
+          if(tag) tags.push(tag)
+        })
+        if(!!title){
+          var loc = '/_/link/' + $link.data('linkid') + '/update?title=' 
+            + encodeURIComponent( title ) + '&tags=' + encodeURIComponent(JSON.stringify(tags))
           window.location.href = loc
         }
       })

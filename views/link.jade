@@ -1,15 +1,12 @@
 mixin link(link, authosizedUser)
   li.clearfix.link(data-linkid="#{link._id}")
     .well
-      if authosizedUser
+      if authorizedUser
         .controls
-          a(href="/_/bin/#{bin.id}/link/#{link.id}/remove").close
+          a(href="/_/link/#{link.id}/remove").close
             i.icon-trash
           .edit.close
             i.icon-edit
-          //- .move.close
-          //-   .dropdown
-          //-     a.icon-move.dropdown-toggle(data-toggle="dropdown")
       a.clearfix(href=link.url, title=link.title,target="_blank",rel="nofollow")
         .minwidth.clearfix
           .icon
@@ -18,8 +15,8 @@ mixin link(link, authosizedUser)
             else if(link.mime)
               img(src="/_/images/mimetypes/" + link.mime.replace('/','-') + '.png')
             else
-              .icon(style="font-size: 64px; line-height:64px")
-                i.icon-warning-sign(style="width:64px;height:64px") 
+              .icon(style="font-size: 64px; line-height:64px;height:64px")
+                i.icon-warning-sign(style="width:64px;height:64px;margin-top:16px") 
           .text
             .text-container
               if (link.title)
@@ -30,3 +27,9 @@ mixin link(link, authosizedUser)
                 .url.ellipsis #{link.desc}
               else
                 .url.ellipsis #{link.url}
+          .tags
+            each tag in link.tags
+              a(href=path+tag)
+                span.badge( class = ( tags[tag]? 'badge-info' : '') ) 
+                  != tag
+                | 

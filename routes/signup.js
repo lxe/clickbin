@@ -32,6 +32,7 @@ module.exports = function(app) {
     if(_.any(config.reservedUsernames,function(name){
       return req.body.inputUsername.toLowerCase() === name
     })){
+      console.log('conflict with reserved usernames')
       errors.inputUsername = {
         msg : 'Sorry! That username is already taken'
       }
@@ -61,6 +62,7 @@ module.exports = function(app) {
           if( err.toString().indexOf('dup key') !==-1 
               && err.toString().indexOf('$username') !== -1
           ){
+            console.log('dup key error')
             req.session.flash.error = 'Sorry! That username is already taken'
           }else if( 
             err.toString().indexOf('dup key') !==-1 

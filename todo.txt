@@ -1,3 +1,4 @@
+trim page titles
 "ability to add friends to bins. so people can suggest books to read"
 ability
 Add open graph meta tags to cb

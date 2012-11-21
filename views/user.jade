@@ -10,6 +10,8 @@ block body
     include alerts
   .bin.main.container
     .span12
-      h3 User links
-      each link in links
-        mixin link(link)
+      .links
+        ul.items.clearfix.row-fluid
+          each link in links
+            mixin link(link)
+  include link-modal

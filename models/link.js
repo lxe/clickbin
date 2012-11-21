@@ -1,26 +1,33 @@
 var _ = require('underscore')
+  , util = require('util')
   , mongoose = require('mongoose')
-  , scraper = require('../controllers/scraper')
   , Schema = mongoose.Schema
   , LinkSchema = require('./schemas/link')
+  , LinkCache = require('./linkcache')
 
 LinkSchema.statics.scrape = function(url,cb){
-  // this is sort of like a cache, for the scraper
-  Link.findOne( { url : url }, function(err, link) {
-    if(err) return cb(err)
-    // first, try to see if the link already exists.
-    // if it does, just return it
-    else if(link) return cb(null,link)
-    // if not, go and _actually_ scrape the page
-    else scraper.get(url,function(err,link){
-      if(err) link = { url : url }
-      link = new Link(link)
-      link.save(function(err){
-        if(err) return cb(err)
-        else return cb(null,link)
+  LinkCache.scrape(url,cb)
+}
+
+LinkSchema.statics.getUserLinks = function(user, tags, cb){
+  if(!cb){
+    cb = tags
+    tags = []
+  }else if(!util.isArray(tags)) tags = [tags]
+  else if(!tags) tags = []
+  
+  var query = Link.find() //.where('owner').equals(user._id)
+  if(tags.length){
+    query.and(
+      _.map(tags, function(tag){
+        return { tags : tag }
       })
-    })
-  })
+    )
+  }
+  query.limit(20)
+  query.sort('field -created')
+  if(cb) query.exec(cb)
+  else return query
 }
 
 var Link = module.exports = mongoose.model('Link', LinkSchema)

@@ -19,6 +19,7 @@ var LinkSchema = new Schema({
   , url : {
     type : String
     , required : true
+    , index : true
   }
   , mime : {
     type : String
@@ -38,6 +39,7 @@ var LinkSchema = new Schema({
     type : Schema.Types.ObjectId
     , required : false
     , index : true
+  }
   , votes : {
     type : Number
     , required : true
