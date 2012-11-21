@@ -11080,6 +11080,10 @@ body#landing {
   width: 85px;
   float: right;
 }
+#info .well p {
+  color: #333;
+  text-shadow: none;
+}
 #info #newsletter {
   min-height: 32px;
   margin: 0;

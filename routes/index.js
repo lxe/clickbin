@@ -22,8 +22,8 @@ module.exports = function(app) {
     if(!req.loggedIn) {
       // show the landing page
       return res.render('landing', {
-        title: 'clickbin',
-        bodyId: 'landing'
+        title : 'clickbin'
+        , bodyId : 'landing'
       })
     } else {
       // redirect to the users bin
