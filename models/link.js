@@ -30,4 +30,16 @@ LinkSchema.statics.getUserLinks = function(user, tags, cb){
   else return query
 }
 
+LinkSchema.methods.save = function(cb){
+  console.log('calling our custom save')
+  if(cb){
+    var old_cb = cb
+    cb = function(err, doc){
+      if(err && err.code === 11000) return cb(new Error("You already have that link"))
+      else return old_cb(err,doc)
+    }
+  }
+  return mongoose.Model.prototype.save.call(this,cb)
+}
+
 var Link = module.exports = mongoose.model('Link', LinkSchema)

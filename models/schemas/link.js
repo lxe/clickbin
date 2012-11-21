@@ -55,8 +55,9 @@ var LinkSchema = new Schema({
 LinkSchema.index(
   { 
     owner : 1
-    , tags : 1
+    , _id : 1
   }
-);
+  , { unique : true }
+)
 
 module.exports = LinkSchema

@@ -6,6 +6,7 @@
 var Link = require('../models/link')
   , User = require('../models/user')
   , config = require('../config')
+  , mongoose = require('mongoose')
   , _ = require('underscore')
 
 
@@ -31,6 +32,7 @@ module.exports = function(req, res, next, opts) {
         delete scrappedLink._id
         _.extend(link,scrappedLink)
         link.save(function(err){
+          if(err && err.code === 11000) console.log(err)
           if(err) return next(err)
           return res.redirect('/' + tags.join('/'))
         })

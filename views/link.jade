@@ -33,7 +33,11 @@ mixin link(link, authosizedUser)
                 .url.ellipsis #{link.url}
           .tags
             each tag in link.tags
-              a(href=path+tag)
+              if path.indexOf('/' + tag + '/') !== -1
+                - var href = path.replace('/' + tag + '/' , '/')
+              else
+                - var href = path + tag
+              a(href=href)
                 span.badge( class = ( tags[tag]? 'badge-info' : '') ) 
                   != tag
                 | 

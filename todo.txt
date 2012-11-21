@@ -1,12 +1,6 @@
-trim page titles
+do a private beta.
+
 "ability to add friends to bins. so people can suggest books to read"
-ability
-Add open graph meta tags to cb
-add more content. example bins. whatever it takes
-performance. (CDN, minification, etc.)
-recommendations "lxe recommended this link for this bin"
-add "nofollow" to edit links
-make bins/links movable
 bookmarklet
 allow anonymous bin users to save their bins to an account, if they choose.
 implement password reset. maybe use this module? https://github.com/substack/node-password-reset
