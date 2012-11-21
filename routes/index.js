@@ -19,8 +19,7 @@ module.exports = function(app) {
     }
 
     // if the user is not logged in
-    if(!req.session.user || !req.session.user.loggedIn) {
-
+    if(!req.loggedIn) {
       // show the landing page
       return res.render('landing', {
         title: 'clickbin',
@@ -30,8 +29,7 @@ module.exports = function(app) {
       // redirect to the users bin
       var url = req.protocol + '://' 
         + req.session.user.username 
-        + '.' + host[1] + '.' + host[0] + '/';
-
+        + '.' + host[1] + '.' + host[0] + req.url;
       return res.redirect(url)
     }
   })

@@ -103,10 +103,11 @@ app.configure(function() {
     req.session.flash = req.session.flash || {}
     res.locals.flash  = req.session.flash
     req.session.flash = {}
+    req.loggedIn = req.session && req.session.user && req.session.user.loggedIn
     res.locals.domain = config.domain
     res.locals.getUserURI = function(username){
       var host = req.get('Host').split('.').reverse()
-      return req.protocol + '://' + username + '.' + host[1] + '.' + host[0] + '/'
+      return req.protocol + '://' + username + '.' + host[1] + '.' + host[0]
     }
     res.locals.getRootURI = function(){
       var host = req.get('Host').split('.').reverse()
@@ -120,8 +121,8 @@ app.configure(function() {
       var uri = this.locals.getRootURI()
       this.redirect(uri + '_/signin')
     }
-    res.redirectToProfile = function(username){
-      this.redirect(this.locals.getUserURI(username))
+    res.redirectToProfile = function(username, path){
+      this.redirect(this.locals.getUserURI(username) + path)
     }
     next()
   })

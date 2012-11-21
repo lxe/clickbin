@@ -12,14 +12,21 @@ var Link = require('../models/link')
 
 module.exports = function(req, res, next, opts) {
   // this route is called from the `path` route. the path route first parses out
-  // the following parameters and gives it to us via the `opts` object above
+  // the following parameters and gives it to us via the `opts` argument
   var username = opts.username
     , path = opts.path || '/'
     , link  = opts.link
     , tags = opts.tags
   
+  // if the user is logged in but the user subdomain wasn't in the request,
+  // redirect to the user subdomain
+  if(!username){
+    return res.redirectToProfile(req.session.user.username, opts.path)
+  }
+  
+  // add a new link with the provided tags
   if(link){
-    // add a new link with the provided tags
+    // check that we're the owner of the subdomain
     if(req.session.user.username === username){
       Link.scrape(link.href, function(err, scrappedLink){
         if(err) return next(err)
@@ -38,7 +45,7 @@ module.exports = function(req, res, next, opts) {
         })
       })
     }else{
-      return next(new Error("You cant tag links for other users."))
+      return next(new Error("You can't tag links for other users."))
     }
   }else{
     if(tags && tags.length){

@@ -4,6 +4,7 @@
 var _        = require('underscore')
   , crypto   = require('crypto')
   , user = require('./user')
+  , anonymous = require('./anonymous')
   , pathCommandParser = require('../middleware/path-command-parser')
 
 /**
@@ -13,39 +14,17 @@ var _        = require('underscore')
  */
 module.exports = function (app) {
   
-  app.get('/*', pathCommandParser, function (req, res, next) {
+  app.get(/^\/[^_]{1}.*/, pathCommandParser, function (req, res, next) {
     var command = req.parsedPathCommand
-    console.log(command)
-    if(command.username) return user(req,res,next,command)
+    
+    if(command.username || req.loggedIn ){
+      return user(req, res, next, command)
+    }
     
     // else, the user is anonymous...
-    return next()
-    
+    if( req.url === '/' ) return next()
+    return anonymous(req, res, next, command)
+      
   }) // end GET /path/[link]
   
-}
-
-
-
-function errorTopLevelBin(req, res){
-  req.session.flash.error = "Sorry. We couldn not find the clickbin you requested."
-  return res.redirect('/')
-}
-
-function errorNotRootBinOwner(req, res){
-  req.session.flash.error = "Sorry. You cannot access the clickbin you requested."
-  return res.redirect('/')
-}
-
-function errorMaxBinPath(req, res){
-  // make sure bins dont get crazy...
-  req.session.flash.error = "Too many levels of bins!"
-    + "paths."
-  return res.redirect('back')
-}
-
-function errorNameBin(req, res){
-  req.session.flash.error = "You must <a href=\"/_/login\">register or sign "
-    + "in</a> to name your bins. "
-  return res.redirect('back')
 }

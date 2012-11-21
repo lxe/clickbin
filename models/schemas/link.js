@@ -50,6 +50,10 @@ var LinkSchema = new Schema({
     , required : true
     , default : 0
   }
+  , anonymous : {
+    type : String
+    , required : false
+  }
 }, {strict : true})
 
 LinkSchema.index(
