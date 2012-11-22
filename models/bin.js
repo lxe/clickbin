@@ -253,40 +253,8 @@ BinSchema.statics.ensureExists = function(opts, path, cb) {
         else return cb(null,bin)
       })
     })
-    // 
-    // Bin.findOneAndUpdate(
-    //   // query
-    //   query
-    //   // update
-    //   , {
-    //     $set : query
-    //   }
-    //   // options. create it if it doesn't already exist
-    //   , { upsert : true }
-    //   , function(err,bin){
-    //     if(err) return cb(err)
-    //     if(!bin) return cb(new Error('findOneAndUpate did not return a bin when upsert was provided'))
-    //     console.log(bin)
-    //     if(typeof bin.__v === 'undefined' ){
-    //       // this bin was just created. make sure we set any new fields
-    //       console.log('this bin didnt exist before')
-    //       console.log(set)
-    //       _.extend(bin,set)
-    //       bin.increment()
-    //       bin.save(function(err){
-    //         if(err) return cb(err)
-    //         return cb(null,bin)
-    //       })
-    //     }else return cb(null,bin)
-    //   })
   }
 }
-
-BinSchema.virtual('name').set(function (name) {
-  var parts = v.split(' ');
-  this.name.first = parts[0];
-  this.name.last = parts[1];
-});
 
 BinSchema.virtual('username').get(function(){
   throw new Error('Dont use the username property. use `owner` instead ')
