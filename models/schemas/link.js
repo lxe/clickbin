@@ -54,6 +54,11 @@ var LinkSchema = new Schema({
     type : String
     , required : false
   }
+  , public : {
+    type : Boolean
+    , required: true
+    , default : true
+  }
 }, {strict : true})
 
 LinkSchema.index(

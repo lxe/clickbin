@@ -1,13 +1,20 @@
 mixin link(link, authosizedUser)
   li.clearfix.link(data-linkid="#{link._id}")
-    .well
+    .well(class=(link.public)?'':'private')
       if authorizedUser
         .controls
           a(href="/_/link/#{link.id}/remove").close
             i.icon-trash
           .edit.close
             i.icon-edit
-      a.clearfix(href='/_/click/link/' + link._id , title=link.title,target="_blank",rel="nofollow")
+           .close
+            if(link.public)
+              a(href="/_/link/#{link.id}/update?public=false")
+                i.icon-eye-close(rel="tooltip", data-original-title="click to make this link private")
+            else
+              a(href="/_/link/#{link.id}/update?public=true")
+                i.icon-eye-open(rel="tooltip", data-original-title="click to make this link public")
+      a.clearfix(href='/_/click/link/' + link._id , title=link.title, target="_blank", rel="nofollow")
         .minwidth.clearfix
           .icon
             if (link.icon)

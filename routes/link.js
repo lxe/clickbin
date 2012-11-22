@@ -18,27 +18,35 @@ module.exports = function(app){
     if(!req.session.user) return res.redirect('back')
     var tags = req.query.tags
       , title = req.query.title
+      , public = req.query.public
       , update = {}
     
     // console.log('query')
     // console.log(req.query)
     
-    try{
-      tags = JSON.parse(tags)
-    }catch(e){
-      console.error('tag format issue')
-      return res.redirect('back')
+    if(tags){
+      try{
+        tags = JSON.parse(tags)
+      }catch(e){
+        console.error('tag format issue')
+        return res.redirect('back')
+      }
     }
     
     if(tags && !(tags instanceof Array) ){
       console.error('tags not array when updating link')
       return res.redirect('back')
     }
-    console.log('title: ' + title)
-    if(title && typeof(title) !== 'string' ){
+    
+    if(title && typeof title !== 'string' ){
       console.error('title not string hwne updating link')
       return res.redirect('back')
     }
+    
+    if(public) public = (public === 'true')
+    else public = undefined
+    
+    console.log('public: ' + public)
     
     Link.findOne({
       _id : req.params.linkID
@@ -52,6 +60,7 @@ module.exports = function(app){
       console.log('tags: ' + tags)
       if(title) link.title = title
       if(tags) link.tags = tags
+      if( public !== undefined ) link.public = public
       link.save()
       return res.redirect('back')
     })
