@@ -24,10 +24,12 @@ module.exports = function(req, res, next, opts) {
     return res.redirectToProfile(req.session.user.username, opts.path)
   }
   
+  var isOwner = req.session.user && req.session.user.username === username
+  
   // add a new link with the provided tags
   if(link){
     // check that we're the owner of the subdomain
-    if(req.session.user.username === username){
+    if(isOwner){
       Link.scrape(link.href, function(err, scrappedLink){
         if(err) return next(err)
         var link = new Link({
@@ -48,44 +50,15 @@ module.exports = function(req, res, next, opts) {
       return next(new Error("You can't tag links for other users."))
     }
   }else{
-    if(tags && tags.length){
-      Link.find({ 
-        tags : tags 
-        , owner : req.session.user._id
-      }, function(err,links){
-        if(err) return next(err)
-        return render(tags,links)
-      })
-    }else{
-      User.findOne({
-        username : username
-      }, function(err,user){
-        if(err) throw err
-        if(!user) return res.send(404)
-        Link.find({
-          owner : user._id
-        }, function(err, links){
-          if(err) return next(err)
-          return render([], links)
-        })
-      })
-    }
-  }
-
-  // show the user bin page
-
-  function render(tags,links) {
     if(!tags) tags = []
-    if(!links) links = []
     // meanhile, in russia
     User.findOne({
       username : username
     }, function(err,user){
       if(err) return next(err)
-      if(!user) return res.send(404)
-      user.getLinks(tags, function(err,links){
+      if(!user) return next(new Error("Ther's no user with that name"))
+      user.getLinks(tags, isOwner, function(err,links){
         if(err) return next(err)
-        
         tags.sort()
         path = '/' + tags.join('/')
         if(path.length > 1) path += '/'

@@ -64,6 +64,8 @@ client.open(function (err, client) {
           if(err) throw err
           if(doc){
             var user = new User(doc)
+            user.setValue('password',doc.password)
+            user.setValue('salt',doc.salt)
             user.save(function(err){
               if(err) throw err
               next()
@@ -104,6 +106,7 @@ client.open(function (err, client) {
                 console.log(link)
                 link = new Link({
                   title : link.title
+                  , _id : link.id
                   , desc : link.desc
                   , icon : link.icon
                   , url : link.url

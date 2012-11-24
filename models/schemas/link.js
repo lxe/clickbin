@@ -10,7 +10,7 @@ var LinkSchema = new Schema({
     type : String
     , required : false
   }
-  // the path to the image (local or absolute)
+  // the path to the image
   , icon : {
     type : String
     , required : false
@@ -59,7 +59,10 @@ var LinkSchema = new Schema({
     , required: true
     , default : true
   }
-}, {strict : true})
+}, {
+  strict : true
+})
+
 
 LinkSchema.index(
   { 

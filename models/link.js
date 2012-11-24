@@ -9,7 +9,7 @@ LinkSchema.statics.scrape = function(url,cb){
   LinkCache.scrape(url,cb)
 }
 
-LinkSchema.statics.getUserLinks = function(user, tags, cb){
+LinkSchema.statics.getUserLinks = function(user, tags, includePrivate, cb){
   if(!cb){
     cb = tags
     tags = []
@@ -24,7 +24,9 @@ LinkSchema.statics.getUserLinks = function(user, tags, cb){
       })
     )
   }
-  query.limit(20)
+  query.where('owner',user._id)
+  if(!includePrivate) query.where('public',true)
+  //query.limit(100)
   query.sort('field -created')
   if(cb) query.exec(cb)
   else return query
