@@ -17,6 +17,8 @@ module.exports = function(req, res, next, opts) {
     , path = opts.path || '/'
     , link  = opts.link
     , tags = opts.tags
+    , page = opts.page || 0
+    , tagPath = opts.tagPath || '/'
   
   // if the user is logged in but the user subdomain wasn't in the request,
   // redirect to the user subdomain
@@ -50,32 +52,47 @@ module.exports = function(req, res, next, opts) {
       return next(new Error("You can't tag links for other users."))
     }
   }else{
+    console.log('otps: ')
+    console.log(opts)
     if(!tags) tags = []
-    // meanhile, in russia
     User.findOne({
       username : username
     }, function(err,user){
       if(err) return next(err)
       if(!user) return next(new Error("Ther's no user with that name"))
-      user.getLinks(tags, isOwner, function(err,links){
+      var query = user.getLinks(tags, isOwner)
+      query.count(function(err, numLinks){
         if(err) return next(err)
-        tags.sort()
-        path = '/' + tags.join('/')
-        if(path.length > 1) path += '/'
-        
-        tags = _.object(_.map(tags, function(tag){
-          return [tag, true]
-        }))
-        
-        return res.render('user', {
-          title : user.username + '.' + config.domain + path
-          , links : links
-          , tags : tags
-          , path : path
-          , authorizedUser : req.session.user && user._id.toString() === req.session.user._id
-          , profile : {
-            username : user.username
-          }
+        var query = user.getLinks(tags, isOwner)
+        query.limit(20).skip(page * 20)
+        query.exec(function(err,links){
+          
+          if(err) return next(err)
+          tags.sort()
+          path = '/' + tags.join('/')
+          if(path.length > 1) path += '/'
+
+          tags = _.object(_.map(tags, function(tag){
+            return [tag, true]
+          }))
+          
+          if(tagPath !== '/') tagPath += '/'
+          var lastPage = Math.floor( numLinks / 20 )
+          
+          return res.render('user', {
+            title : user.username + '.' + config.domain + path
+            , numLinks : numLinks
+            , page : page
+            , links : links
+            , tags : tags
+            , prevPage : (page > 0) ? tagPath + (page - 1) : null
+            , nextPage : (page < lastPage) ? tagPath + (page + 1) : null
+            , path : path
+            , authorizedUser : req.session.user && user._id.toString() === req.session.user._id
+            , profile : {
+              username : user.username
+            }
+          })
         })
       })
     })

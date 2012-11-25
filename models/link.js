@@ -10,10 +10,8 @@ LinkSchema.statics.scrape = function(url,cb){
 }
 
 LinkSchema.statics.getUserLinks = function(user, tags, includePrivate, cb){
-  if(!cb){
-    cb = tags
-    tags = []
-  }else if(!util.isArray(tags)) tags = [tags]
+  
+  if(!util.isArray(tags)) tags = [tags]
   else if(!tags) tags = []
   
   var query = Link.find() //.where('owner').equals(user._id)

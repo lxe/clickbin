@@ -1,6 +1,8 @@
 
 var Link = require('../models/link')
   , User = require('../models/user')
+  , _ = require('underscore')
+  , config = require('../config')
 
 module.exports = function(app){
   app.get('/_/link/:linkID/remove', function(req, res, next){
@@ -38,6 +40,12 @@ module.exports = function(app){
       return res.redirect('back')
     }
     
+    var invalidTag = _.find(tags, function(tag){
+      return !tag.match(config.tagNameRegexp)
+    })
+    if(invalidTag)
+      return next(new Error('invalid tag name: ' + invalidTag))
+    
     if(title && typeof title !== 'string' ){
       console.error('title not string hwne updating link')
       return res.redirect('back')
@@ -45,8 +53,6 @@ module.exports = function(app){
     
     if(public) public = (public === 'true')
     else public = undefined
-    
-    console.log('public: ' + public)
     
     Link.findOne({
       _id : req.params.linkID

@@ -10,6 +10,13 @@ block body
     include alerts
   .bin.main.container
     .span12
+      if(prevPage)
+        a.btn.btn-navy.pull-left(href=prevPage) previous
+      if(nextPage)
+        a.btn.btn-navy.pull-right(href=nextPage) next
+      br
+      br
+    .span12
       .links
         ul.items.clearfix.row-fluid
           each link in links

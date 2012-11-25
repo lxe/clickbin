@@ -19,19 +19,24 @@ module.exports = function(url){
     , uri  = matches[matches.length - 1]
     , tag_part = matches[1]
     , alt_tag_part
+    , page = 0
   
-  // console.log('matches')
-  // console.log(matches)
   
   if(tag_part){
     if( tag_part.length > 1 && tag_part[tag_part.length-1]==='/') 
       tag_part = tag_part.slice(0,-1)
+    
+    var pageNumMatch = tag_part.match(/\/([0-9]+)$/)
+    if(pageNumMatch){
+      page = Number(pageNumMatch[1])
+      tag_part = tag_part.replace(/\/([0-9]+)$/,'')
+      if(tag_part === '') tag_part = '/'
+    }
+    
     alt_tag_part = path.normalize(tag_part)
     alt_tag_part = _.map(alt_tag_part.split('/'), function(tag){
       return decodeURIComponent(sanitize(tag).trim())
     })
-    // console.log('alt_tag_parts: ')
-    // console.log(alt_tag_part)
     alt_tag_part = _.uniq(alt_tag_part)
     alt_tag_part.sort()
     // console.log(alt_tag_part)
@@ -61,6 +66,15 @@ module.exports = function(url){
       return encodeURIComponent(tag)
     })
     alt_tag_part = '/' + alt_tag_part.join('/')
+    
+    if(alt_tag_part !== '/')
+      alt_tag_part += '/' + page
+    else alt_tag_part += page
+    
+    if(tag_part !== '/')
+      tag_part += '/' + page
+    else tag_part += page
+    
     if(uri){
       if(tag_part !== '/')
         url = alt_tag_part + '/' + protocol + uri
@@ -71,13 +85,10 @@ module.exports = function(url){
     // if cleaned up version of the command isn't the original provided, 
     // redirect to the proper version
     
-    // console.log('alt_tag_part: ' + alt_tag_part)
-    // console.log('tag_part: ' + tag_part)
     
     if( tag_part !== '/' && alt_tag_part !== tag_part){
       var redirect = alt_tag_part
       if(uri) redirect += '/' + protocol + uri
-      // console.log('redirect: ' + redirect)
       return { redirect : redirect }
     }
   }
@@ -89,6 +100,8 @@ module.exports = function(url){
   var command = {
     tags : tags
     , path : url
+    , page : page
+    , tagPath : (tags.length) ? ( '/' + tags.join('/') ) : '/'
   }
   if(uri){
     command.link = {
@@ -97,5 +110,7 @@ module.exports = function(url){
       , href : protocol + uri
     }
   }
+  console.log('command')
+  console.log(command)
   return command
 }

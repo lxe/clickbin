@@ -19,7 +19,7 @@ var config = {
   , maxNumTags : 10
   // tags can have lowercase or uppercase letters, numbers or `-` or `_` or 
   // spaces but must start with a letter or number
-  , tagNameRegexp : /^[a-zA-Z0-9]{1,}[a-z\%A-Z0-9\-\_ ]*$/
+  , tagNameRegexp : /^[a-zA-Z]{1,}[a-z\%A-Z0-9\-\_ ]*$/
   /**
     * this breaks the requested url into its commands parts. namely: 
     * the tag parts, the `uri` and the `protocol`
