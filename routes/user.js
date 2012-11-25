@@ -41,6 +41,7 @@ module.exports = function(req, res, next, opts) {
         })
         scrappedLink = scrappedLink.toObject()
         delete scrappedLink._id
+        scrappedLink.tags = _.union(scrappedLink.tags,link.tags)
         _.extend(link,scrappedLink)
         link.save(function(err){
           if(err && err.code === 11000) console.log(err)
