@@ -1,4 +1,3 @@
-authosizedUser = user && user.loggedIn && typeof(profile) !== 'undefined' && profile.username === user.username || typeof(isOwner) !== 'undefined' && isOwner
 
 mixin link(link)
   li.clearfix.link(data-linkid="#{link._id}")
@@ -32,7 +31,6 @@ mixin link(link)
                 .url.ellipsis #{link.desc}
               else
                 .url.ellipsis #{link.url}
-    
 
 mixin bin(bin)
   li.clearfix.bin
@@ -135,15 +133,4 @@ mixin bin(bin)
           else  
             each link in bin.links
               mixin link(link)
-      #linkModal.modal.hide(tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
-        .modal-header
-          button.close(type="button", data-dismiss="modal", aria-hidden="true") x
-          h3#myModalLabel edit link
-        .modal-body
-          img.pull-left.thumbnail
-          form.pull-left(style="margin:10px")
-            label title
-            input.input-xlarge.title(type="text")
-        .modal-footer
-          button.btn(data-dismiss="modal", aria-hidden="true") cancel
-          button.btn.btn-success(data-dismiss="modal") update
+      include link-modal

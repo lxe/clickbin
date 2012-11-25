@@ -215,6 +215,7 @@ function makeLimitedRequest(req,limits,cb) {
 function urlRequest(url) {
   return request.get({
     url : url
+    , timeout : 10000
     , headers : {
       // we use a mock user agent string to `trick` sites like facebook into 
       // serving our request properly

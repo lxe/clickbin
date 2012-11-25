@@ -13,13 +13,21 @@ var config = {
   , logging : true
   // just incase, reserve these usernames (aka, subdomains)
   , reservedUsernames : fs.readFileSync( __dirname + '/reserved.txt').toString().split('\n')
-  , mongoPath : 'mongodb://localhost/clickbin-v2'
+  , mongoPath : 'mongodb://localhost/clickbin-v3'
   , usernameRegexp : /^[a-zA-Z]{1,}[a-zA-Z0-9]{1,}$/
   , maxChildBins : 50
-  , maxBinPathDepth : 10
-  // bins can have lowercase or uppercase letters, numbers or `-` or `_` or 
+  , maxNumTags : 10
+  // tags can have lowercase or uppercase letters, numbers or `-` or `_` or 
   // spaces but must start with a letter or number
-  , binNameRegexp : /^[a-zA-Z0-9]{1,}[a-z\%A-Z0-9\-\_ ]*$/
+  , tagNameRegexp : /^[a-zA-Z]{1,}[a-z\%A-Z0-9\-\_ ]*$/
+  /**
+    * this breaks the requested url into its commands parts. namely: 
+    * the tag parts, the `uri` and the `protocol`
+    * there's some overlap here with config.binNameRegexp. notice how the
+    * part in this regexp also contains an extra `/` because we're matching
+    * the entire bin `path` not just a single bin `name`
+    */
+  , commandRegexp : /^((\/(?:[a-zA-Z0-9]{1,}[a-z \%A-Z0-9\-\_\/]*(?:\/|$)))|\/)(\w+?:\/\/)?([^\/]+\..+)?/
 }
 
 // "In an extreme view, the world can be seen as only connections, nothing 

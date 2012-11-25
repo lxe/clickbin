@@ -10,7 +10,7 @@ var LinkSchema = new Schema({
     type : String
     , required : false
   }
-  // the path to the image (local or absolute)
+  // the path to the image
   , icon : {
     type : String
     , required : false
@@ -19,6 +19,7 @@ var LinkSchema = new Schema({
   , url : {
     type : String
     , required : true
+    , index : true
   }
   , mime : {
     type : String
@@ -27,6 +28,16 @@ var LinkSchema = new Schema({
   , created : {
     type : Date
     , default : Date.now
+    , index : true
+  }
+  , tags : {
+    type : [String]
+    , default : []
+    , index : true
+  }
+  , owner : {
+    type : Schema.Types.ObjectId
+    , required : false
     , index : true
   }
   , votes : {
@@ -39,6 +50,26 @@ var LinkSchema = new Schema({
     , required : true
     , default : 0
   }
-}, {strict : true})
+  , anonymous : {
+    type : String
+    , required : false
+  }
+  , public : {
+    type : Boolean
+    , required: true
+    , default : true
+  }
+}, {
+  strict : true
+})
+
+
+LinkSchema.index(
+  { 
+    owner : 1
+    , _id : 1
+  }
+  , { unique : true }
+)
 
 module.exports = LinkSchema

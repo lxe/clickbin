@@ -6,6 +6,7 @@ var mongoose = require('mongoose')
   , Schema = mongoose.Schema
   , salt = require('../config').salt
   , common = require('./common')
+  , Link = require('./link')
 
 
 /**
@@ -87,5 +88,11 @@ UserSchema.methods.getURI = function(req){
 UserSchema.methods.guessPassword = function(password){
   return this.password === common.digest(common.md5(password + salt),this.salt).digest
 }
+
+UserSchema.methods.getLinks = function(tags, includePrivate, cb){
+  // optional parameters
+  return Link.getUserLinks(this, tags, includePrivate, cb)
+}
+
 
 var User = module.exports = mongoose.model('User', UserSchema)

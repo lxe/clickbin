@@ -1,5 +1,6 @@
 extends layout
-include bin-items
+
+include link
 
 block breadcrumb
   include bin-breadcrumbs
@@ -7,5 +8,17 @@ block breadcrumb
 block body
   .container.alerts
     include alerts
-
-  include bincontainer
+  .bin.main.container
+    .span12
+      if(prevPage)
+        a.btn.btn-navy.pull-left(href=prevPage) previous
+      if(nextPage)
+        a.btn.btn-navy.pull-right(href=nextPage) next
+      br
+      br
+    .span12
+      .links
+        ul.items.clearfix.row-fluid
+          each link in links
+            mixin link(link)
+  include link-modal

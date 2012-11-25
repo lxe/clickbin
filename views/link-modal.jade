@@ -1,0 +1,21 @@
+#linkModal.modal.hide(tabindex="-1", role="dialog", aria-labelledby="myModalLabel", aria-hidden="true")
+  .modal-header
+    button.close(type="button", data-dismiss="modal", aria-hidden="true") x
+    h3#myModalLabel edit link
+  .modal-body
+    img.pull-left.thumbnail
+    form.pull-left(style="margin:10px")
+      label title
+      input.input-xlarge.title(type="text")
+      .input-group.tags
+        span.badge.badge-info 
+          | example 
+          i.icon-remove
+        | 
+      label add a tag
+      input.input-xlarge.add-tag(type="text")
+      br
+      button.btn.add-tag add
+  .modal-footer
+    button.btn(data-dismiss="modal", aria-hidden="true") cancel
+    button.btn.btn-success(data-dismiss="modal") update

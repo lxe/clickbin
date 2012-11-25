@@ -9452,6 +9452,13 @@ a.badge:hover {
     -webkit-transform: translatey(-300px);
   }
 }
+#linkModal .tags .icon-remove {
+  font-size: 10px;
+  line-height: 15px;
+  margin-top: 0px;
+  width: 7px;
+  vertical-align: middle;
+}
 /*  Font Awesome
     the iconic font designed for use with Twitter Bootstrap
     -------------------------------------------------------
@@ -10526,20 +10533,6 @@ ul.icons li .icon-large:before {
   color: #fff !important;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.09);
   -webkit-font-smoothing: antialiased;
-  background-color: #1e5076 !important;
-  background-repeat: repeat-x;
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr="#24608d", endColorstr="#1e4f75");
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#24608d), to(#1e4f75));
-  background-image: -moz-linear-gradient(top, #24608d, #1e4f75);
-  background-image: -ms-linear-gradient(top, #24608d, #1e4f75);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #24608d), color-stop(100%, #1e4f75));
-  background-image: -webkit-linear-gradient(top, #24608d, #1e4f75);
-  background-image: -o-linear-gradient(top, #24608d, #1e4f75);
-  background-image: linear-gradient(#24608d, #1e4f75);
-  border-color: #1e4f75 #1e4f75 #1d4c6f;
-  color: #fff !important;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.09);
-  -webkit-font-smoothing: antialiased;
   border-radius: 0;
   font-family: 'Titillium Web', sans-serif;
   margin-left: 0;
@@ -10781,22 +10774,6 @@ body .mascot {
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.09);
   -webkit-font-smoothing: antialiased;
 }
-.btn-navy {
-  background-color: #1e5076 !important;
-  background-repeat: repeat-x;
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr="#24608d", endColorstr="#1e4f75");
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#24608d), to(#1e4f75));
-  background-image: -moz-linear-gradient(top, #24608d, #1e4f75);
-  background-image: -ms-linear-gradient(top, #24608d, #1e4f75);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #24608d), color-stop(100%, #1e4f75));
-  background-image: -webkit-linear-gradient(top, #24608d, #1e4f75);
-  background-image: -o-linear-gradient(top, #24608d, #1e4f75);
-  background-image: linear-gradient(#24608d, #1e4f75);
-  border-color: #1e4f75 #1e4f75 #1d4c6f;
-  color: #fff !important;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.09);
-  -webkit-font-smoothing: antialiased;
-}
 .btn-lightgray {
   background-color: #e8e8e8 !important;
   background-repeat: repeat-x;
@@ -10981,20 +10958,6 @@ body#landing {
 }
 #info .well {
   padding: 20px;
-  background-color: #e8e8e8 !important;
-  background-repeat: repeat-x;
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr="#f7f7f7", endColorstr="#e8e8e8");
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f7f7f7), to(#efefef));
-  background-image: -moz-linear-gradient(top, #f7f7f7, #efefef);
-  background-image: -ms-linear-gradient(top, #f7f7f7, #efefef);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f7f7f7), color-stop(100%, #efefef));
-  background-image: -webkit-linear-gradient(top, #f7f7f7, #efefef);
-  background-image: -o-linear-gradient(top, #f7f7f7, #efefef);
-  background-image: linear-gradient(#f7f7f7, #efefef);
-  border-color: #e8e8e8 #e8e8e8 #e4e4e4;
-  color: #333 !important;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.09);
-  -webkit-font-smoothing: antialiased;
   margin-bottom: 0px;
   box-shadow: 1px 1px 2px #0D2233;
 }
@@ -11072,6 +11035,10 @@ body#landing {
 #info .newsletter-wrapper  > .inner form .button-wrapper {
   width: 85px;
   float: right;
+}
+#info .well p {
+  color: #333;
+  text-shadow: none;
 }
 #info #newsletter {
   min-height: 32px;
@@ -11175,20 +11142,6 @@ body#landing {
   color: #fff !important;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.09);
   -webkit-font-smoothing: antialiased;
-  background-color: #1e5076 !important;
-  background-repeat: repeat-x;
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr="#24608d", endColorstr="#1e4f75");
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#24608d), to(#1e4f75));
-  background-image: -moz-linear-gradient(top, #24608d, #1e4f75);
-  background-image: -ms-linear-gradient(top, #24608d, #1e4f75);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #24608d), color-stop(100%, #1e4f75));
-  background-image: -webkit-linear-gradient(top, #24608d, #1e4f75);
-  background-image: -o-linear-gradient(top, #24608d, #1e4f75);
-  background-image: linear-gradient(#24608d, #1e4f75);
-  border-color: #1e4f75 #1e4f75 #1d4c6f;
-  color: #fff !important;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.09);
-  -webkit-font-smoothing: antialiased;
   color: #ededed;
 }
 .alert.alert-warn a,
@@ -11250,6 +11203,28 @@ a {
   color: #888;
   font-size: 12px;
   font-weight: bold;
+}
+.links .items li .well.private {
+  background-color: #1e5076 !important;
+  background-repeat: repeat-x;
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr="#24608d", endColorstr="#1e4f75");
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#24608d), to(#1e4f75));
+  background-image: -moz-linear-gradient(top, #24608d, #1e4f75);
+  background-image: -ms-linear-gradient(top, #24608d, #1e4f75);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #24608d), color-stop(100%, #1e4f75));
+  background-image: -webkit-linear-gradient(top, #24608d, #1e4f75);
+  background-image: -o-linear-gradient(top, #24608d, #1e4f75);
+  background-image: linear-gradient(#24608d, #1e4f75);
+  border-color: #1e4f75 #1e4f75 #1d4c6f;
+  color: #fff !important;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.09);
+  -webkit-font-smoothing: antialiased;
+}
+.links .items li .well.private .title {
+  color: #fff;
+}
+.links .items li .well.private .url {
+  color: #DFDFDF;
 }
 .bins .well {
   padding: 0;
