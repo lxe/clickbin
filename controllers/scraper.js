@@ -14,6 +14,8 @@ var fs                        = require('fs')
   , node_url                  = require('url')
   , fav                       = require('fav')(Canvas)
   , hostnameSpecificScrapers  = require('./hostname-specific-scrapers')
+  , tagScraper           = require('./tag-scraper')
+
 
 // make sure the image directories exists. (dirp.. dirp..)
 mkdirp(image_dir, function(err) { if(err) throw err })
@@ -29,7 +31,6 @@ module.exports = {
    * @param  {Function} cb  the callback called when that happens. of the form (err,link)
    */
   get : function(url, cb) {
-    
     var req = urlRequest(url)
     makeLimitedRequest(req, {
       size : config.maxRequestSize
@@ -54,89 +55,96 @@ module.exports = {
         // changed
         var uri = res.request.uri
         var page = hostnameSpecificScrapers(uri,body)
-        // see if there's an icon we can use.
-        if(!page.icon || page.__dont_scrape_icon){
-          return cb(null, {
-            title : page.title
-            , url   : page.url
-            , desc : page.desc
-            , icon : page.icon
-            //incase there's no icon, we can also use the mime type to display an icon
-            , mime : mime
-          })
-        }else{
-          // get the icon
-          var req = urlRequest(page.icon)
-          makeLimitedRequest(req, {
-            size : config.maxRequestSize
-            , mime : [imageType]
-          }, function (err, icon_mime, body, res) {
-            if(err) return tryFavicon()
-            // image (jpg, png, gif) type
-            var name = uuid.v4() + '.png'
-            saveThumbnails(body, name, function(err, icon) {
-              if(err){
-                console.error('save thunbnail for image ' + page.icon)
-                console.error(err)
-                console.trace()
-                return tryFavicon()
-              }else return done(icon)
+        
+        tagScraper(page, function(tags){
+          
+          // see if there's an icon we can use.
+          if(!page.icon || page.__dont_scrape_icon){
+            return cb(null, {
+              title : page.title
+              , url   : page.url
+              , desc : page.desc
+              , icon : page.icon
+              , tags : tags
+              //incase there's no icon, we can also use the mime type to display 
+              // an appropriate icon
+              , mime : mime
             })
-            
-            function tryFavicon(){
-              getFavicon(uri.protocol + '//' + uri.host + '/favicon.ico', function(icon){
-                if(icon) return done(icon)
-                // try to get the favicon from the root host
-                var hosts = uri.host.split('.')
-                if(hosts.length < 3) return done(null)
-                var domain = hosts[hosts.length-2] + '.' + hosts[hosts.length-1]
-                getFavicon(uri.protocol + '//' + domain + '/favicon.ico', done)
-              })
-            }
-            
-            function getFavicon(favicon_url, cb){
-              var req = urlRequest(favicon_url)
-              makeLimitedRequest(req,{
-                size : config.maxRequestSize
-                , mime : [icoType]
-              }, function(err, icon_mime, body, res){
+          }else{
+            // get the icon
+            var req = urlRequest(page.icon)
+            makeLimitedRequest(req, {
+              size : config.maxRequestSize
+              , mime : [imageType]
+            }, function (err, icon_mime, body, res) {
+              if(err) return tryFavicon()
+              // image (jpg, png, gif) type
+              var name = uuid.v4() + '.png'
+              saveThumbnails(body, name, function(err, icon) {
                 if(err){
-                  console.error('unable to retrivew icon : ' + favicon_url)
-                  return cb(null)
-                }
-                var name = uuid.v4() + '.png'
-                  , ico
-                
-                try{
-                  ico = fav(body).getLargest().toBuffer()
-                }catch(e){
-                  console.error('error parsing ico file: ' + favicon_url)
-                  console.error(e)
+                  console.error('save thunbnail for image ' + page.icon)
+                  console.error(err)
                   console.trace()
-                  if(e) return cb(null)
-                }
-                
-                saveThumbnails(ico, name, function(err, icon){
-                  if(err) return cb(null)
-                  return cb(icon)
-                },{
-                  antialias : 'none'
-                  , patternQuality : 'fast'
+                  return tryFavicon()
+                }else return done(icon)
+              })
+
+              function tryFavicon(){
+                getFavicon(uri.protocol + '//' + uri.host + '/favicon.ico', function(icon){
+                  if(icon) return done(icon)
+                  // try to get the favicon from the root host
+                  var hosts = uri.host.split('.')
+                  if(hosts.length < 3) return done(null)
+                  var domain = hosts[hosts.length-2] + '.' + hosts[hosts.length-1]
+                  getFavicon(uri.protocol + '//' + domain + '/favicon.ico', done)
                 })
-              })
-            }
-            
-            function done(icon){
-              return cb(null,{
-                url : page.url
-                , title : page.title
-                , desc : page.desc
-                , mime : mime
-                , icon : icon
-              })
-            }
-          })
-        }
+              }
+
+              function getFavicon(favicon_url, cb){
+                var req = urlRequest(favicon_url)
+                makeLimitedRequest(req,{
+                  size : config.maxRequestSize
+                  , mime : [icoType]
+                }, function(err, icon_mime, body, res){
+                  if(err){
+                    console.error('unable to retrivew icon : ' + favicon_url)
+                    return cb(null)
+                  }
+                  var name = uuid.v4() + '.png'
+                    , ico
+
+                  try{
+                    ico = fav(body).getLargest().toBuffer()
+                  }catch(e){
+                    console.error('error parsing ico file: ' + favicon_url)
+                    console.error(e)
+                    console.trace()
+                    if(e) return cb(null)
+                  }
+
+                  saveThumbnails(ico, name, function(err, icon){
+                    if(err) return cb(null)
+                    return cb(icon)
+                  },{
+                    antialias : 'none'
+                    , patternQuality : 'fast'
+                  })
+                })
+              }
+
+              function done(icon){
+                return cb(null,{
+                  url : page.url
+                  , title : page.title
+                  , desc : page.desc
+                  , mime : mime
+                  , icon : icon
+                  , tags : tags
+                })
+              }
+            })
+          }
+        })
       }else return fail(new Error("unsupported type: " + mime))
     })
     // failed to get additional meta data (other then the url provided)

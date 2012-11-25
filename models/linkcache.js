@@ -24,6 +24,11 @@ var LinkCacheSchema = new Schema({
     , index : true
     , unique : true
   }
+  , tags : {
+    type : [String]
+    , default : []
+    , index : true
+  }
   , mime : {
     type : String
     , required : false

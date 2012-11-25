@@ -1,0 +1,74 @@
+how can i find a list of the best coffee shops in pittsburgh?
+
+pittsburgh/coffee/cafe
+
+
+kiva han
+coffee +5
+cafe +10
+pittsburgh + 10
+
+
+the beehive
+coffee +7
+cafe +7
+pittsburgh + 11
+
+
+tryst
+coffee +11
+cafe +7
+pittsburgh 0
+
+"cafe + coffee"
+"coffee + pittsburgh"
+"cafe + pittsburgh"
+"cafe + coffee + pittsburgh"
+
+-- a -- = 1
+a
+
+-- a b -- + 2 = 3
+a
++ b
++ a b
+
+-- a b c -- + 3 = 6
+a
++ c
+a b
++ a c
++ b c
+
+-- a b c d -- + 5 = 11
+a
+b
+c
++ d
+a b
+a c
++ a d
+b c
++ b d
++ c d
++ a b c d
+-- a b c d e -- + 8 = 17
+a
+b
+c
+d
++ e
+a b
+a c
+a d
++ a e
+b c
+b d
++ b e
+c d
++ c e
++ d e
+a b c d
++ a b c e
++ b c d e
++ a b c d e

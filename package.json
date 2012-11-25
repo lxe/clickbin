@@ -20,7 +20,7 @@
     "sitemap": "~0.6.0",
     "png": "~2.1.1",
     "mongodb": "~1.1.11",
-    "fav": "0.0.7",
+    "fav": "~ 0.0.7",
     "validator": "~0.4.16",
     "mongoose": "~3.4.0",
     "underscore": "~1.4.2"
