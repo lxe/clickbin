@@ -1,1 +1,3 @@
++ bug with creating new users: http://vicapow.testb.inundefined/
 + add ability to scrape module keywords when a github or npm project is uploaded
+

@@ -122,6 +122,7 @@ app.configure(function() {
       this.redirect(uri + '_/signin')
     }
     res.redirectToProfile = function(username, path){
+      if(!path) path = ''
       this.redirect(this.locals.getUserURI(username) + path)
     }
     next()

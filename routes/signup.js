@@ -83,6 +83,7 @@ module.exports = function(app) {
           }
           req.session.flash.succuess = "You're logged in!"
           // create a new top level bin for this user
+          console.log(user)
           return res.redirectToProfile(user.username)
         }
       })
