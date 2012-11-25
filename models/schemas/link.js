@@ -67,7 +67,7 @@ var LinkSchema = new Schema({
 LinkSchema.index(
   { 
     owner : 1
-    , _id : 1
+    , url : 1
   }
   , { unique : true }
 )
