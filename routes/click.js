@@ -1,6 +1,6 @@
 var _ = require("underscore")
   , Link = require('../models/link')
-  , Heat = require('../models/Heat')
+  , Heat = require('../models/heat')
 
 module.exports = function(app) {
   app.get('/_/click/link/:linkID', function(req, res, next) {
