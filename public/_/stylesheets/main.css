@@ -10882,11 +10882,7 @@ body .mascot {
 }
 #landing-promo .anchor-wrap {
   padding: 60px 0 150px 0;
-  background: transparent url('/_/images/waves.png') center 280px repeat-x;
-  -webkit-animation: waves-landing 15s infinite linear;
-  -moz-animation: waves-landing 15s infinite linear;
-  -o-animation: waves-landing 15s infinite linear;
-  animation: waves-landing 15s infinite linear;
+  background: transparent url('/_/images/waves.png') center bottom repeat-x;
 }
 #landing-promo .arrow {
   font-size: 20px;
@@ -10937,20 +10933,20 @@ body#landing {
   background: #183E5C;
 }
 #info {
-  background-color: #235C88;
+  background-color: #225985;
   background-color: #1e5076 !important;
   background-repeat: repeat-x;
   filter: progid:dximagetransform.microsoft.gradient(startColorstr="#235C88", endColorstr="#183E5C");
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#235c88), to(#183e5c));
-  background-image: -moz-linear-gradient(top, #235c88, #183e5c);
-  background-image: -ms-linear-gradient(top, #235c88, #183e5c);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #235c88), color-stop(100%, #183e5c));
-  background-image: -webkit-linear-gradient(top, #235c88, #183e5c);
-  background-image: -o-linear-gradient(top, #235c88, #183e5c);
-  background-image: linear-gradient(#235c88, #183e5c);
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#225985), to(#183e5c));
+  background-image: -moz-linear-gradient(top, #225985, #183e5c);
+  background-image: -ms-linear-gradient(top, #225985, #183e5c);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #225985), color-stop(100%, #183e5c));
+  background-image: -webkit-linear-gradient(top, #225985, #183e5c);
+  background-image: -o-linear-gradient(top, #225985, #183e5c);
+  background-image: linear-gradient(#225985, #183e5c);
   border-color: #183e5c #183e5c #1d4c6f;
   color: #fff !important;
-  text-shadow: 0 -1px 0 #0e2537;
+  text-shadow: 0 -1px 0 #0d2334;
   -webkit-font-smoothing: antialiased;
   padding: 20px 0;
   font-size: 14px;

@@ -1,0 +1,31 @@
+h2 stay tuned for more features!
+.newsletter-wrapper
+  .inner
+    iframe.hidden(src="about:blank", id="newsletter-target", name="newsletter-target")
+    p(style="min-height: auto;") 
+      | sign up for updates:
+    form.form-inline#newsletter(action='https://docs.google.com/spreadsheet/formResponse?formkey=dHpHWkpHNWEwYjhRUmVlX2Z3bFZsc2c6MQ&ifq', 
+      method='POST', target="newsletter-target", style="margin-bottom: 20px;")
+      input(type="hidden", value="Submit", name="submit")
+      input(type="hidden", value="0", name="pageNumber")
+      input(type="hidden", value="", name="backupCache")
+      .clearfix
+        .button-wrapper
+          button.btn.btn-navy(type="submit") 
+            strong sign up
+        .block-input-wrapper
+          input.input-block-level#newsletter-email(
+            type="text", 
+            name="entry.0.single", 
+            placeholder="email")
+
+    .clearfix
+      .pull-left
+
+        a(href="https://twitter.com/share", class="twitter-share-button", data-url="http://clickb.in", data-text="Clickbin - the easy way to organize a bunch of links. No sign-up required.", data-via="clickbin") Tweet
+        script
+          !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+
+      .pull-left
+        div.fb-like(data-href="http://clickb.in", data-send="true", 
+          data-layout="button_count", data-width="300", data-show-faces="false")
