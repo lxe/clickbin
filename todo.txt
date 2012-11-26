@@ -1,11 +1,1 @@
-edits to front page
-  clickb.in
-  bookmarking done right.
-
-  just put "clickb.in/" in front of the url you want to bookmark. for example: clickb.in/google.com
-
-  to tag a link "video" and "space"
-  
-  clickb.in/videos/space/youtube.com/watch?v=K0wZ1MOzFSU
-
-  create an account to get started!
++ change pagenation to use url query. change tags to allow numbers

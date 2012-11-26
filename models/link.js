@@ -31,7 +31,6 @@ LinkSchema.statics.getUserLinks = function(user, tags, includePrivate, cb){
 }
 
 LinkSchema.methods.save = function(cb){
-  console.log('calling our custom save')
   if(cb){
     var old_cb = cb
     cb = function(err, doc){
