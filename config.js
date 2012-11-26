@@ -13,7 +13,9 @@ var config = {
   , logging : true
   // just incase, reserve these usernames (aka, subdomains)
   , reservedUsernames : fs.readFileSync( __dirname + '/reserved.txt').toString().split('\n')
-  , mongoPath : 'mongodb://localhost/clickbin-v3'
+  // make sure to update the sessionDB if you update the mongoPath
+  , dbName : 'clickbin-v3'
+  , mongoPath : 'mongodb://localhost/'
   , usernameRegexp : /^[a-zA-Z]{1,}[a-zA-Z0-9]{1,}$/
   , maxChildBins : 50
   , maxNumTags : 10
@@ -29,6 +31,7 @@ var config = {
     */
   , commandRegexp : /^((\/(?:[a-zA-Z0-9]{1,}[a-z \%A-Z0-9\-\_\/]*(?:\/|$)))|\/)(\w+?:\/\/)?([^\/]+\..+)?/
 }
+config.mongoPath = config.mongoPath + config.dbName
 
 // "In an extreme view, the world can be seen as only connections, nothing 
 // else. We think of a dictionary as the repository of meaning, but it defines 

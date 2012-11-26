@@ -77,7 +77,7 @@ app.configure(function() {
   app.use(express.session({
     secret: 'whalecopter' // nice...
     , maxAge: new Date(Date.now() + 3600000)
-    , store:  new MongoStore({ db: 'clickbin-v2' })
+    , store:  new MongoStore({ db: config.dbName })
     , cookie : { 
       domain : config.domain 
       , path : '/'

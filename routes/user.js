@@ -73,19 +73,34 @@ module.exports = function(req, res, next, opts) {
           path = '/' + tags.join('/')
           if(path.length > 1) path += '/'
 
-          tags = _.object(_.map(tags, function(tag){
+          tagsHash = _.object(_.map(tags, function(tag){
             return [tag, true]
           }))
           
           if(tagPath !== '/') tagPath += '/'
-          var lastPage = Math.floor( numLinks / 20 )
+          var lastPage = Math.floor( (numLinks-1) / 20 )
+          
+          // when to page with no links
+          if(!links.length && page !== 0){
+            if(req.session) req.session.flash.error = "There are no more pages for this tag"
+            return res.redirect(path)
+          }
+          
+          if(!links.length && !isOwner){
+            if(tags.length){
+              if(req.session) req.session.flash.error = user.username + " has no links those tags"
+              return res.redirectToProfile(username)
+            }else{
+              if(req.session) req.session.flash.error = user.username + " doesn't have any public links"
+            }
+          }
           
           return res.render('user', {
             title : user.username + '.' + config.domain + path
             , numLinks : numLinks
             , page : page
             , links : links
-            , tags : tags
+            , tags : tagsHash
             , prevPage : (page > 0) ? tagPath + (page - 1) : null
             , nextPage : (page < lastPage) ? tagPath + (page + 1) : null
             , path : path

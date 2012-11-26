@@ -40,16 +40,19 @@ var LinkCacheSchema = new Schema({
   }
 },{strict: true})
 
-LinkCacheSchema.statics.scrape = function(url,cb){
+LinkCacheSchema.statics.scrape = function(orig_url,cb){
   // this is sort of like a cache, for the scraper
-  LinkCache.findOne( { url : url }, function(err, link) {
+  LinkCache.findOne( { url : orig_url }, function(err, link) {
     if(err) return cb(err)
     // first, try to see if the link already exists.
     // if it does, just return it
     else if(link) return cb(null,link)
+    console.log('could not find linke cache for url: ' + orig_url)
     // if not, go and _actually_ scrape the page
-    else scraper.get(url, function(err, link){
-      if(err) link = { url : url }
+    scraper.get(orig_url, function(err, link){
+      console.log('saving link cache for url: ' + orig_url)
+      if(err) link = { url : orig_url }
+      link.url = orig_url
       link = new LinkCache(link)
       link.save(function(err){
         if(err) return cb(err)

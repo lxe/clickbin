@@ -27,7 +27,9 @@ module.exports = function(app) {
         return res.redirect('/')
       }else{
         errors.inputPassword = { msg : "Username and password combo is not correct" }
-        return res.render('login',{errors:errors})
+        return res.render('login', {
+          errors : errors
+        })
       }
     })
   })
