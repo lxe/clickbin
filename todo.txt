@@ -1,1 +1,0 @@
-+ change pagenation to use url query. change tags to allow numbers
