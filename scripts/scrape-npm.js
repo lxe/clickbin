@@ -15,13 +15,16 @@ mongoose.connect(config.mongoPath, function(err){
   }, function(err, user){
     if(err) throw err
     if(!user) throw new Error("user '" + argv.user + "' not found")
+    
     // remove the previous modules
     Link.remove({ 
       $and : [
         { tags : 'module' }
         , { tags : 'npm' }
       ]
+      , owner : user._id
     }).exec()
+    
     request.get({ 
       url : 'http://isaacs.iriscouch.com/registry/_all_docs'
       , json : true
