@@ -32,22 +32,10 @@ module.exports = function(req, res, next, opts) {
   if(link){
     // check that we're the owner of the subdomain
     if(isOwner){
-      Link.scrape(link.href, function(err, scrappedLink){
+      User.scrapeLink(req.session.user._id, link.href, tags, function(err, link){
         if(err) return next(err)
-        var link = new Link({
-          tags : tags
-          , url : opts.link.href
-          , owner : req.session.user._id
-        })
-        scrappedLink = scrappedLink.toObject()
-        delete scrappedLink._id
-        scrappedLink.tags = _.union(scrappedLink.tags,link.tags)
-        _.extend(link,scrappedLink)
-        link.save(function(err){
-          if(err && err.code === 11000) console.log(err)
-          if(err) return next(err)
-          return res.redirect('/' + tags.join('/'))
-        })
+        req.session.flash.success = 'Saved link ' + link.url
+        return res.redirect('/' + tags.join('/'))
       })
     }else{
       return next(new Error("You can't tag links for other users."))

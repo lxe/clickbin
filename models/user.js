@@ -7,6 +7,7 @@ var mongoose = require('mongoose')
   , salt = require('../config').salt
   , common = require('./common')
   , Link = require('./link')
+  , _ = require('underscore')
 
 
 /**
@@ -74,6 +75,22 @@ UserSchema.statics.exists = function(username,email,cb){
     username : username
     , email : email
   }).exec(cb)
+}
+
+UserSchema.statics.scrapeLink = function(user_id, href, tags, cb){
+  Link.scrape(href, function(err, scrappedLink){
+    if(err) return cb(err)
+    var link = new Link({
+      tags : tags
+      , url : href
+      , owner : user_id
+    })
+    scrappedLink = scrappedLink.toObject()
+    delete scrappedLink._id
+    scrappedLink.tags = _.union(scrappedLink.tags,link.tags)
+    _.extend(link, scrappedLink)
+    link.save(cb)
+  })
 }
 
 UserSchema.statics.getURI = function(req,username){

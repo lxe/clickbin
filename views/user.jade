@@ -11,14 +11,15 @@ block body
   .bin.main.container
     .span12
       .pagination.pagination-right
-        ul
-          li(class=(prevPage)?'':'disabled')
-            a(href=prevPage) «
-          //- - for(var i = 0; i < numPages; i++)
-          //-   li
-          //-     a(href=i) #{i}
-          li(class=(nextPage)?'':'disabled')
-            a(href=nextPage) »
+        if(prevPage || nextPage)
+          ul
+            li(class=(prevPage)?'':'disabled')
+              a(href=prevPage) «
+            //- - for(var i = 0; i < numPages; i++)
+            //-   li
+            //-     a(href=i) #{i}
+            li(class=(nextPage)?'':'disabled')
+              a(href=nextPage) »
     .span12
       if links.length
         .links
@@ -29,16 +30,17 @@ block body
         if authorizedUser
           h1 It's so lonely in here... why not add a link?
           h2 just find a nice link and put "clickb.in#{path}" in front of it. for example:
-          a(href="google.com",style="text-decoration:underline") 
+          a(href=path + "google.com",style="text-decoration:underline") 
             h2 clickb.in#{path}google.com
     .span12
       .pagination.pagination-right
-        ul
-          li(class=(prevPage)?'':'disabled')
-            a(href=prevPage) «
-          //- - for(var i = 0; i < numPages; i++)
-          //-   li
-          //-     a(href=i) #{i}
-          li(class=(nextPage)?'':'disabled')
-            a(href=nextPage) »
+        if(prevPage || nextPage)
+          ul
+            li(class=(prevPage)?'':'disabled')
+              a(href=prevPage) «
+            //- - for(var i = 0; i < numPages; i++)
+            //-   li
+            //-     a(href=i) #{i}
+            li(class=(nextPage)?'':'disabled')
+              a(href=nextPage) »
   include link-modal
