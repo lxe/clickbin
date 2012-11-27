@@ -29,24 +29,26 @@ mongoose.connect(config.mongoPath, function(err){
       if(err) throw err
       var ids = _.pluck(body.rows,'id')
       function next(){
-        request.get({
-          url : 'http://isaacs.iriscouch.com/registry/' + ids.shift()
-          , json : true
-        }, function(err, res, body){
-          if(err) throw err
-          var link = getLink(body)
-          if(!link){
-            if(ids.length) return next()
-            else return
-          }
-          link = new Link(link)
-          link.owner = user.id
-          console.log(link)
-          link.save(function(err){
+        setTimeout(function(){
+          request.get({
+            url : 'http://isaacs.iriscouch.com/registry/' + ids.shift()
+            , json : true
+          }, function(err, res, body){
             if(err) throw err
-            if(ids.length) next()
+            var link = getLink(body)
+            if(!link){
+              if(ids.length) return next()
+              else return
+            }
+            link = new Link(link)
+            link.owner = user.id
+            console.log(link)
+            link.save(function(err){
+              if(err) throw err
+              if(ids.length) next()
+            })
           })
-        })
+        }, 200)
       }
       next()
     })
