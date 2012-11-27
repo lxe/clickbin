@@ -10,21 +10,15 @@ block body
     include alerts
   .bin.main.container
     .span12
-      //- .pagination.pagination-right
-      //-   ul
-      //-     li(class=(prevPage)?'':'disabled')
-      //-       a(href=prevPage) «
-      //-     - for(var i = 0; i < numPages; i++)
-      //-       li
-      //-         a(href=i) #{i}
-      //-     li(class=(nextPage)?'':'disabled')
-      //-       a(href=nextPage) »
-      if(prevPage)
-        a.btn.btn-navy.pull-left(href=prevPage) previous
-      if(nextPage)
-        a.btn.btn-navy.pull-right(href=nextPage) next
-      br
-      br
+      .pagination.pagination-right
+        ul
+          li(class=(prevPage)?'':'disabled')
+            a(href=prevPage) «
+          //- - for(var i = 0; i < numPages; i++)
+          //-   li
+          //-     a(href=i) #{i}
+          li(class=(nextPage)?'':'disabled')
+            a(href=nextPage) »
     .span12
       if links.length
         .links
@@ -38,17 +32,13 @@ block body
           a(href="google.com",style="text-decoration:underline") 
             h2 clickb.in#{path}google.com
     .span12
-      if(prevPage)
-        a.btn.btn-navy.pull-left(href=prevPage) previous
-      if(nextPage)
-        a.btn.btn-navy.pull-right(href=nextPage) next
-      //- .pagination.pagination-right
-      //-   ul
-      //-     li(class=(prevPage)?'':'disabled')
-      //-       a(href=prevPage) «
-      //-     - for(var i = 0; i < numPages; i++)
-      //-       li
-      //-         a(href=i) #{i}
-      //-     li(class=(nextPage)?'':'disabled')
-      //-       a(href=nextPage) »
+      .pagination.pagination-right
+        ul
+          li(class=(prevPage)?'':'disabled')
+            a(href=prevPage) «
+          //- - for(var i = 0; i < numPages; i++)
+          //-   li
+          //-     a(href=i) #{i}
+          li(class=(nextPage)?'':'disabled')
+            a(href=nextPage) »
   include link-modal
