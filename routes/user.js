@@ -101,6 +101,7 @@ module.exports = function(req, res, next, opts) {
             , page : page
             , links : links
             , tags : tagsHash
+            , numPages : lastPage + 1
             , prevPage : (page > 0) ? tagPath + (page - 1) : null
             , nextPage : (page < lastPage) ? tagPath + (page + 1) : null
             , path : path
