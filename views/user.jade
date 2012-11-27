@@ -9,38 +9,41 @@ block body
   .container.alerts
     include alerts
   .bin.main.container
-    .span12
-      .pagination.pagination-right
-        if(prevPage || nextPage)
-          ul
-            li(class=(prevPage)?'':'disabled')
-              a(href=prevPage) «
-            //- - for(var i = 0; i < numPages; i++)
-            //-   li
-            //-     a(href=i) #{i}
-            li(class=(nextPage)?'':'disabled')
-              a(href=nextPage) »
-    .span12
-      if links.length
-        .links
-          ul.items.clearfix.row-fluid
-            each link in links
-              mixin link(link)
-      else
-        if authorizedUser
-          h1 It's so lonely in here... why not add a link?
-          h2 just find a nice link and put "clickb.in#{path}" in front of it. for example:
-          a(href=path + "google.com",style="text-decoration:underline") 
-            h2 clickb.in#{path}google.com
-    .span12
-      .pagination.pagination-right
-        if(prevPage || nextPage)
-          ul
-            li(class=(prevPage)?'':'disabled')
-              a(href=prevPage) «
-            //- - for(var i = 0; i < numPages; i++)
-            //-   li
-            //-     a(href=i) #{i}
-            li(class=(nextPage)?'':'disabled')
-              a(href=nextPage) »
+    .row
+      .span12
+        .pagination.pagination-right
+          if(prevPage || nextPage)
+            ul
+              li(class=(prevPage)?'':'disabled')
+                a(href=prevPage) «
+              //- - for(var i = 0; i < numPages; i++)
+              //-   li
+              //-     a(href=i) #{i}
+              li(class=(nextPage)?'':'disabled')
+                a(href=nextPage) »
+    .row
+      .span12
+        if links.length
+          .links
+            ul.items.clearfix.row-fluid
+              each link in links
+                mixin link(link)
+        else
+          if authorizedUser
+            h1 It's so lonely in here... why not add a link?
+            h2 just find a nice link and put "clickb.in#{path}" in front of it. for example:
+            a(href=path + "google.com",style="text-decoration:underline") 
+              h2 clickb.in#{path}google.com
+    .row
+      .span12
+        .pagination.pagination-right
+          if(prevPage || nextPage)
+            ul
+              li(class=(prevPage)?'':'disabled')
+                a(href=prevPage) «
+              //- - for(var i = 0; i < numPages; i++)
+              //-   li
+              //-     a(href=i) #{i}
+              li(class=(nextPage)?'':'disabled')
+                a(href=nextPage) »
   include link-modal

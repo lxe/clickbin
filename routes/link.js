@@ -51,7 +51,10 @@ module.exports = function(app){
       return res.redirect('back')
     }
     
-    if(public) public = (public === 'true')
+    if(public){
+      public = (public === 'true')
+      req.session.flash.success = 'The link was made ' + ( (public) ? 'public' : 'private' )
+    }
     else public = undefined
     
     Link.findOne({
