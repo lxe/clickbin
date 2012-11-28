@@ -68,6 +68,13 @@ var UserSchema = new Schema({
     , required : true
     , default : false
   }
+  
+  , tags : {
+    type : Schema.Types.Mixed
+    , required : true
+    , default : {}
+    , index : false
+  }
 }, { strict: true })
 
 UserSchema.statics.exists = function(username,email,cb){
@@ -89,8 +96,27 @@ UserSchema.statics.scrapeLink = function(user_id, href, tags, cb){
     delete scrappedLink._id
     scrappedLink.tags = _.union(scrappedLink.tags,link.tags)
     _.extend(link, scrappedLink)
-    link.save(cb)
+    link.save(function(err, link){
+      if(err) return cb(err)
+      // increment the users tag count
+      var inc = {}
+      _.each(link.tags, function(tag){
+        inc['tags.' + tag] = 1
+      })
+      console.log(inc)
+      User.findByIdAndUpdate(user_id , { $inc : inc }, function(err){
+        return cb(err,link)
+      })
+    })
   })
+}
+
+UserSchema.statics.updateTagCount = function(user_id, tag_changes, cb){
+  var inc = {}
+  _.each(tag_changes, function(val, tag){
+    inc['tags.' + tag] = val
+  })
+  User.findByIdAndUpdate(user_id, { $inc : inc }, cb)
 }
 
 UserSchema.statics.getURI = function(req,username){

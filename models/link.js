@@ -30,6 +30,26 @@ LinkSchema.statics.getUserLinks = function(user, tags, includePrivate, cb){
   else return query
 }
 
+LinkSchema.methods.getTagChanges = function(tags){
+  var tag_changes = {}
+  tags = _.uniq(tags)
+  _.each(tags, function(tag){
+    if(!_.contains(this.tags,tag)){
+      // `tag` is a new tag being added to this link
+      tag_changes[tag] = 1
+    }
+  })
+  _.each(this.tags, function(tag){
+    if(!_.contains(tags, tag)){
+      // `tag` is an old tag being removed from this link
+      tag_changes[tag] = -1
+    }
+  })
+  console.log('tag_changes')
+  console.log(tag_changes)
+  return tag_changes
+}
+
 LinkSchema.methods.save = function(cb){
   if(cb){
     var old_cb = cb

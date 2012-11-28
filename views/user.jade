@@ -10,7 +10,17 @@ block body
     include alerts
   .bin.main.container
     .row
-      .span12
+      .span10
+        if path === '/'
+          for val, tag in user.tags
+            if val !== 0
+              a(href=tag)
+                .badge
+                  !{tag} !{val}
+              | 
+          br
+          br
+      .span2
         .pagination.pagination-right
           if(prevPage || nextPage)
             ul

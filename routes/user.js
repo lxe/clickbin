@@ -48,7 +48,12 @@ module.exports = function(req, res, next, opts) {
       username : username
     }, function(err,user){
       if(err) return next(err)
-      if(!user) return next(new Error("Ther's no user with that name"))
+      if(!user){
+        if(req.session.user && username === req.session.user.username){
+          req.session.user = null
+        }
+        return next(new Error("Ther's no user with that name"))
+      }
       var query = user.getLinks(tags, isOwner)
       query.count(function(err, numLinks){
         if(err) return next(err)
@@ -97,6 +102,7 @@ module.exports = function(req, res, next, opts) {
             , profile : {
               username : user.username
             }
+            , user : user
           })
         })
       })

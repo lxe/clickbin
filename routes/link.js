@@ -12,8 +12,18 @@ module.exports = function(app){
     Link.findOne({
       _id : req.params.linkID
       , owner : req.session.user._id
-    }).remove()
-    res.redirect('back')
+    }, function(err, link){
+      if(err || !link) return res.redirect('back')
+      var tag_changes = link.getTagChanges([])
+        , owner = link.owner
+      link.remove(function(err){
+        if(err) return next(err)
+        User.updateTagCount( owner, tag_changes, function(err){
+          if(err) return next(err)
+          return res.redirect('back')
+        })
+      })
+    })
   })
   
   app.get('/_/link/:linkID/update', function(req, res, next){
@@ -65,13 +75,25 @@ module.exports = function(app){
         console.error('error or missing when updating link')
         return res.redirect('back')
       }
-      console.log('title')
-      console.log('tags: ' + tags)
+      
       if(title) link.title = title
-      if(tags) link.tags = tags
+      var tag_changes = null
+      if(tags){
+        tag_changes = link.getTagChanges(tags)
+        link.tags = tags
+      }
       if( public !== undefined ) link.public = public
-      link.save()
-      return res.redirect('back')
+      link.save(function(err, link){
+        if(err) return next(err)
+        if(!link) return res.redirect('back')
+        // the tags didn't change
+        if(!tag_changes) return res.redirect('back')
+        
+        User.updateTagCount( link.owner, tag_changes, function(err){
+          if(err) return next(err)
+          return res.redirect('back')
+        })
+      })
     })
   })
 }
