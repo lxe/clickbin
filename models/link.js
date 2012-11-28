@@ -2,8 +2,78 @@ var _ = require('underscore')
   , util = require('util')
   , mongoose = require('mongoose')
   , Schema = mongoose.Schema
-  , LinkSchema = require('./schemas/link')
   , LinkCache = require('./linkcache')
+
+
+var LinkSchema = new Schema({
+  title : {
+    type : String
+    , required : false
+  }
+  , desc : {
+    type : String
+    , required : false
+  }
+  // the path to the image
+  , icon : {
+    type : String
+    , required : false
+    , default : null
+  }
+  , url : {
+    type : String
+    , required : true
+    , index : true
+  }
+  , mime : {
+    type : String
+    , required : false
+  }
+  , created : {
+    type : Date
+    , default : Date.now
+    , index : true
+  }
+  , tags : {
+    type : [String]
+    , default : []
+    , index : true
+  }
+  , owner : {
+    type : Schema.Types.ObjectId
+    , required : false
+    , index : true
+  }
+  , votes : {
+    type : Number
+    , required : true
+    , default : 0
+  }
+  , clicks : {
+    type : Number
+    , required : true
+    , default : 0
+  }
+  , anonymous : {
+    type : String
+    , required : false
+  }
+  , public : {
+    type : Boolean
+    , required: true
+    , default : true
+  }
+}, { strict : true })
+
+
+LinkSchema.index(
+  { 
+    owner : 1
+    , url : 1
+  }
+  , { unique : true }
+)
+
 
 LinkSchema.statics.scrape = function(url,cb){
   LinkCache.scrape(url,cb)
