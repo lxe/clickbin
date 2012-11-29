@@ -111,10 +111,7 @@ module.exports = function(req, res, next, opts) {
               , nextPage : (page < lastPage) ? tagPath + (page + 1) : null
               , path : path
               , authorizedUser : authorizedUser
-              , profile : {
-                username : user.username
-              }
-              , user : user
+              , profile : user
             })
           })
         })

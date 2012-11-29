@@ -34,12 +34,11 @@ html(lang='en')
                 //-       input.input-small(type="text", placeholder="new bin")
 
               ul.nav.pull-right
-                if loggedIn && typeof(profile) !=='undefined' && profile.username !== user.username
+                if loggedIn && user.username !== profile.username
                   li
                     a(href="#{getUserURI(user.username)}")
                       i.icon-home
                       |  Home
-
                 if !loggedIn
                   li 
                     a(href=getRootURI() + "_/login") 
