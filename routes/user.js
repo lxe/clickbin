@@ -93,7 +93,10 @@ module.exports = function(req, res, next, opts) {
           
           var authorizedUser = req.session.user && user._id.toString() === req.session.user._id
           
-          user.getTopTags().limit(10).exec(function(err,tags){
+          var query = user.getTopTags()
+          if(!authorizedUser) query.where('public', true)
+          query.limit(20)
+          query.exec(function(err,tags){
             if(err) return next(err)
             return res.render('user', {
               title : user.username + '.' + config.domain + path
