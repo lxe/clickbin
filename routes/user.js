@@ -95,7 +95,7 @@ module.exports = function(req, res, next, opts) {
             && user._id.toString() === req.session.user._id
           
           var query = user.getTopTags()
-          if(!authorizedUser) query.where('public', true)
+          //if(!authorizedUser) query.where('public', true)
           query.limit(20)
           query.exec(function(err,tags){
             if(err) return next(err)
