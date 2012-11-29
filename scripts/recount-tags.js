@@ -26,8 +26,7 @@ client.open(function(err, client){
           _.each(doc.tags, function(tag){ 
             changes[tag] = 1 
           })
-          Tag.updateUserTags(doc.owner, changes)
-          next()
+          Tag.updateUserTags(doc.owner, changes, next)
         })
       }
       next()

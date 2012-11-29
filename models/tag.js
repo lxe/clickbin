@@ -38,8 +38,11 @@ TagSchema.statics.getTopTags = function(owner, cb){
   else return query
 }
 
-TagSchema.statics.updateUserTags = function(owner, changes){
-  _.each(changes, function(change, name){
+TagSchema.statics.updateUserTags = function(owner, changes, cb){
+  
+  var tags = _.keys(changes)
+  
+  function next(name){
     Tag.findOneAndUpdate(
       // query conditions
       {
@@ -50,15 +53,23 @@ TagSchema.statics.updateUserTags = function(owner, changes){
       , {
         name : name
         , owner : owner
-        , $inc : { count : change }
+        , $inc : { count : changes[name] }
       }
       // options
       , {
         // create the field if it doesn't already exist
         upsert : true
       }
-    ).exec()
-  })
+      , function(err){
+        if(err && cb) return cb(err)
+        var tag = tags.pop()
+        if(tag) return next(tag)
+        if(cb) return cb()
+      }
+    )
+  }
+  
+  return next(tags.pop())
 }
 
 
