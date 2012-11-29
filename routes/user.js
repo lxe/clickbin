@@ -91,7 +91,8 @@ module.exports = function(req, res, next, opts) {
             }
           }
           
-          var authorizedUser = req.session.user && user._id.toString() === req.session.user._id
+          var authorizedUser = req.session.user 
+            && user._id.toString() === req.session.user._id
           
           var query = user.getTopTags()
           if(!authorizedUser) query.where('public', true)
