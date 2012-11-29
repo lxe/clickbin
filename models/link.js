@@ -85,15 +85,9 @@ LinkSchema.statics.getUserLinks = function(user, tags, includePrivate, cb){
   else if(!tags) tags = []
   
   var query = Link.find() //.where('owner').equals(user._id)
-  if(tags.length){
-    query.and(
-      _.map(tags, function(tag){
-        return { tags : tag }
-      })
-    )
-  }
   query.where('owner',user._id)
   if(!includePrivate) query.where('public',true)
+  if(tags.length) query.all('tags',tags)
   //query.limit(100)
   query.sort('field -created')
   if(cb) query.exec(cb)
