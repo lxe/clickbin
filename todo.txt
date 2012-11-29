@@ -1,2 +1,1 @@
-ability to search by domain
-change page url to not collide with tag names
+add `public` attribute to `tag` model
