@@ -12,11 +12,13 @@ block body
     .row
       .span10
         if path === '/'
-          for val, tag in user.tags
-            if val !== 0
-              a(href=tag)
+          for tag in tags
+            if tag.count !== 0
+              a(href=tag.name)
                 .badge
-                  !{tag} !{val}
+                  !{tag.name}
+                | 
+                !{tag.count}
               | 
           br
           br

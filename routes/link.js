@@ -18,10 +18,8 @@ module.exports = function(app){
         , owner = link.owner
       link.remove(function(err){
         if(err) return next(err)
-        User.updateTagCount( owner, tag_changes, function(err){
-          if(err) return next(err)
-          return res.redirect('back')
-        })
+        User.updateTagCount( owner, tag_changes )
+        return res.redirect('back')
       })
     })
   })
@@ -89,10 +87,8 @@ module.exports = function(app){
         // the tags didn't change
         if(!tag_changes) return res.redirect('back')
         
-        User.updateTagCount( link.owner, tag_changes, function(err){
-          if(err) return next(err)
-          return res.redirect('back')
-        })
+        User.updateTagCount( link.owner, tag_changes )
+        return res.redirect('back')
       })
     })
   })

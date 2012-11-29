@@ -1,12 +1,10 @@
-/**
- * User Model
- */
 
 var mongoose = require('mongoose')
   , Schema = mongoose.Schema
   , salt = require('../config').salt
   , common = require('./common')
   , Link = require('./link')
+  , Tag = require('./tag')
   , _ = require('underscore')
 
 
@@ -61,19 +59,11 @@ var UserSchema = new Schema({
     , default : Date.now
     , index : true
   }
-
   // did the user activate their account via email?
   , active : {
     type : Boolean
     , required : true
     , default : false
-  }
-  
-  , tags : {
-    type : Schema.Types.Mixed
-    , required : true
-    , default : {}
-    , index : false
   }
 }, { strict: true })
 
@@ -99,24 +89,22 @@ UserSchema.statics.scrapeLink = function(user_id, href, tags, cb){
     link.save(function(err, link){
       if(err) return cb(err)
       // increment the users tag count
-      var inc = {}
+      var tag_changes = {}
       _.each(link.tags, function(tag){
-        inc['tags.' + tag] = 1
+        tag_changes[tag] = 1
       })
-      console.log(inc)
-      User.findByIdAndUpdate(user_id , { $inc : inc }, function(err){
-        return cb(err,link)
-      })
+      Tag.updateUserTags(user_id, tag_changes)
+      return cb(null, link)
     })
   })
 }
 
-UserSchema.statics.updateTagCount = function(user_id, tag_changes, cb){
-  var inc = {}
-  _.each(tag_changes, function(val, tag){
-    inc['tags.' + tag] = val
-  })
-  User.findByIdAndUpdate(user_id, { $inc : inc }, cb)
+UserSchema.statics.updateTagCount = function(user_id, tag_changes){
+  Tag.updateUserTags(user_id, tag_changes)
+}
+
+UserSchema.methods.getTopTags = function(cb){
+  return Tag.getTopTags(this._id, cb)
 }
 
 UserSchema.statics.getURI = function(req,username){

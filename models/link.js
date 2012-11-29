@@ -103,13 +103,16 @@ LinkSchema.statics.getUserLinks = function(user, tags, includePrivate, cb){
 LinkSchema.methods.getTagChanges = function(tags){
   var tag_changes = {}
   tags = _.uniq(tags)
+  console.log('tags added: ' + tags)
+  console.log('existing tags: ' + this.tags)
+  var old_tags = this.tags
   _.each(tags, function(tag){
-    if(!_.contains(this.tags,tag)){
+    if(!_.contains(old_tags, tag)){
       // `tag` is a new tag being added to this link
       tag_changes[tag] = 1
     }
   })
-  _.each(this.tags, function(tag){
+  _.each(old_tags, function(tag){
     if(!_.contains(tags, tag)){
       // `tag` is an old tag being removed from this link
       tag_changes[tag] = -1

@@ -1,11 +1,8 @@
-/**
- * Counter model - counts the number of anonymous bins
- */
 
 var mongoose = require('mongoose')
   , Schema   = mongoose.Schema
 
-var Counter = new Schema({
+var CounterSchema = new Schema({
   value : {
       type     : Number
     , required : true
@@ -27,7 +24,7 @@ var Counter = new Schema({
  * @param  {Function} callback [description]
  * @return {[type]}            [description]
  */
-Counter.statics.findAndModify = function(query, sort, doc, options, callback) {
+CounterSchema.statics.findAndModify = function(query, sort, doc, options, callback) {
   return this.collection.findAndModify(query, sort, doc, options, callback)
 }
 
@@ -38,7 +35,7 @@ Counter.statics.findAndModify = function(query, sort, doc, options, callback) {
  * @param  {Function} cb       [description]
  * @return {[type]}            [description]
  */
-Counter.statics.increment = function(name, startval, cb) {
+CounterSchema.statics.increment = function(name, startval, cb) {
   if (!cb) {
     cb = startval
     startval = 1
@@ -79,4 +76,4 @@ Counter.statics.increment = function(name, startval, cb) {
   )
 }
 
-module.exports = mongoose.model('Counter',Counter)
+module.exports = mongoose.model('Counter',CounterSchema)

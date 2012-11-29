@@ -45,6 +45,6 @@ mixin link(link, authosizedUser)
               else
                 - var href = path + tag
               a(href=href)
-                span.badge( class = ( tags[tag]? 'badge-info' : '') ) 
+                span.badge( class = ( tagHash[tag]? 'badge-info' : '') ) 
                   != tag
                 | 

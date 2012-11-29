@@ -75,34 +75,43 @@ module.exports = function(req, res, next, opts) {
           
           // when to page with no links
           if(!links.length && page !== 0){
-            if(req.session) req.session.flash.error = "There are no more pages for this tag"
+            if(req.session) req.session.flash.error = "There are no more pages "
+              + "for this tag"
             return res.redirect(path)
           }
           
           if(!links.length && !isOwner){
             if(tags.length){
-              if(req.session) req.session.flash.error = user.username + " has no links those tags"
+              if(req.session) req.session.flash.error = user.username 
+                + " has no links those tags"
               return res.redirectToProfile(username)
             }else{
-              if(req.session) req.session.flash.error = user.username + " doesn't have any public links"
+              if(req.session) req.session.flash.error = user.username 
+                + " doesn't have any public links"
             }
           }
           
-          return res.render('user', {
-            title : user.username + '.' + config.domain + path
-            , numLinks : numLinks
-            , page : page
-            , links : links
-            , tags : tagsHash
-            , numPages : lastPage + 1
-            , prevPage : (page > 0) ? tagPath + (page - 1) : null
-            , nextPage : (page < lastPage) ? tagPath + (page + 1) : null
-            , path : path
-            , authorizedUser : req.session.user && user._id.toString() === req.session.user._id
-            , profile : {
-              username : user.username
-            }
-            , user : user
+          var authorizedUser = req.session.user && user._id.toString() === req.session.user._id
+          
+          user.getTopTags().limit(10).exec(function(err,tags){
+            if(err) return next(err)
+            return res.render('user', {
+              title : user.username + '.' + config.domain + path
+              , numLinks : numLinks
+              , page : page
+              , links : links
+              , tags : tags
+              , tagHash : tagsHash
+              , numPages : lastPage + 1
+              , prevPage : (page > 0) ? tagPath + (page - 1) : null
+              , nextPage : (page < lastPage) ? tagPath + (page + 1) : null
+              , path : path
+              , authorizedUser : authorizedUser
+              , profile : {
+                username : user.username
+              }
+              , user : user
+            })
           })
         })
       })
