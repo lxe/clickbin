@@ -91,7 +91,10 @@ UserSchema.statics.scrapeLink = function(user_id, href, tags, cb){
       // increment the users tag count
       var tag_changes = {}
       _.each(link.tags, function(tag){
-        tag_changes[tag] = 1
+        tag_changes[tag] = {
+          count : 1
+          , publicCount : 1
+        }
       })
       Tag.updateUserTags(user_id, tag_changes)
       return cb(null, link)

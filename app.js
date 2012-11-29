@@ -132,7 +132,10 @@ app.configure(function() {
     if(req.session && req.session.user){
       res.locals.user = req.session.user
       res.locals.loggedIn = !!req.session.user.loggedIn
-    }else res.locals.user = {}
+    }else{
+      res.locals.user = {}
+      res.locals.loggedIn = false
+    }
     next()
   })
 

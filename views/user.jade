@@ -13,12 +13,15 @@ block body
       .span10
         if path === '/'
           for tag in tags
-            if tag.count !== 0
+            if tag.count !== 0 && authorizedUser || tag.publicCount !== 0 && !authorizedUser
               a(href=tag.name)
                 .badge
                   !{tag.name}
                 | 
-                !{tag.count}
+                if(authorizedUser)
+                  !{tag.count}
+                else
+                  !{tag.publicCount}
               | 
           br
           br

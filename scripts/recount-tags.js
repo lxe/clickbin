@@ -24,7 +24,9 @@ client.open(function(err, client){
           if(!doc) process.exit()
           var changes = {}
           _.each(doc.tags, function(tag){ 
-            changes[tag] = 1 
+            changes[tag].count = 1 
+            if(doc.public) changes[tag].publicCount = 1
+            else changes[tag].public = 0
           })
           Tag.updateUserTags(doc.owner, changes, next)
         })

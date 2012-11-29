@@ -9,6 +9,11 @@ var TagSchema = new Schema({
     , required : true
     , index : true
   }
+  , publicCount : {
+    type : Number
+    , required : true
+    , default : 0
+  }
   , count : {
       type  : Number
     , required : true
@@ -53,7 +58,7 @@ TagSchema.statics.updateUserTags = function(owner, changes, cb){
       , {
         name : name
         , owner : owner
-        , $inc : { count : changes[name] }
+        , $inc : changes[name]
       }
       // options
       , {

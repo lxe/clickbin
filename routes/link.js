@@ -61,7 +61,8 @@ module.exports = function(app){
     
     if(public){
       public = (public === 'true')
-      req.session.flash.success = 'The link was made ' + ( (public) ? 'public' : 'private' )
+      req.session.flash.success = 'The link was made ' 
+        + ( (public) ? 'public' : 'private' )
     }
     else public = undefined
     
@@ -75,12 +76,19 @@ module.exports = function(app){
       }
       
       if(title) link.title = title
+      if( public !== undefined ) link.public = public
+      
+      // make sure the tag changes occur after changes to the `public` attribute
       var tag_changes = null
       if(tags){
         tag_changes = link.getTagChanges(tags)
         link.tags = tags
+      }else{
+        if(link.isModified('public')){
+          tag_changes = link.getTagChanges(link.tags)
+        }
       }
-      if( public !== undefined ) link.public = public
+      
       link.save(function(err, link){
         if(err) return next(err)
         if(!link) return res.redirect('back')
